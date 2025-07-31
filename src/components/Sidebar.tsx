@@ -83,7 +83,17 @@ const Sidebar = () => {
         { title: "Meu Perfil", path: "/perfil" },
         ...(userRole === 'admin' ? [{ title: "Administração", path: "/admin" }] : [])
       ]
-    }
+    },
+  ...(userRole === 'admin'
+    ? [
+        {
+          id: "adm",
+          title: "Administração",
+          icon: BookOpen,
+          path: "/admin"
+        }
+      ]
+    : [])
   ];
 
   const handleSignOut = async () => {
@@ -131,7 +141,7 @@ const Sidebar = () => {
             >
               <div className="flex items-center space-x-3">
                 <img src="/lovable-uploads/7433a794-51a8-45eb-81be-aeaccb87a06f.png" alt="Ana Paula Perci" className="h-8 w-8" />
-                <span className="text-white font-bold text-lg">Ana Paula Perci {userRole}</span>
+                <span className="text-white font-bold text-lg">Ana Paula Perci </span>
               </div>
             </Link>
           </header>
