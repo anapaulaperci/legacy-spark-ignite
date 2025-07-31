@@ -129,7 +129,7 @@ const Checklist = () => {
           setTaskThemes(data.task_themes || {});
           setTaskPriorities(data.task_priorities || {});
           setTaskDates(data.task_dates || {});
-          // setTaskResponsibles(data.task_responsibles || {}); // Temporariamente desabilitado até criar coluna no banco
+          setTaskResponsibles(data.task_responsibles || {});
           console.log("🔍 LoadUserProgress: Estados atualizados com sucesso");
         } else {
           console.log("🔍 LoadUserProgress: Nenhum dado encontrado");
@@ -158,8 +158,8 @@ const Checklist = () => {
       checkedItems,
       taskThemes,
       taskPriorities,
-      taskDates
-      // taskResponsibles // Temporariamente removido
+      taskDates,
+      taskResponsibles
     });
 
     try {
@@ -172,7 +172,7 @@ const Checklist = () => {
         task_themes: taskThemes,
         task_priorities: taskPriorities,
         task_dates: taskDates,
-        // task_responsibles: taskResponsibles, // Temporariamente removido até criar coluna no banco
+        task_responsibles: taskResponsibles,
         updated_at: new Date().toISOString()
       };
 
@@ -217,7 +217,7 @@ const Checklist = () => {
             task_themes: taskThemes,
             task_priorities: taskPriorities,
             task_dates: taskDates,
-            // task_responsibles: taskResponsibles, // Temporariamente removido
+            task_responsibles: taskResponsibles,
             updated_at: new Date().toISOString()
           })
         });
@@ -271,7 +271,7 @@ const Checklist = () => {
 
       return () => clearTimeout(timeoutId);
     }
-  }, [checkedItems, taskThemes, taskPriorities, taskDates, loading, user]); // Temporariamente removido taskResponsibles
+  }, [checkedItems, taskThemes, taskPriorities, taskDates, taskResponsibles, loading, user]);
 
   const handleItemCheck = (itemId: string) => {
     setCheckedItems(prev => ({
