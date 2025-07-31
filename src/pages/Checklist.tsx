@@ -175,19 +175,60 @@ const Checklist = () => {
       const session = await supabase.auth.getSession();
       console.log("💾 SaveUserProgress: Session obtida:", !!session.data.session);
       
-      const url = `${SUPABASE_URL}/rest/v1/checklist_progress`;
-      console.log("💾 SaveUserProgress: URL:", url);
-
-      const response = await fetch(url, {
-        method: 'POST',
+      // Primeiro, verificar se o registro já existe
+      const checkUrl = `${SUPABASE_URL}/rest/v1/checklist_progress?user_id=eq.${user.id}`;
+      console.log("💾 SaveUserProgress: Verificando existência:", checkUrl);
+      
+      const checkResponse = await fetch(checkUrl, {
         headers: {
           'apikey': SUPABASE_KEY,
           'Authorization': `Bearer ${session.data.session?.access_token}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=representation,resolution=merge-duplicates'
-        },
-        body: JSON.stringify(progressData)
+          'Accept': 'application/json'
+        }
       });
+
+      const existingData = await checkResponse.json();
+      console.log("💾 SaveUserProgress: Dados existentes:", existingData);
+      
+      let response;
+      const baseUrl = `${SUPABASE_URL}/rest/v1/checklist_progress`;
+      
+      if (existingData && existingData.length > 0) {
+        // UPDATE - registro existe
+        console.log("💾 SaveUserProgress: Atualizando registro existente");
+        const updateUrl = `${baseUrl}?user_id=eq.${user.id}`;
+        
+        response = await fetch(updateUrl, {
+          method: 'PATCH',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${session.data.session?.access_token}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({
+            checked_items: checkedItems,
+            task_themes: taskThemes,
+            task_priorities: taskPriorities,
+            task_dates: taskDates,
+            updated_at: new Date().toISOString()
+          })
+        });
+      } else {
+        // INSERT - registro não existe
+        console.log("💾 SaveUserProgress: Criando novo registro");
+        
+        response = await fetch(baseUrl, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${session.data.session?.access_token}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify(progressData)
+        });
+      }
 
       console.log("💾 SaveUserProgress: Response status:", response.status);
       console.log("💾 SaveUserProgress: Response ok:", response.ok);
