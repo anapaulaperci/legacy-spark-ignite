@@ -59,7 +59,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           emailRedirectTo: redirectUrl,
           data: {
             display_name: displayName || email
-          }
+          },
+          // Desabilitar email de confirmação padrão do Supabase
+          captchaToken: undefined
         }
       });
       
