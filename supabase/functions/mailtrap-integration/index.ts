@@ -186,8 +186,8 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: {
-          email: 'noreply@imersaoposicionamento.com',
-          name: 'Imersão Posicionamento'
+          email: 'noreply@anapaulaperci.com.br',
+          name: 'Ana Paula Perci'
         },
         to: [{
           email: userEmail,
