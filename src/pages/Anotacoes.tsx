@@ -41,12 +41,17 @@ const Anotacoes = () => {
 
     try {
       setLoading(true);
-      // Simplificar a query para evitar problemas de tipo
-      const result: any = await supabase.from('notes').select('*').eq('user_id', user.id);
-      const { data, error } = result;
+      // Usar fetch direto para evitar problemas de tipos complexos do Supabase
+      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?user_id=eq.${user.id}&select=*&order=updated_at.desc`, {
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+        }
+      });
+      const data = await response.json();
 
-      if (error) {
-        console.error('Erro ao carregar anotações:', error);
+      if (!response.ok) {
+        console.error('Erro ao carregar anotações');
         toast({
           title: "Erro",
           description: "Erro ao carregar anotações",
@@ -86,13 +91,20 @@ const Anotacoes = () => {
         content: "# Nova Anotação\n\n"
       };
 
-      const { data, error } = await supabase
-        .from('notes')
-        .insert([newNote])
-        .select()
-        .single();
+      const session = await supabase.auth.getSession();
+      const response = await fetch('https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes', {
+        method: 'POST',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(newNote)
+      });
+      const data = await response.json();
 
-      if (error) {
+      if (!response.ok) {
         toast({
           title: "Erro",
           description: "Erro ao criar nova anotação",
@@ -101,17 +113,19 @@ const Anotacoes = () => {
         return;
       }
 
+      const noteData = Array.isArray(data) ? data[0] : data;
+
       const noteWithTags = { 
-        id: data.id,
+        id: noteData.id,
         user_id: user.id,
-        title: data.title,
-        content: data.content,
+        title: noteData.title,
+        content: noteData.content,
         tags: [] as string[], 
-        created_at: data.created_at,
-        updated_at: data.updated_at
+        created_at: noteData.created_at,
+        updated_at: noteData.updated_at
       };
       setNotes(prev => [noteWithTags, ...prev]);
-      setSelectedNote(data.id);
+      setSelectedNote(noteData.id);
       
       toast({
         title: "Sucesso",
@@ -139,20 +153,26 @@ const Anotacoes = () => {
       )
     );
 
-    // Salvar no banco de dados com debounce
+    // Salvar no banco de dados usando fetch direto
     try {
-      const { error } = await supabase
-        .from('notes')
-        .update({
+      const session = await supabase.auth.getSession();
+      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?id=eq.${id}&user_id=eq.${user.id}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
           title,
           content,
           updated_at: new Date().toISOString()
         })
-        .eq('id', id)
-        .eq('user_id', user.id);
+      });
 
-      if (error) {
-        console.error('Erro ao salvar anotação:', error);
+      if (!response.ok) {
+        console.error('Erro ao salvar anotação');
       }
     } catch (error) {
       console.error('Erro ao salvar anotação:', error);
@@ -165,17 +185,23 @@ const Anotacoes = () => {
 
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('notes')
-        .update({
+      const session = await supabase.auth.getSession();
+      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?id=eq.${selectedNoteData.id}&user_id=eq.${user.id}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
           title: selectedNoteData.title,
           content: selectedNoteData.content,
           updated_at: new Date().toISOString()
         })
-        .eq('id', selectedNoteData.id)
-        .eq('user_id', user.id);
+      });
 
-      if (error) {
+      if (!response.ok) {
         toast({
           title: "Erro",
           description: "Erro ao salvar anotação",
@@ -208,17 +234,19 @@ const Anotacoes = () => {
       )
     );
 
-    // Salvar tags no banco (simplificado - apenas salvando como texto no content por agora)
+    // Salvar tags no banco usando fetch
     try {
-      const { error } = await supabase
-        .from('notes')
-        .update({ updated_at: new Date().toISOString() })
-        .eq('id', noteId)
-        .eq('user_id', user.id);
-
-      if (error) {
-        console.error('Erro ao atualizar tags:', error);
-      }
+      const session = await supabase.auth.getSession();
+      await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?id=eq.${noteId}&user_id=eq.${user.id}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ updated_at: new Date().toISOString() })
+      });
     } catch (error) {
       console.error('Erro ao atualizar tags:', error);
     }
@@ -239,15 +267,17 @@ const Anotacoes = () => {
     );
 
     try {
-      const { error } = await supabase
-        .from('notes')
-        .update({ updated_at: new Date().toISOString() })
-        .eq('id', noteId)
-        .eq('user_id', user.id);
-
-      if (error) {
-        console.error('Erro ao remover tag:', error);
-      }
+      const session = await supabase.auth.getSession();
+      await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?id=eq.${noteId}&user_id=eq.${user.id}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ updated_at: new Date().toISOString() })
+      });
     } catch (error) {
       console.error('Erro ao remover tag:', error);
     }
