@@ -232,24 +232,6 @@ const Resumos = () => {
             </article>
           ))}
 
-          {/* Load More / Coming Soon */}
-          <div className="border-t border-border/40 pt-12 text-center">
-            <div className="space-y-4">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                <BookOpen className="h-6 w-6 text-muted-foreground" />
-              </div>
-              <h3 className="text-xl font-semibold text-foreground">
-                Mais conteúdo em breve
-              </h3>
-              <p className="text-muted-foreground max-w-md mx-auto">
-                Novos materiais estão sendo preparados. Continue acompanhando para ter acesso aos próximos lançamentos.
-              </p>
-              <Button variant="outline" className="mt-4">
-                <ArrowRight className="h-4 w-4 mr-2" />
-                Me notificar
-              </Button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

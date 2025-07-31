@@ -14,7 +14,8 @@ import {
   Menu,
   X,
   LogOut,
-  Shield
+  Settings,
+  Brain
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -53,7 +54,7 @@ const Sidebar = () => {
     {
       id: "resumos",
       title: "Material de Estudo",
-      icon: FileText,
+      icon: BookOpen,
       path: "/resumos"
     },
     {
@@ -71,7 +72,7 @@ const Sidebar = () => {
     {
       id: "ia",
       title: "IA Assistant",
-      icon: BookOpen,
+      icon: Brain,
       path: "/ia"
     },
   ...(userRole === 'admin'
@@ -79,7 +80,7 @@ const Sidebar = () => {
         {
           id: "adm",
           title: "Administração",
-          icon: BookOpen,
+          icon: Settings,
           path: "/admin"
         }
       ]
