@@ -72,28 +72,16 @@ const Home = () => {
               Por: Ana Paula Perci e Convidados.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link to="/resumos">
-                <Button
-                  size="lg" 
-                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                >
-                  Começar Jornada
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              
-              <Link to="/auth">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 text-lg transition-all duration-300"
-                >
-                  Fazer Login
-                </Button>
-              </Link>
-            </div>
+            {/* CTA Button */}
+            <Link to="/resumos">
+              <Button
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              >
+                Começar Jornada
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
 
             {/* Hero Image */}
             <div className="mt-20 relative">
