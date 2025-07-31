@@ -28,7 +28,7 @@ const Home = () => {
       name: "Sabrina",
       description: "Palestrante Convidada",
       instagram: "#",
-      image: "https://images.unsplash.com/photo-1581090464777-f3220bbe18b8"
+      image: "/lovable-uploads/e3453f5b-ac17-4f8e-a922-270689feaeed.png"
     },
     {
       name: "Victor",
@@ -255,11 +255,11 @@ const Home = () => {
                   </div>
                   <div className="p-6 text-center">
                     <div className="flex items-center justify-center gap-3">
-                      <img 
-                        src="https://images.unsplash.com/photo-1581090464777-f3220bbe18b8" 
-                        alt="Sabrina" 
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
+                       <img 
+                         src="/lovable-uploads/e3453f5b-ac17-4f8e-a922-270689feaeed.png" 
+                         alt="Sabrina" 
+                         className="w-10 h-10 rounded-full object-cover"
+                       />
                       <div>
                         <div className="text-white font-bold text-lg">Palestra: Sabrina</div>
                         <div className="text-white/70 text-sm">Desenvolvimento de Conteúdo</div>
