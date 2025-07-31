@@ -184,7 +184,7 @@ const Checklist = () => {
           'apikey': SUPABASE_KEY,
           'Authorization': `Bearer ${session.data.session?.access_token}`,
           'Content-Type': 'application/json',
-          'Prefer': 'resolution=merge-duplicates'
+          'Prefer': 'return=representation,resolution=merge-duplicates'
         },
         body: JSON.stringify(progressData)
       });
