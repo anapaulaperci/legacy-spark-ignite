@@ -23,7 +23,20 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const mailtrapApiKey = Deno.env.get('MAILTRAP_API_KEY')!;
+    const mailtrapApiKey = Deno.env.get('MAILTRAP_API_KEY');
+
+    console.log('Environment check:', {
+      hasSupabaseUrl: !!supabaseUrl,
+      hasSupabaseKey: !!supabaseKey,
+      hasMailtrapKey: !!mailtrapApiKey
+    });
+
+    if (!mailtrapApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'MAILTRAP_API_KEY not configured' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
     
     const supabase = createClient(supabaseUrl, supabaseKey);
 
