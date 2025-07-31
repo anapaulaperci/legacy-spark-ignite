@@ -87,19 +87,29 @@ const Checklist = () => {
   ];
 
   // Carregar progresso do usuário
-  const loadUserProgress = () => {
+  const loadUserProgress = async () => {
     if (!user) return;
 
     try {
-      const storageKey = `checklist_progress_${user.id}`;
-      const savedProgress = localStorage.getItem(storageKey);
+      const SUPABASE_URL = "https://cvbjtjmogseupckocmeb.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc";
       
-      if (savedProgress) {
-        const data = JSON.parse(savedProgress);
-        setCheckedItems(data.checked_items || {});
-        setTaskThemes(data.task_themes || {});
-        setTaskPriorities(data.task_priorities || {});
-        setTaskDates(data.task_dates || {});
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/checklist_progress?user_id=eq.${user.id}`, {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          'Accept': 'application/vnd.pgrst.object+json'
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          setCheckedItems(data.checked_items || {});
+          setTaskThemes(data.task_themes || {});
+          setTaskPriorities(data.task_priorities || {});
+          setTaskDates(data.task_dates || {});
+        }
       }
     } catch (error) {
       console.error('Erro ao carregar progresso:', error);
@@ -109,11 +119,15 @@ const Checklist = () => {
   };
 
   // Salvar progresso do usuário
-  const saveUserProgress = () => {
+  const saveUserProgress = async () => {
     if (!user) return;
 
     try {
+      const SUPABASE_URL = "https://cvbjtjmogseupckocmeb.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc";
+      
       const progressData = {
+        user_id: user.id,
         checked_items: checkedItems,
         task_themes: taskThemes,
         task_priorities: taskPriorities,
@@ -121,8 +135,27 @@ const Checklist = () => {
         updated_at: new Date().toISOString()
       };
 
-      const storageKey = `checklist_progress_${user.id}`;
-      localStorage.setItem(storageKey, JSON.stringify(progressData));
+      const session = await supabase.auth.getSession();
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/checklist_progress`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(progressData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Erro ao salvar progresso:', errorData);
+        toast({
+          title: "Erro",
+          description: "Erro ao salvar progresso",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       console.error('Erro ao salvar progresso:', error);
     }
