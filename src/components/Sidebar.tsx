@@ -139,7 +139,7 @@ const Sidebar = () => {
           {/* Content */}
           <div className="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
             {/* Nav */}
-            <nav className="p-5 pt-0 w-full flex flex-col flex-wrap">
+            <nav className="p-5 pt-5 w-full flex flex-col flex-wrap">
               <ul className="space-y-1.5">
                 {navItems.map((item) => {
                   const Icon = item.icon;
