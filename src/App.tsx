@@ -29,9 +29,12 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/auth" element={<Auth />} />
-            <Route path="/" element={<Layout />}>
+            <Route path="/" element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }>
               <Route index element={<Home />} />
-              
               <Route path="resumos" element={<Resumos />} />
               <Route path="palestra/:id" element={<Palestra />} />
               <Route path="checklist" element={<Checklist />} />

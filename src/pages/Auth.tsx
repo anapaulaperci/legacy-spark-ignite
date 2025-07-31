@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,9 +19,23 @@ const Auth = () => {
     confirmPassword: ""
   });
   
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Redirect if user is already authenticated
+  useEffect(() => {
+    if (user) {
+      const from = location.state?.from?.pathname || "/";
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, location]);
+
+  // Don't render if user is authenticated
+  if (user) {
+    return null;
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -56,7 +70,8 @@ const Auth = () => {
           title: "Login realizado com sucesso!",
           description: "Redirecionando...",
         });
-        navigate("/");
+        const from = location.state?.from?.pathname || "/";
+        navigate(from, { replace: true });
       }
     } catch (error) {
       toast({
@@ -137,13 +152,15 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary via-primary-glow to-accent flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Back to Home */}
-        <div className="mb-6">
-          <Link to="/" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar ao início
-          </Link>
-        </div>
+        {/* Back to Home - only show if not redirected from a protected route */}
+        {!location.state?.from && (
+          <div className="mb-6">
+            <Link to="/" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Voltar ao início
+            </Link>
+          </div>
+        )}
 
         <Card className="backdrop-blur-sm bg-white/10 border-white/20">
           <CardHeader className="text-center">
