@@ -188,22 +188,6 @@ const Checklist = () => {
             </Button>
           </div>
           
-          {/* Date Section */}
-          <div className="mb-6">
-            <div className="space-y-2">
-              <Label htmlFor="completion-date" className="text-sm font-medium">
-                Data de Conclusão
-              </Label>
-              <div className="relative max-w-xs">
-                <Input 
-                  id="completion-date"
-                  type="date"
-                  className="w-full"
-                />
-                <Calendar className="absolute right-3 top-3 h-4 w-4 text-muted-foreground pointer-events-none" />
-              </div>
-            </div>
-          </div>
           
           {/* Progress Bar */}
           <div className="space-y-2">
@@ -272,7 +256,7 @@ const Checklist = () => {
                           
                           <div className="p-4 pl-6">
                             {/* Grid layout com todas as colunas */}
-                            <div className="grid grid-cols-12 gap-3 items-center">
+                            <div className="grid grid-cols-9 gap-3 items-center">
                               {/* Checkbox e Tarefa - 4 colunas */}
                               <div className="col-span-4 flex items-center gap-3">
                                 <Checkbox
@@ -293,8 +277,8 @@ const Checklist = () => {
                                 </label>
                               </div>
                               
-                              {/* Tema - 2 colunas */}
-                              <div className="col-span-2">
+                              {/* Tema - 3 colunas */}
+                              <div className="col-span-3">
                                 <Select 
                                   value={taskThemes[item.id] || ""} 
                                   onValueChange={(value) => handleThemeChange(item.id, value)}
@@ -324,8 +308,8 @@ const Checklist = () => {
                                 </Select>
                               </div>
                               
-                              {/* Prioridade Selecionável - 2 colunas */}
-                              <div className="col-span-2">
+                              {/* Prioridade Selecionável - 1 coluna */}
+                              <div className="col-span-1">
                                 <Select 
                                   value={taskPriorities[item.id] || item.priority} 
                                   onValueChange={(value) => handlePriorityChange(item.id, value)}
@@ -349,15 +333,6 @@ const Checklist = () => {
                                 </Select>
                               </div>
                               
-                              {/* Data de Conclusão - 2 colunas */}
-                              <div className="col-span-2">
-                                <Input 
-                                  type="date"
-                                  value={taskDates[item.id] || ""}
-                                  onChange={(e) => handleDateChange(item.id, e.target.value)}
-                                  className="h-8 text-xs border-gray-200 hover:border-gray-300 transition-colors bg-white"
-                                />
-                              </div>
                               
                               {/* Status - 1 coluna */}
                               <div className="col-span-1 flex justify-center">
