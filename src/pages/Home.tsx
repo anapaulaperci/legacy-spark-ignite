@@ -88,29 +88,35 @@ const Home = () => {
       </section>
 
       {/* Speakers Section */}
-      <section className="py-16 bg-card">
+      <section className="py-16 bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          {/* Header with title and button */}
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground">
               Palestrantes
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Conheça os especialistas que irão compartilhar conhecimento durante a imersão
-            </p>
+            <Button 
+              variant="default"
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-2 rounded-lg shadow-lg"
+            >
+              Ver todos os palestrantes
+            </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+          {/* Speakers Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {speakers.map((speaker, index) => (
               <a 
                 key={index}
                 href={speaker.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group cursor-pointer text-center"
+                className="group cursor-pointer"
               >
-                <div className="transition-all duration-300 hover:transform hover:scale-105">
+                <div className="bg-card rounded-2xl p-8 text-center shadow-card hover:shadow-elegant transition-all duration-300 hover:transform hover:scale-105 border border-border/50">
+                  {/* Speaker Image */}
                   <div className="relative mb-6">
-                    <div className="w-40 h-40 mx-auto rounded-full overflow-hidden shadow-card group-hover:shadow-glow transition-shadow duration-300">
+                    <div className="w-24 h-24 mx-auto rounded-full overflow-hidden shadow-lg">
                       <img 
                         src={speaker.image}
                         alt={speaker.name}
@@ -119,18 +125,14 @@ const Home = () => {
                     </div>
                   </div>
                   
+                  {/* Speaker Info */}
                   <div className="space-y-2">
                     <h3 className="font-bold text-xl text-foreground group-hover:text-primary transition-colors duration-300">
                       {speaker.name}
                     </h3>
-                    <p className="text-muted-foreground text-base">
+                    <p className="text-muted-foreground text-sm font-medium">
                       {speaker.description}
                     </p>
-                    {speaker.bio && (
-                      <p className="text-xs text-muted-foreground/80 line-clamp-3 max-w-xs mx-auto leading-relaxed mt-2">
-                        {speaker.bio}
-                      </p>
-                    )}
                   </div>
                 </div>
               </a>
