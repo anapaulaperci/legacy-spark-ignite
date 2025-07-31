@@ -36,15 +36,7 @@ const Checklist = () => {
     { value: "baixa", label: "Baixa", color: "bg-green-100 text-green-800 border-green-200" }
   ];
 
-  const responsibleOptions = [
-    "Ana Paula Perci",
-    "Camilo Coutinho", 
-    "Melina Dantas",
-    "Sabrina",
-    "Victor",
-    "Equipe",
-    "Cliente"
-  ];
+  // Removido responsibleOptions - agora é campo livre
 
   const sections = [
     {
@@ -137,7 +129,7 @@ const Checklist = () => {
           setTaskThemes(data.task_themes || {});
           setTaskPriorities(data.task_priorities || {});
           setTaskDates(data.task_dates || {});
-          setTaskResponsibles(data.task_responsibles || {});
+          // setTaskResponsibles(data.task_responsibles || {}); // Temporariamente desabilitado até criar coluna no banco
           console.log("🔍 LoadUserProgress: Estados atualizados com sucesso");
         } else {
           console.log("🔍 LoadUserProgress: Nenhum dado encontrado");
@@ -166,8 +158,8 @@ const Checklist = () => {
       checkedItems,
       taskThemes,
       taskPriorities,
-      taskDates,
-      taskResponsibles
+      taskDates
+      // taskResponsibles // Temporariamente removido
     });
 
     try {
@@ -180,7 +172,7 @@ const Checklist = () => {
         task_themes: taskThemes,
         task_priorities: taskPriorities,
         task_dates: taskDates,
-        task_responsibles: taskResponsibles,
+        // task_responsibles: taskResponsibles, // Temporariamente removido até criar coluna no banco
         updated_at: new Date().toISOString()
       };
 
@@ -225,7 +217,7 @@ const Checklist = () => {
             task_themes: taskThemes,
             task_priorities: taskPriorities,
             task_dates: taskDates,
-            task_responsibles: taskResponsibles,
+            // task_responsibles: taskResponsibles, // Temporariamente removido
             updated_at: new Date().toISOString()
           })
         });
@@ -279,7 +271,7 @@ const Checklist = () => {
 
       return () => clearTimeout(timeoutId);
     }
-  }, [checkedItems, taskThemes, taskPriorities, taskDates, taskResponsibles, loading, user]);
+  }, [checkedItems, taskThemes, taskPriorities, taskDates, loading, user]); // Temporariamente removido taskResponsibles
 
   const handleItemCheck = (itemId: string) => {
     setCheckedItems(prev => ({
@@ -513,21 +505,13 @@ const Checklist = () => {
                               
                               {/* Responsável - 2 colunas */}
                               <div className="col-span-2">
-                                <Select 
-                                  value={taskResponsibles[item.id] || ""} 
-                                  onValueChange={(value) => handleResponsibleChange(item.id, value)}
-                                >
-                                  <SelectTrigger className="h-8 text-xs border-gray-200 hover:border-gray-300 transition-colors bg-white">
-                                    <SelectValue placeholder="Responsável" />
-                                  </SelectTrigger>
-                                  <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
-                                    {responsibleOptions.map((responsible) => (
-                                      <SelectItem key={responsible} value={responsible} className="text-xs hover:bg-gray-50">
-                                        {responsible}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
+                                <Input
+                                  type="text"
+                                  placeholder="Responsável"
+                                  value={taskResponsibles[item.id] || ""}
+                                  onChange={(e) => handleResponsibleChange(item.id, e.target.value)}
+                                  className="h-8 text-xs border-gray-200 hover:border-gray-300 focus:border-primary transition-colors bg-white"
+                                />
                               </div>
                               
                               {/* Prioridade Selecionável - 1 coluna */}
