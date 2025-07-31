@@ -90,16 +90,10 @@ const Home = () => {
       {/* Speakers Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-16">
+          <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-              Speakers
+              Palestrantes
             </h2>
-            <Button 
-              variant="outline" 
-              className="bg-red-500 hover:bg-red-600 text-white border-red-500 hover:border-red-600 px-6 py-2"
-            >
-              speakers
-            </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-12">
