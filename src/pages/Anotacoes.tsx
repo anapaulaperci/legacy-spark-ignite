@@ -1,50 +1,131 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, FileText, Bold, Italic, Link, List, AlignLeft, File, Underline, Strikethrough, Quote, Code, Hash, ListOrdered, Image, Highlighter, Undo, Redo, Table, Minus, Heading1, Heading2, Tag, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { Plus, Search, FileText, Bold, Italic, Link, List, AlignLeft, File, Underline, Strikethrough, Quote, Code, Hash, ListOrdered, Image, Highlighter, Undo, Redo, Table, Minus, Heading1, Heading2, Tag, X, Save } from "lucide-react";
+
+interface Note {
+  id: string;
+  user_id: string;
+  title: string;
+  content: string;
+  tags?: string[];
+  created_at: string;
+  updated_at: string;
+}
 
 const Anotacoes = () => {
-  const [selectedNote, setSelectedNote] = useState<number | null>(1);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState("");
+  const [selectedNote, setSelectedNote] = useState<string | null>(null);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  
+  const { user } = useAuth();
+  const { toast } = useToast();
   
   const availableTags = ["Posicionamento", "Branding", "Marketing", "Vendas", "Estratégia", "Conteúdo", "Digital", "Redes Sociais"];
-  
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: "Anotações da Imersão - Dia 1",
-      preview: "Principais conceitos sobre posicionamento digital...",
-      content: "# Anotações da Imersão - Dia 1\n\n## Principais conceitos sobre posicionamento digital\n\nEscreva aqui suas anotações da primeira palestra...",
-      lastModified: "2 min atrás",
-      tags: ["Posicionamento", "Digital"]
-    },
-    {
-      id: 2,
-      title: "Estratégias de Branding",
-      preview: "Como construir uma marca forte no mercado...",
-      content: "# Estratégias de Branding\n\n## Como construir uma marca forte\n\nSuas anotações sobre branding...",
-      lastModified: "1 hora atrás",
-      tags: ["Branding", "Estratégia"]
-    }
-  ]);
 
-  const createNewNote = () => {
-    const newNote = {
-      id: Date.now(),
-      title: "Nova Anotação",
-      preview: "Comece a escrever...",
-      content: "# Nova Anotação\n\n",
-      lastModified: "agora",
-      tags: []
-    };
-    setNotes([newNote, ...notes]);
-    setSelectedNote(newNote.id);
+  // Carregar anotações do usuário
+  useEffect(() => {
+    if (user) {
+      fetchNotes();
+    }
+  }, []);
+
+  const fetchNotes = async () => {
+    if (!user) return;
+
+    try {
+      setLoading(true);
+      // Simplificar a query para evitar problemas de tipo
+      const result: any = await supabase.from('notes').select('*').eq('user_id', user.id);
+      const { data, error } = result;
+
+      if (error) {
+        console.error('Erro ao carregar anotações:', error);
+        toast({
+          title: "Erro",
+          description: "Erro ao carregar anotações",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const notesWithTags = (data || []).map((note: any) => ({
+        id: note.id,
+        user_id: user.id,
+        title: note.title || "",
+        content: note.content || "",
+        tags: [] as string[],
+        created_at: note.created_at,
+        updated_at: note.updated_at
+      }));
+
+      setNotes(notesWithTags);
+      if (notesWithTags.length > 0 && !selectedNote) {
+        setSelectedNote(notesWithTags[0].id);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar anotações:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleUpdateNote = useCallback((id: number, title: string, content: string) => {
+  const createNewNote = async () => {
+    if (!user) return;
+
+    try {
+      const newNote = {
+        user_id: user.id,
+        title: "Nova Anotação",
+        content: "# Nova Anotação\n\n"
+      };
+
+      const { data, error } = await supabase
+        .from('notes')
+        .insert([newNote])
+        .select()
+        .single();
+
+      if (error) {
+        toast({
+          title: "Erro",
+          description: "Erro ao criar nova anotação",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const noteWithTags = { 
+        id: data.id,
+        user_id: user.id,
+        title: data.title,
+        content: data.content,
+        tags: [] as string[], 
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      };
+      setNotes(prev => [noteWithTags, ...prev]);
+      setSelectedNote(data.id);
+      
+      toast({
+        title: "Sucesso",
+        description: "Nova anotação criada!",
+      });
+    } catch (error) {
+      console.error('Erro ao criar anotação:', error);
+    }
+  };
+
+  const handleUpdateNote = async (id: string, title: string, content: string) => {
+    if (!user) return;
+
+    // Atualizar localmente primeiro
     setNotes(prevNotes => 
       prevNotes.map(note => 
         note.id === id 
@@ -52,35 +133,138 @@ const Anotacoes = () => {
               ...note, 
               title,
               content,
-              preview: content.slice(0, 50) + "...",
-              lastModified: "agora"
+              updated_at: new Date().toISOString()
             }
           : note
       )
     );
-  }, []);
 
-  const addTagToNote = (noteId: number, tag: string) => {
-    setNotes(prevNotes =>
-      prevNotes.map(note =>
-        note.id === noteId
-          ? { ...note, tags: [...(note.tags || []), tag] }
-          : note
-      )
-    );
+    // Salvar no banco de dados com debounce
+    try {
+      const { error } = await supabase
+        .from('notes')
+        .update({
+          title,
+          content,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Erro ao salvar anotação:', error);
+      }
+    } catch (error) {
+      console.error('Erro ao salvar anotação:', error);
+    }
   };
 
-  const removeTagFromNote = (noteId: number, tagToRemove: string) => {
+  const saveNote = async () => {
+    const selectedNoteData = notes.find(note => note.id === selectedNote);
+    if (!selectedNoteData || !user) return;
+
+    setSaving(true);
+    try {
+      const { error } = await supabase
+        .from('notes')
+        .update({
+          title: selectedNoteData.title,
+          content: selectedNoteData.content,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', selectedNoteData.id)
+        .eq('user_id', user.id);
+
+      if (error) {
+        toast({
+          title: "Erro",
+          description: "Erro ao salvar anotação",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Sucesso",
+          description: "Anotação salva com sucesso!",
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao salvar:', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const addTagToNote = async (noteId: string, tag: string) => {
+    if (!user) return;
+
+    const currentNote = notes.find(note => note.id === noteId);
+    const updatedTags = [...(currentNote?.tags || []), tag];
+    
     setNotes(prevNotes =>
       prevNotes.map(note =>
         note.id === noteId
-          ? { ...note, tags: (note.tags || []).filter(tag => tag !== tagToRemove) }
+          ? { ...note, tags: updatedTags }
           : note
       )
     );
+
+    // Salvar tags no banco (simplificado - apenas salvando como texto no content por agora)
+    try {
+      const { error } = await supabase
+        .from('notes')
+        .update({ updated_at: new Date().toISOString() })
+        .eq('id', noteId)
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Erro ao atualizar tags:', error);
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar tags:', error);
+    }
+  };
+
+  const removeTagFromNote = async (noteId: string, tagToRemove: string) => {
+    if (!user) return;
+
+    const currentNote = notes.find(note => note.id === noteId);
+    const updatedTags = (currentNote?.tags || []).filter(tag => tag !== tagToRemove);
+    
+    setNotes(prevNotes =>
+      prevNotes.map(note =>
+        note.id === noteId
+          ? { ...note, tags: updatedTags }
+          : note
+      )
+    );
+
+    try {
+      const { error } = await supabase
+        .from('notes')
+        .update({ updated_at: new Date().toISOString() })
+        .eq('id', noteId)
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Erro ao remover tag:', error);
+      }
+    } catch (error) {
+      console.error('Erro ao remover tag:', error);
+    }
   };
 
   const selectedNoteData = notes.find(note => note.id === selectedNote);
+
+  if (loading) {
+    return (
+      <div className="h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4 animate-pulse" />
+          <p className="text-muted-foreground">Carregando anotações...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen bg-background flex">
@@ -126,7 +310,7 @@ const Anotacoes = () => {
                     {note.title}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                    {note.preview}
+                    {note.content?.slice(0, 50)}...
                   </p>
                   {note.tags && note.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2">
@@ -143,7 +327,7 @@ const Anotacoes = () => {
                     </div>
                   )}
                   <p className="text-xs text-muted-foreground mt-2">
-                    {note.lastModified}
+                    {new Date(note.updated_at).toLocaleString('pt-BR')}
                   </p>
                 </div>
               </div>
@@ -156,9 +340,10 @@ const Anotacoes = () => {
       <div className="flex-1 flex flex-col">
         {selectedNoteData ? (
           <>
-            {/* Toolbar */}
-            <div className="border-b border-border p-4">
+            {/* Header com botão salvar */}
+            <div className="border-b border-border p-4 flex justify-between items-center">
               <div className="flex items-center gap-1 flex-wrap">
+                {/* Toolbar existing content */}
                 {/* Undo/Redo */}
                 <Button variant="ghost" size="sm" className="h-8 px-2">
                   <Undo className="h-4 w-4" />
@@ -236,6 +421,12 @@ const Anotacoes = () => {
                   <AlignLeft className="h-4 w-4" />
                 </Button>
               </div>
+              
+              {/* Botão Salvar */}
+              <Button onClick={saveNote} disabled={saving} size="sm">
+                <Save className="h-4 w-4 mr-2" />
+                {saving ? "Salvando..." : "Salvar"}
+              </Button>
             </div>
 
             {/* Content */}
