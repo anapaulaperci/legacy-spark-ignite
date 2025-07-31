@@ -83,38 +83,6 @@ const Home = () => {
               </Button>
             </Link>
 
-            {/* Hero Image */}
-            <div className="mt-20 relative">
-              <div className="relative max-w-4xl mx-auto">
-                <div className="aspect-video bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
-                  <div 
-                    className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 bg-cover bg-center relative"
-                    style={{
-                      backgroundImage: `url('https://images.unsplash.com/photo-1743360543515-d3b506e6d3c2?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`
-                    }}
-                  >
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-black/20" />
-                    
-                    {/* Play Button */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <button 
-                        type="button" 
-                        className="w-20 h-20 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
-                      >
-                        <svg className="w-8 h-8 text-purple-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Floating Elements */}
-                <div className="absolute -top-4 -left-4 w-24 h-24 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl opacity-20 animate-pulse"></div>
-                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-to-br from-purple-300 to-purple-500 rounded-full opacity-15 animate-pulse delay-1000"></div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
