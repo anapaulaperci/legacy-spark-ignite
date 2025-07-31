@@ -162,6 +162,116 @@ export type Database = {
           },
         ]
       }
+      checklist_groups: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          position: number | null
+          title: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          position?: number | null
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          position?: number | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      checklist_items: {
+        Row: {
+          created_at: string | null
+          group_id: string | null
+          id: string
+          position: number | null
+          priority: string | null
+          task: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          group_id?: string | null
+          id?: string
+          position?: number | null
+          priority?: string | null
+          task: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          group_id?: string | null
+          id?: string
+          position?: number | null
+          priority?: string | null
+          task?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checklist_items_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "checklist_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      checklist_progress: {
+        Row: {
+          checked_items: Json | null
+          created_at: string | null
+          id: string
+          task_dates: Json | null
+          task_priorities: Json | null
+          task_responsibles: Json | null
+          task_themes: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          checked_items?: Json | null
+          created_at?: string | null
+          id?: string
+          task_dates?: Json | null
+          task_priorities?: Json | null
+          task_responsibles?: Json | null
+          task_themes?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          checked_items?: Json | null
+          created_at?: string | null
+          id?: string
+          task_dates?: Json | null
+          task_priorities?: Json | null
+          task_responsibles?: Json | null
+          task_themes?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       client_links: {
         Row: {
           client_id: string
@@ -233,8 +343,8 @@ export type Database = {
             foreignKeyName: "client_notes_client_id_fkey"
             columns: ["client_id"]
             isOneToOne: false
-            referencedRelation: "clients"
-            referencedColumns: ["id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
           },
         ]
       }
