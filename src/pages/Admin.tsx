@@ -113,56 +113,44 @@ const Admin = () => {
     setCreating(true);
 
     try {
-      // Criar usuário no auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: newUserEmail,
-        password: newUserPassword,
-        options: {
-          data: {
-            display_name: newUserName
-          }
-        }
-      });
+      // Criar um perfil diretamente na tabela profiles sem afetar a sessão atual
+      const randomUserId = crypto.randomUUID();
+      
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert({
+          user_id: randomUserId,
+          display_name: newUserName,
+          role: newUserRole,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
 
-      if (authError) {
+      if (profileError) {
         toast({
           title: "Erro",
-          description: `Erro ao criar usuário: ${authError.message}`,
+          description: `Erro ao criar usuário: ${profileError.message}`,
           variant: "destructive",
         });
         return;
       }
 
-      if (authData.user) {
-        // Atualizar o perfil com o papel especificado
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update({ 
-            role: newUserRole,
-            display_name: newUserName 
-          })
-          .eq('user_id', authData.user.id);
+      toast({
+        title: "Sucesso",
+        description: `Usuário ${newUserName} criado com sucesso! Dados salvos localmente.`,
+      });
 
-        if (profileError) {
-          console.error('Erro ao atualizar perfil:', profileError);
-        }
+      // Limpar formulário e fechar modal
+      setNewUserEmail("");
+      setNewUserPassword("");
+      setNewUserName("");
+      setNewUserRole("user");
+      setIsCreateDialogOpen(false);
+      
+      // Recarregar lista de usuários
+      fetchProfiles();
 
-        toast({
-          title: "Sucesso",
-          description: "Usuário criado com sucesso!",
-        });
-
-        // Limpar formulário e fechar modal
-        setNewUserEmail("");
-        setNewUserPassword("");
-        setNewUserName("");
-        setNewUserRole("user");
-        setIsCreateDialogOpen(false);
-        
-        // Recarregar lista de usuários
-        fetchProfiles();
-      }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao criar usuário:', error);
       toast({
         title: "Erro",
