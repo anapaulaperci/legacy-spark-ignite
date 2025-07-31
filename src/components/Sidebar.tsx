@@ -74,16 +74,6 @@ const Sidebar = () => {
       icon: BookOpen,
       path: "/ia"
     },
-    {
-      id: "perfil",
-      title: "Perfil",
-      icon: User,
-      hasDropdown: true,
-      items: [
-        { title: "Meu Perfil", path: "/perfil" },
-        ...(userRole === 'admin' ? [{ title: "Administração", path: "/admin" }] : [])
-      ]
-    },
   ...(userRole === 'admin'
     ? [
         {
@@ -154,42 +144,6 @@ const Sidebar = () => {
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   
-                  if (item.hasDropdown) {
-                    return (
-                      <li className="hs-accordion" key={item.id}>
-                        <button 
-                          type="button" 
-                          className="hs-accordion-toggle hs-accordion-active:bg-white/10 w-full text-start flex gap-x-3 py-2 px-3 text-sm text-white/80 rounded-lg hover:bg-white/10 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-white/10"
-                        >
-                          <Icon className="shrink-0 mt-0.5 size-4" />
-                          {item.title}
-                          <ChevronDown className="hs-accordion-active:-rotate-180 shrink-0 mt-1 size-3.5 ms-auto transition" />
-                        </button>
-
-                        <div className="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden">
-                          <ul className="ps-7 mt-1.5 space-y-1.5 relative before:absolute before:top-0 before:start-[19px] before:w-0.5 before:h-full before:bg-white/10">
-                            {item.items?.map((subItem) => (
-                              <li key={subItem.path}>
-                                <Link
-                                  className={`flex gap-x-4 py-2 px-3 text-sm rounded-lg focus:outline-hidden transition-colors ${
-                                    isActive(subItem.path)
-                                      ? 'bg-white/20 text-white'
-                                      : 'text-white/80 hover:bg-white/10'
-                                  }`}
-                                  to={subItem.path}
-                                  onClick={() => setIsOpen(false)}
-                                >
-                                  {subItem.title === "Administração" && <Shield className="h-4 w-4 mr-2" />}
-                                  {subItem.title}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </li>
-                    );
-                  }
-
                   return (
                     <li key={item.id}>
                       <Link
