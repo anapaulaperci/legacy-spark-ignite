@@ -122,7 +122,7 @@ const Sidebar = () => {
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
       >
-        <div className="flex flex-col h-full max-h-full py-3">
+        <div className="flex flex-col h-full max-h-full py-5">
           <header className="h-11.5 px-8">
             {/* Logo */}
             <Link 
