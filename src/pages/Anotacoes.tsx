@@ -82,6 +82,7 @@ const Anotacoes = () => {
   };
 
   const createNewNote = async () => {
+    console.log("Criando nova anotação...", { user });
     if (!user) return;
 
     try {
