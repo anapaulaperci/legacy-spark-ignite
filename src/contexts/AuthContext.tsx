@@ -49,18 +49,66 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signUp = async (email: string, password: string, displayName?: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: {
-          display_name: displayName || email
+    try {
+      console.log("🔐 SignUp: Iniciando cadastro para:", email);
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            display_name: displayName || email
+          }
         }
+      });
+      
+      // Se o cadastro foi bem-sucedido, enviar email de boas-vindas
+      if (!error && data.user) {
+        console.log("🔐 SignUp: Cadastro realizado com sucesso, enviando email...");
+        
+        // Aguardar um pouco para garantir que o perfil foi criado
+        setTimeout(async () => {
+          try {
+            // Enviar email de boas-vindas via edge function
+            console.log("📧 Tentando enviar email de boas-vindas...");
+            
+            const emailResponse = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/functions/v1/mailtrap-integration`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc`
+              },
+              body: JSON.stringify({
+                action: 'send_welcome',
+                userEmail: email,
+                userName: displayName || email,
+                templateData: {
+                  user_id: data.user.id,
+                  created_at: new Date().toISOString()
+                }
+              })
+            });
+            
+            if (emailResponse.ok) {
+              const result = await emailResponse.json();
+              console.log("📧 Email de boas-vindas enviado com sucesso!", result);
+            } else {
+              const errorText = await emailResponse.text();
+              console.warn("📧 Falha ao enviar email de boas-vindas:", errorText);
+            }
+          } catch (emailError) {
+            console.warn("📧 Erro ao enviar email de boas-vindas:", emailError);
+            // Email é opcional - não falhar o cadastro
+          }
+        }, 2000); // Aguardar 2 segundos
       }
-    });
-    
-    return { error };
+      
+      return { error };
+    } catch (signupError) {
+      console.error("🔐 SignUp: Erro no cadastro:", signupError);
+      return { error: signupError };
+    }
   };
 
   const signIn = async (email: string, password: string) => {
