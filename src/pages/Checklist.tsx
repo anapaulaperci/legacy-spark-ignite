@@ -7,28 +7,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CheckSquare, Circle, Trophy, Target, Clock, TrendingUp, Plus, Calendar } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/hooks/use-toast";
 
 const Checklist = () => {
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({
-    "1-1": true,
-    "1-2": true,
-    "1-3": false,
-    "1-4": false,
-    "2-1": true,
-    "2-2": false,
-    "2-3": false,
-    "3-1": false,
-    "3-2": false,
-    "3-3": false,
-    "4-1": false,
-    "4-2": false,
-    "4-3": false,
-  });
-
+  const { user } = useAuth();
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [taskThemes, setTaskThemes] = useState<Record<string, string>>({});
   const [taskPriorities, setTaskPriorities] = useState<Record<string, string>>({});
   const [taskDates, setTaskDates] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
 
   const themeOptions = [
     "Posicionamento",
@@ -95,6 +85,64 @@ const Checklist = () => {
       ]
     }
   ];
+
+  // Carregar progresso do usuário
+  const loadUserProgress = () => {
+    if (!user) return;
+
+    try {
+      const storageKey = `checklist_progress_${user.id}`;
+      const savedProgress = localStorage.getItem(storageKey);
+      
+      if (savedProgress) {
+        const data = JSON.parse(savedProgress);
+        setCheckedItems(data.checked_items || {});
+        setTaskThemes(data.task_themes || {});
+        setTaskPriorities(data.task_priorities || {});
+        setTaskDates(data.task_dates || {});
+      }
+    } catch (error) {
+      console.error('Erro ao carregar progresso:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Salvar progresso do usuário
+  const saveUserProgress = () => {
+    if (!user) return;
+
+    try {
+      const progressData = {
+        checked_items: checkedItems,
+        task_themes: taskThemes,
+        task_priorities: taskPriorities,
+        task_dates: taskDates,
+        updated_at: new Date().toISOString()
+      };
+
+      const storageKey = `checklist_progress_${user.id}`;
+      localStorage.setItem(storageKey, JSON.stringify(progressData));
+    } catch (error) {
+      console.error('Erro ao salvar progresso:', error);
+    }
+  };
+
+  // UseEffect para carregar dados na inicialização
+  useEffect(() => {
+    loadUserProgress();
+  }, [user]);
+
+  // UseEffect para salvar automaticamente quando o progresso muda
+  useEffect(() => {
+    if (!loading && user) {
+      const timeoutId = setTimeout(() => {
+        saveUserProgress();
+      }, 1000); // Debounce de 1 segundo
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [checkedItems, taskThemes, taskPriorities, taskDates, loading, user]);
 
   const handleItemCheck = (itemId: string) => {
     setCheckedItems(prev => ({
@@ -167,6 +215,17 @@ const Checklist = () => {
   };
 
   const totalProgress = getTotalProgress();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground mt-4">Carregando progresso...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
