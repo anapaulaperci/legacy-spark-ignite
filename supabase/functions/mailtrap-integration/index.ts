@@ -31,19 +31,35 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Processing Mailtrap action: ${action} for user: ${userEmail}`);
 
-    // Verify user exists in our system
-    const { data: user, error: userError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('user_id', (await supabase.auth.admin.getUserByEmail(userEmail)).data.user?.id)
-      .single();
+    // Para ação send_welcome, buscar user pelo email diretamente
+    if (action === 'send_welcome') {
+      console.log('Sending welcome email to:', userEmail);
+      
+      // Verificar se o usuário existe na tabela auth.users pelo email
+      const { data: authUser, error: authError } = await supabase.auth.admin.getUserByEmail(userEmail);
+      
+      if (authError || !authUser.user) {
+        console.error('Auth user not found:', authError);
+        return new Response(
+          JSON.stringify({ error: 'User not found in auth system' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    } else {
+      // Para outras ações, verificar user na tabela profiles
+      const { data: user, error: userError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', (await supabase.auth.admin.getUserByEmail(userEmail)).data.user?.id)
+        .single();
 
-    if (userError) {
-      console.error('User verification error:', userError);
-      return new Response(
-        JSON.stringify({ error: 'User not found in system' }),
-        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      if (userError) {
+        console.error('User verification error:', userError);
+        return new Response(
+          JSON.stringify({ error: 'User not found in system' }),
+          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     let emailTemplate = '';
@@ -51,13 +67,38 @@ const handler = async (req: Request): Promise<Response> => {
 
     switch (action) {
       case 'send_welcome':
-        emailSubject = 'Bem-vindo à Imersão Posicionamento!';
+        emailSubject = 'Bem-vindo à Imersão Posicionamento! 🎯';
         emailTemplate = `
-          <h1>Olá ${userName || userEmail}!</h1>
-          <p>Seja bem-vindo(a) à nossa plataforma de Imersão Posicionamento.</p>
-          <p>Seu acesso foi configurado com sucesso. Você já pode fazer login e começar a explorar o conteúdo.</p>
-          <p>Se precisar de ajuda, nossa equipe está sempre disponível.</p>
-          <p>Bom aprendizado!</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #8B5CF6, #3B82F6); padding: 20px; border-radius: 12px;">
+            <div style="background: white; padding: 40px; border-radius: 8px; text-align: center;">
+              <h1 style="color: #8B5CF6; font-size: 28px; margin-bottom: 20px;">
+                Olá ${userName || userEmail}! 👋
+              </h1>
+              <p style="color: #4B5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+                Seja bem-vindo(a) à nossa plataforma de <strong>Imersão Posicionamento</strong>!
+              </p>
+              <p style="color: #4B5563; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+                Seu acesso foi configurado com sucesso. Você já pode fazer login e começar a explorar todo o conteúdo exclusivo preparado para você.
+              </p>
+              <div style="background: #F3F4F6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="color: #8B5CF6; margin-bottom: 10px;">O que você encontrará:</h3>
+                <ul style="color: #4B5563; text-align: left; padding-left: 20px;">
+                  <li>Material exclusivo de estudos</li>
+                  <li>Checklist de implementação</li>
+                  <li>Assistente de IA para dúvidas</li>
+                  <li>Anotações personalizadas</li>
+                </ul>
+              </div>
+              <a href="${process.env.SUPABASE_URL?.replace('supabase.co', 'lovableproject.com') || 'https://imersaoposicionamento.com'}" 
+                 style="display: inline-block; background: #8B5CF6; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin: 20px 0;">
+                Acessar Plataforma
+              </a>
+              <p style="color: #6B7280; font-size: 14px; margin-top: 30px;">
+                Se precisar de ajuda, nossa equipe está sempre disponível.<br>
+                <strong>Bom aprendizado!</strong> 🚀
+              </p>
+            </div>
+          </div>
         `;
         break;
 
@@ -123,8 +164,9 @@ const handler = async (req: Request): Promise<Response> => {
         category: 'user_management',
         custom_variables: {
           action: action,
-          user_id: user.user_id,
+          user_email: userEmail,
           timestamp: new Date().toISOString(),
+          source: 'imersao_posicionamento',
           ...templateData
         }
       }),
