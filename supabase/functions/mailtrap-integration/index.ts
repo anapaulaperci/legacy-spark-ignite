@@ -101,7 +101,7 @@ const handler = async (req: Request): Promise<Response> => {
                   <li>Anotações personalizadas</li>
                 </ul>
               </div>
-              <a href="${process.env.SUPABASE_URL?.replace('supabase.co', 'lovableproject.com') || 'https://imersaoposicionamento.com'}" 
+              <a href="https://ac917d31-a7a9-406b-801d-dcc0bc8b8b12.lovableproject.com" 
                  style="display: inline-block; background: #8B5CF6; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin: 20px 0;">
                 Acessar Plataforma
               </a>
