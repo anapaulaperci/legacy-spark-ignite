@@ -168,7 +168,7 @@ const Home = () => {
                     <div className="text-white font-bold">09:00 - 10:00</div>
                     <div className="text-white/70 text-sm">Registros</div>
                   </div>
-                  <div className="p-6 text-center">
+                  <div className="p-6 text-left">
                     <div className="text-white font-bold text-lg">Registros no Sistema & Credenciamento</div>
                   </div>
                 </div>
@@ -179,8 +179,8 @@ const Home = () => {
                     <div className="text-white font-bold">10:00</div>
                     <div className="text-white/70 text-sm">Abertura</div>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="flex items-center justify-center gap-3">
+                  <div className="p-6 text-left">
+                    <div className="flex items-center gap-3">
                       <img 
                         src="/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png" 
                         alt="Ana Paula Perci" 
@@ -200,8 +200,8 @@ const Home = () => {
                     <div className="text-white font-bold">11:00</div>
                     <div className="text-white/70 text-sm">Palestra</div>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="flex items-center justify-center gap-3">
+                  <div className="p-6 text-left">
+                    <div className="flex items-center gap-3">
                       <img 
                         src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
                         alt="Camilo Coutinho" 
@@ -221,7 +221,7 @@ const Home = () => {
                     <div className="text-white font-bold">12:30 - 14:00</div>
                     <div className="text-white/70 text-sm">Intervalo</div>
                   </div>
-                  <div className="p-6 text-center">
+                  <div className="p-6 text-left">
                     <div className="text-white font-bold text-lg">Almoço & Relacionamento</div>
                   </div>
                 </div>
@@ -232,8 +232,8 @@ const Home = () => {
                     <div className="text-white font-bold">14:00</div>
                     <div className="text-white/70 text-sm">Palestra</div>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="flex items-center justify-center gap-3">
+                  <div className="p-6 text-left">
+                    <div className="flex items-center gap-3">
                        <img 
                          src="/lovable-uploads/6811a272-1c33-4ff6-b54b-e955acc9bdc0.png" 
                          alt="Melina Dantas" 
@@ -253,8 +253,8 @@ const Home = () => {
                     <div className="text-white font-bold">15:00</div>
                     <div className="text-white/70 text-sm">Palestra</div>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="flex items-center justify-center gap-3">
+                  <div className="p-6 text-left">
+                    <div className="flex items-center gap-3">
                        <img 
                          src="/lovable-uploads/e3453f5b-ac17-4f8e-a922-270689feaeed.png" 
                          alt="Sabrina" 
@@ -274,8 +274,8 @@ const Home = () => {
                     <div className="text-white font-bold">16:00</div>
                     <div className="text-white/70 text-sm">Palestra</div>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="flex items-center justify-center gap-3">
+                  <div className="p-6 text-left">
+                    <div className="flex items-center gap-3">
                        <img 
                          src="/lovable-uploads/c6993261-b266-40b5-aba1-09af95ef9cea.png" 
                          alt="Victor" 
@@ -295,7 +295,7 @@ const Home = () => {
                     <div className="text-white font-bold">17:00</div>
                     <div className="text-white/70 text-sm">Pausa</div>
                   </div>
-                  <div className="p-6 text-center">
+                  <div className="p-6 text-left">
                     <div className="text-white font-bold text-lg">Pausa para Lanche</div>
                   </div>
                 </div>
@@ -306,8 +306,8 @@ const Home = () => {
                     <div className="text-white font-bold">17:30</div>
                     <div className="text-white/70 text-sm">Encerramento</div>
                   </div>
-                  <div className="p-6 text-center">
-                    <div className="flex items-center justify-center gap-3">
+                  <div className="p-6 text-left">
+                    <div className="flex items-center gap-3">
                       <img 
                         src="/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png" 
                         alt="Ana Paula Perci" 
