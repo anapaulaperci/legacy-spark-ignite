@@ -10,7 +10,7 @@ import { Plus, Search, FileText, Bold, Italic, Link, List, AlignLeft, File, Unde
 
 interface Note {
   id: string;
-  user_id: string;
+  client_id: string;
   title: string;
   content: string;
   tags?: string[];
@@ -42,7 +42,7 @@ const Anotacoes = () => {
     try {
       setLoading(true);
       // Usar fetch direto para evitar problemas de tipos complexos do Supabase
-      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?user_id=eq.${user.id}&select=*&order=updated_at.desc`, {
+      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/client_notes?client_id=eq.${user.id}&select=*&order=updated_at.desc`, {
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
           'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
@@ -62,7 +62,7 @@ const Anotacoes = () => {
 
       const notesWithTags = (data || []).map((note: any) => ({
         id: note.id,
-        user_id: user.id,
+        client_id: user.id,
         title: note.title || "",
         content: note.content || "",
         tags: [] as string[],
@@ -86,13 +86,13 @@ const Anotacoes = () => {
 
     try {
       const newNote = {
-        user_id: user.id,
+        client_id: user.id,
         title: "Nova Anotação",
         content: "# Nova Anotação\n\n"
       };
 
       const session = await supabase.auth.getSession();
-      const response = await fetch('https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes', {
+      const response = await fetch('https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/client_notes', {
         method: 'POST',
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
@@ -117,7 +117,7 @@ const Anotacoes = () => {
 
       const noteWithTags = { 
         id: noteData.id,
-        user_id: user.id,
+        client_id: user.id,
         title: noteData.title,
         content: noteData.content,
         tags: [] as string[], 
@@ -156,7 +156,7 @@ const Anotacoes = () => {
     // Salvar no banco de dados usando fetch direto
     try {
       const session = await supabase.auth.getSession();
-      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?id=eq.${id}&user_id=eq.${user.id}`, {
+      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/client_notes?id=eq.${id}&client_id=eq.${user.id}`, {
         method: 'PATCH',
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
@@ -186,7 +186,7 @@ const Anotacoes = () => {
     setSaving(true);
     try {
       const session = await supabase.auth.getSession();
-      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?id=eq.${selectedNoteData.id}&user_id=eq.${user.id}`, {
+      const response = await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/client_notes?id=eq.${selectedNoteData.id}&client_id=eq.${user.id}`, {
         method: 'PATCH',
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
@@ -237,7 +237,7 @@ const Anotacoes = () => {
     // Salvar tags no banco usando fetch
     try {
       const session = await supabase.auth.getSession();
-      await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?id=eq.${noteId}&user_id=eq.${user.id}`, {
+      await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/client_notes?id=eq.${noteId}&client_id=eq.${user.id}`, {
         method: 'PATCH',
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
@@ -268,7 +268,7 @@ const Anotacoes = () => {
 
     try {
       const session = await supabase.auth.getSession();
-      await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/notes?id=eq.${noteId}&user_id=eq.${user.id}`, {
+      await fetch(`https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/client_notes?id=eq.${noteId}&client_id=eq.${user.id}`, {
         method: 'PATCH',
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc',
