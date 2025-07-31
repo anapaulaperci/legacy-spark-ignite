@@ -10,10 +10,11 @@ import { CheckSquare, Circle, Trophy, Target, Clock, TrendingUp, Plus, Calendar 
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Checklist = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [taskThemes, setTaskThemes] = useState<Record<string, string>>({});
   const [taskPriorities, setTaskPriorities] = useState<Record<string, string>>({});
@@ -88,39 +89,73 @@ const Checklist = () => {
 
   // Carregar progresso do usuário
   const loadUserProgress = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log("🔍 LoadUserProgress: Usuário não encontrado");
+      return;
+    }
+
+    console.log("🔍 LoadUserProgress: Iniciando carregamento para usuário:", user.id);
 
     try {
       const SUPABASE_URL = "https://cvbjtjmogseupckocmeb.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc";
       
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/checklist_progress?user_id=eq.${user.id}`, {
+      const session = await supabase.auth.getSession();
+      console.log("🔍 LoadUserProgress: Session obtida:", !!session.data.session);
+      
+      const url = `${SUPABASE_URL}/rest/v1/checklist_progress?user_id=eq.${user.id}`;
+      console.log("🔍 LoadUserProgress: URL:", url);
+      
+      const response = await fetch(url, {
         headers: {
           'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
           'Accept': 'application/vnd.pgrst.object+json'
         }
       });
 
+      console.log("🔍 LoadUserProgress: Response status:", response.status);
+      console.log("🔍 LoadUserProgress: Response ok:", response.ok);
+
       if (response.ok) {
         const data = await response.json();
+        console.log("🔍 LoadUserProgress: Dados recebidos:", data);
+        
         if (data) {
           setCheckedItems(data.checked_items || {});
           setTaskThemes(data.task_themes || {});
           setTaskPriorities(data.task_priorities || {});
           setTaskDates(data.task_dates || {});
+          console.log("🔍 LoadUserProgress: Estados atualizados com sucesso");
+        } else {
+          console.log("🔍 LoadUserProgress: Nenhum dado encontrado");
         }
+      } else {
+        const errorText = await response.text();
+        console.log("🔍 LoadUserProgress: Erro na resposta:", errorText);
       }
     } catch (error) {
-      console.error('Erro ao carregar progresso:', error);
+      console.error('🔍 LoadUserProgress: Erro:', error);
     } finally {
       setLoading(false);
+      console.log("🔍 LoadUserProgress: Loading finalizado");
     }
   };
 
   // Salvar progresso do usuário
   const saveUserProgress = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log("💾 SaveUserProgress: Usuário não encontrado");
+      return;
+    }
+
+    console.log("💾 SaveUserProgress: Iniciando salvamento para usuário:", user.id);
+    console.log("💾 SaveUserProgress: Estados atuais:", {
+      checkedItems,
+      taskThemes,
+      taskPriorities,
+      taskDates
+    });
 
     try {
       const SUPABASE_URL = "https://cvbjtjmogseupckocmeb.supabase.co";
@@ -135,8 +170,15 @@ const Checklist = () => {
         updated_at: new Date().toISOString()
       };
 
+      console.log("💾 SaveUserProgress: Dados para enviar:", progressData);
+
       const session = await supabase.auth.getSession();
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/checklist_progress`, {
+      console.log("💾 SaveUserProgress: Session obtida:", !!session.data.session);
+      
+      const url = `${SUPABASE_URL}/rest/v1/checklist_progress`;
+      console.log("💾 SaveUserProgress: URL:", url);
+
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'apikey': SUPABASE_KEY,
@@ -147,17 +189,23 @@ const Checklist = () => {
         body: JSON.stringify(progressData)
       });
 
+      console.log("💾 SaveUserProgress: Response status:", response.status);
+      console.log("💾 SaveUserProgress: Response ok:", response.ok);
+
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Erro ao salvar progresso:', errorData);
+        console.error('💾 SaveUserProgress: Erro detalhado:', errorData);
         toast({
           title: "Erro",
-          description: "Erro ao salvar progresso",
+          description: `Erro ao salvar progresso: ${errorData.message || response.status}`,
           variant: "destructive",
         });
+      } else {
+        const responseData = await response.json();
+        console.log("💾 SaveUserProgress: Sucesso! Resposta:", responseData);
       }
     } catch (error) {
-      console.error('Erro ao salvar progresso:', error);
+      console.error('💾 SaveUserProgress: Erro geral:', error);
     }
   };
 
