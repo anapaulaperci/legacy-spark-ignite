@@ -23,8 +23,12 @@ const Checklist = () => {
   const [taskResponsibles, setTaskResponsibles] = useState<Record<string, string>>({});
   const [groups, setGroups] = useState<any[]>([]);
   const [isAddGroupOpen, setIsAddGroupOpen] = useState(false);
+  const [isAddItemOpen, setIsAddItemOpen] = useState(false);
+  const [selectedGroupId, setSelectedGroupId] = useState<string>("");
   const [newGroupTitle, setNewGroupTitle] = useState("");
   const [newGroupDescription, setNewGroupDescription] = useState("");
+  const [newItemTask, setNewItemTask] = useState("");
+  const [newItemPriority, setNewItemPriority] = useState("média");
   const [loading, setLoading] = useState(true);
 
   const themeOptions = [
@@ -152,6 +156,77 @@ const Checklist = () => {
         variant: "destructive",
       });
     }
+  };
+
+  // Criar novo item no grupo
+  const createItem = async () => {
+    if (!user || !selectedGroupId || !newItemTask.trim()) return;
+
+    try {
+      console.log("➕ CreateItem: Criando novo item...");
+      
+      const SUPABASE_URL = "https://cvbjtjmogseupckocmeb.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc";
+      
+      const session = await supabase.auth.getSession();
+      
+      // Obter número atual de itens no grupo para posição
+      const selectedGroup = groups.find(g => g.id === selectedGroupId);
+      const currentItemsCount = selectedGroup?.checklist_items?.length || 0;
+      
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/checklist_items`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({
+          group_id: selectedGroupId,
+          task: newItemTask,
+          priority: newItemPriority,
+          position: currentItemsCount
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("➕ CreateItem: Item criado:", data);
+        setNewItemTask("");
+        setNewItemPriority("média");
+        setIsAddItemOpen(false);
+        setSelectedGroupId("");
+        loadGroups(); // Recarregar grupos
+        
+        toast({
+          title: "Sucesso",
+          description: "Item adicionado com sucesso!",
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('➕ CreateItem: Erro:', errorData);
+        toast({
+          title: "Erro",
+          description: "Erro ao criar item - verifique se as tabelas foram criadas no Supabase!",
+          variant: "destructive",
+        });
+      }
+      
+    } catch (error) {
+      console.error('➕ CreateItem: Erro geral:', error);
+      toast({
+        title: "Erro",
+        description: "Execute primeiro os SQLs no Supabase para criar as tabelas!",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Abrir modal para adicionar item em grupo específico
+  const openAddItemModal = (groupId: string) => {
+    setSelectedGroupId(groupId);
+    setIsAddItemOpen(true);
   };
 
   // Carregar progresso do usuário
@@ -490,6 +565,50 @@ const Checklist = () => {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+
+            {/* Modal para Adicionar Item */}
+            <Dialog open={isAddItemOpen} onOpenChange={setIsAddItemOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Adicionar Item ao Checklist</DialogTitle>
+                  <DialogDescription>
+                    Adicione um novo item ao grupo selecionado
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="task">Tarefa</Label>
+                    <Input
+                      id="task"
+                      value={newItemTask}
+                      onChange={(e) => setNewItemTask(e.target.value)}
+                      placeholder="Ex: Estudar conceitos básicos"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="priority">Prioridade</Label>
+                    <Select value={newItemPriority} onValueChange={setNewItemPriority}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="alta">Alta</SelectItem>
+                        <SelectItem value="média">Média</SelectItem>
+                        <SelectItem value="baixa">Baixa</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setIsAddItemOpen(false)}>
+                    Cancelar
+                  </Button>
+                  <Button onClick={createItem} disabled={!newItemTask.trim()}>
+                    Adicionar Item
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
           
           
@@ -540,6 +659,19 @@ const Checklist = () => {
                     </div>
                   </div>
                 </CardHeader>
+                
+                {/* Botão Adicionar Item */}
+                <div className="px-6 pb-4">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => openAddItemModal(group.id)}
+                    className="w-full border-dashed border-2 hover:border-primary hover:bg-primary/5"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Adicionar Item
+                  </Button>
+                </div>
                 
                 {/* Group Items */}
                 <CardContent className="pt-0">
