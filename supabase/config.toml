@@ -1,0 +1,4 @@
+project_id = "cvbjtjmogseupckocmeb"
+
+[functions.mailtrap-integration]
+verify_jwt = false
