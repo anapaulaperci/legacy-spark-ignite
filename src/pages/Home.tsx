@@ -22,7 +22,7 @@ const Home = () => {
       name: "Melina Dantas",
       description: "Palestrante Convidada",
       instagram: "#",
-      image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
+      image: "/lovable-uploads/6811a272-1c33-4ff6-b54b-e955acc9bdc0.png"
     },
     {
       name: "Sabrina",
@@ -234,11 +234,11 @@ const Home = () => {
                   </div>
                   <div className="p-6 text-center">
                     <div className="flex items-center justify-center gap-3">
-                      <img 
-                        src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" 
-                        alt="Melina Dantas" 
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
+                       <img 
+                         src="/lovable-uploads/6811a272-1c33-4ff6-b54b-e955acc9bdc0.png" 
+                         alt="Melina Dantas" 
+                         className="w-10 h-10 rounded-full object-cover"
+                       />
                       <div>
                         <div className="text-white font-bold text-lg">Palestra: Melina Dantas</div>
                         <div className="text-white/70 text-sm">Estratégias de Marca</div>
