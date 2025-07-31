@@ -19,6 +19,7 @@ const Checklist = () => {
   const [taskThemes, setTaskThemes] = useState<Record<string, string>>({});
   const [taskPriorities, setTaskPriorities] = useState<Record<string, string>>({});
   const [taskDates, setTaskDates] = useState<Record<string, string>>({});
+  const [taskResponsibles, setTaskResponsibles] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
   const themeOptions = [
@@ -33,6 +34,16 @@ const Checklist = () => {
     { value: "alta", label: "Alta", color: "bg-red-100 text-red-800 border-red-200" },
     { value: "média", label: "Média", color: "bg-yellow-100 text-yellow-800 border-yellow-200" },
     { value: "baixa", label: "Baixa", color: "bg-green-100 text-green-800 border-green-200" }
+  ];
+
+  const responsibleOptions = [
+    "Ana Paula Perci",
+    "Camilo Coutinho", 
+    "Melina Dantas",
+    "Sabrina",
+    "Victor",
+    "Equipe",
+    "Cliente"
   ];
 
   const sections = [
@@ -126,6 +137,7 @@ const Checklist = () => {
           setTaskThemes(data.task_themes || {});
           setTaskPriorities(data.task_priorities || {});
           setTaskDates(data.task_dates || {});
+          setTaskResponsibles(data.task_responsibles || {});
           console.log("🔍 LoadUserProgress: Estados atualizados com sucesso");
         } else {
           console.log("🔍 LoadUserProgress: Nenhum dado encontrado");
@@ -154,7 +166,8 @@ const Checklist = () => {
       checkedItems,
       taskThemes,
       taskPriorities,
-      taskDates
+      taskDates,
+      taskResponsibles
     });
 
     try {
@@ -167,6 +180,7 @@ const Checklist = () => {
         task_themes: taskThemes,
         task_priorities: taskPriorities,
         task_dates: taskDates,
+        task_responsibles: taskResponsibles,
         updated_at: new Date().toISOString()
       };
 
@@ -211,6 +225,7 @@ const Checklist = () => {
             task_themes: taskThemes,
             task_priorities: taskPriorities,
             task_dates: taskDates,
+            task_responsibles: taskResponsibles,
             updated_at: new Date().toISOString()
           })
         });
@@ -264,7 +279,7 @@ const Checklist = () => {
 
       return () => clearTimeout(timeoutId);
     }
-  }, [checkedItems, taskThemes, taskPriorities, taskDates, loading, user]);
+  }, [checkedItems, taskThemes, taskPriorities, taskDates, taskResponsibles, loading, user]);
 
   const handleItemCheck = (itemId: string) => {
     setCheckedItems(prev => ({
@@ -291,6 +306,13 @@ const Checklist = () => {
     setTaskDates(prev => ({
       ...prev,
       [itemId]: date
+    }));
+  };
+
+  const handleResponsibleChange = (itemId: string, responsible: string) => {
+    setTaskResponsibles(prev => ({
+      ...prev,
+      [itemId]: responsible
     }));
   };
 
@@ -437,9 +459,9 @@ const Checklist = () => {
                           
                           <div className="p-4 pl-6">
                             {/* Grid layout com todas as colunas */}
-                            <div className="grid grid-cols-9 gap-3 items-center">
-                              {/* Checkbox e Tarefa - 4 colunas */}
-                              <div className="col-span-4 flex items-center gap-3">
+                            <div className="grid grid-cols-10 gap-3 items-center">
+                              {/* Checkbox e Tarefa - 3 colunas */}
+                              <div className="col-span-3 flex items-center gap-3">
                                 <Checkbox
                                   id={item.id}
                                   checked={checkedItems[item.id] || false}
@@ -458,8 +480,8 @@ const Checklist = () => {
                                 </label>
                               </div>
                               
-                              {/* Tema - 3 colunas */}
-                              <div className="col-span-3">
+                              {/* Tema - 2 colunas */}
+                              <div className="col-span-2">
                                 <Select 
                                   value={taskThemes[item.id] || ""} 
                                   onValueChange={(value) => handleThemeChange(item.id, value)}
@@ -483,6 +505,25 @@ const Checklist = () => {
                                           <div className={`w-2 h-2 rounded-full ${getThemeColor(theme)}`} />
                                           {theme}
                                         </div>
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              
+                              {/* Responsável - 2 colunas */}
+                              <div className="col-span-2">
+                                <Select 
+                                  value={taskResponsibles[item.id] || ""} 
+                                  onValueChange={(value) => handleResponsibleChange(item.id, value)}
+                                >
+                                  <SelectTrigger className="h-8 text-xs border-gray-200 hover:border-gray-300 transition-colors bg-white">
+                                    <SelectValue placeholder="Responsável" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
+                                    {responsibleOptions.map((responsible) => (
+                                      <SelectItem key={responsible} value={responsible} className="text-xs hover:bg-gray-50">
+                                        {responsible}
                                       </SelectItem>
                                     ))}
                                   </SelectContent>
