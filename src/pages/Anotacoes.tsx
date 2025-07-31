@@ -90,6 +90,8 @@ const Anotacoes = () => {
         title: "Nova Anotação",
         content: "# Nova Anotação\n\n"
       };
+      
+      console.log("Dados da nova anotação:", newNote);
 
       const session = await supabase.auth.getSession();
       const response = await fetch('https://cvbjtjmogseupckocmeb.supabase.co/rest/v1/client_notes', {
@@ -102,12 +104,16 @@ const Anotacoes = () => {
         },
         body: JSON.stringify(newNote)
       });
+      
+      console.log("Status da resposta:", response.status);
       const data = await response.json();
+      console.log("Dados da resposta:", data);
 
       if (!response.ok) {
+        console.error("Erro na resposta:", data);
         toast({
           title: "Erro",
-          description: "Erro ao criar nova anotação",
+          description: `Erro ao criar nova anotação: ${data.message || response.status}`,
           variant: "destructive",
         });
         return;
