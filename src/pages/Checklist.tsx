@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CheckSquare, Circle, Trophy, Target, Clock, TrendingUp, Plus, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,6 +21,10 @@ const Checklist = () => {
   const [taskPriorities, setTaskPriorities] = useState<Record<string, string>>({});
   const [taskDates, setTaskDates] = useState<Record<string, string>>({});
   const [taskResponsibles, setTaskResponsibles] = useState<Record<string, string>>({});
+  const [groups, setGroups] = useState<any[]>([]);
+  const [isAddGroupOpen, setIsAddGroupOpen] = useState(false);
+  const [newGroupTitle, setNewGroupTitle] = useState("");
+  const [newGroupDescription, setNewGroupDescription] = useState("");
   const [loading, setLoading] = useState(true);
 
   const themeOptions = [
@@ -38,57 +43,116 @@ const Checklist = () => {
 
   // Removido responsibleOptions - agora é campo livre
 
-  const sections = [
-    {
-      id: "1",
-      title: "Fundamentos",
-      description: "Base conceitual do posicionamento",
-      icon: Circle,
-      color: "text-primary",
-      items: [
-        { id: "1-1", task: "Entender o conceito de posicionamento de marca", priority: "alta" },
-        { id: "1-2", task: "Estudar casos de posicionamento bem-sucedidos", priority: "alta" },
-        { id: "1-3", task: "Identificar diferentes tipos de posicionamento", priority: "média" },
-        { id: "1-4", task: "Completar exercícios de fixação", priority: "baixa" }
-      ]
-    },
-    {
-      id: "2",
-      title: "Análise de Mercado",
-      description: "Compreensão do ambiente competitivo",
-      icon: Target,
-      color: "text-accent",
-      items: [
-        { id: "2-1", task: "Mapear principais concorrentes diretos", priority: "alta" },
-        { id: "2-2", task: "Analisar posicionamento dos concorrentes", priority: "alta" },
-        { id: "2-3", task: "Identificar gaps no mercado", priority: "média" }
-      ]
-    },
-    {
-      id: "3",
-      title: "Estratégia",
-      description: "Desenvolvimento da estratégia de posicionamento",
-      icon: TrendingUp,
-      color: "text-success",
-      items: [
-        { id: "3-1", task: "Definir proposta de valor única", priority: "alta" },
-        { id: "3-2", task: "Criar personas detalhadas", priority: "alta" },
-        { id: "3-3", task: "Desenvolver mensagem principal", priority: "média" }
-      ]
-    },
-    {
-      id: "4",
-      title: "Plano de Implementação",
-      description: "Execução e acompanhamento",
-      icon: Trophy,
-      color: "text-destructive",
-      items: [
-        { id: "4-1", task: "Criar plano de comunicação", priority: "alta" },
-        { id: "4-2", task: "Definir métricas de acompanhamento", priority: "média" },
-        { id: "4-3", task: "Implementar estratégia", priority: "alta" }
-      ]
-    }
+  const iconOptions = [
+    { value: "Circle", label: "Circle", icon: Circle },
+    { value: "Target", label: "Target", icon: Target },
+    { value: "TrendingUp", label: "Trending Up", icon: TrendingUp },
+    { value: "Trophy", label: "Trophy", icon: Trophy },
+    { value: "CheckSquare", label: "Check Square", icon: CheckSquare }
   ];
+
+  const colorOptions = [
+    { value: "text-primary", label: "Primary" },
+    { value: "text-accent", label: "Accent" },
+    { value: "text-success", label: "Success" },
+    { value: "text-destructive", label: "Destructive" }
+  ];
+
+  // Carregar grupos do banco
+  const loadGroups = async () => {
+    if (!user) return;
+
+    try {
+      console.log("🔍 LoadGroups: Carregando grupos...");
+      
+      const SUPABASE_URL = "https://cvbjtjmogseupckocmeb.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc";
+      
+      const session = await supabase.auth.getSession();
+      
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/checklist_groups?user_id=eq.${user.id}&select=*,checklist_items(*)&order=position`, {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const groupsData = await response.json();
+        console.log("🔍 LoadGroups: Grupos carregados:", groupsData);
+        setGroups(groupsData || []);
+      } else {
+        console.error('🔍 LoadGroups: Erro ao carregar grupos:', response.status);
+        // Se tabela não existe ainda, usar dados default
+        setGroups([]);
+      }
+      
+    } catch (error) {
+      console.error('🔍 LoadGroups: Erro geral:', error);
+      setGroups([]);
+    }
+  };
+
+  // Criar novo grupo
+  const createGroup = async () => {
+    if (!user || !newGroupTitle.trim()) return;
+
+    try {
+      console.log("➕ CreateGroup: Criando novo grupo...");
+      
+      const SUPABASE_URL = "https://cvbjtjmogseupckocmeb.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2Ymp0am1vZ3NldXBja29jbWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzOTUyODUsImV4cCI6MjA2Njk3MTI4NX0.pWIXaXFJZNbLeD5uVBkAHe97z7mY2APWiCsHk8matmc";
+      
+      const session = await supabase.auth.getSession();
+      
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/checklist_groups`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${session.data.session?.access_token}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          title: newGroupTitle,
+          description: newGroupDescription,
+          position: groups.length
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("➕ CreateGroup: Grupo criado:", data);
+        setNewGroupTitle("");
+        setNewGroupDescription("");
+        setIsAddGroupOpen(false);
+        loadGroups(); // Recarregar grupos
+        
+        toast({
+          title: "Sucesso",
+          description: "Grupo criado com sucesso!",
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('➕ CreateGroup: Erro:', errorData);
+        toast({
+          title: "Erro",
+          description: "Erro ao criar grupo - tabela ainda não existe. Execute primeiro os SQLs no Supabase!",
+          variant: "destructive",
+        });
+      }
+      
+    } catch (error) {
+      console.error('➕ CreateGroup: Erro geral:', error);
+      toast({
+        title: "Erro",
+        description: "Execute primeiro os SQLs no Supabase para criar as tabelas!",
+        variant: "destructive",
+      });
+    }
+  };
 
   // Carregar progresso do usuário
   const loadUserProgress = async () => {
@@ -259,7 +323,10 @@ const Checklist = () => {
 
   // UseEffect para carregar dados na inicialização
   useEffect(() => {
-    loadUserProgress();
+    if (user) {
+      loadUserProgress();
+      loadGroups();
+    }
   }, [user]);
 
   // UseEffect para salvar automaticamente quando o progresso muda
@@ -308,16 +375,18 @@ const Checklist = () => {
     }));
   };
 
-  const getSectionProgress = (sectionId: string) => {
-    const sectionItems = sections.find(s => s.id === sectionId)?.items || [];
-    const completedItems = sectionItems.filter(item => checkedItems[item.id]).length;
-    return Math.round((completedItems / sectionItems.length) * 100);
+  const getSectionProgress = (groupId: string) => {
+    const group = groups.find(g => g.id === groupId);
+    if (!group || !group.checklist_items) return 0;
+    
+    const completedItems = group.checklist_items.filter((item: any) => checkedItems[item.id]).length;
+    return Math.round((completedItems / group.checklist_items.length) * 100);
   };
 
   const getTotalProgress = () => {
-    const totalItems = sections.reduce((acc, section) => acc + section.items.length, 0);
+    const totalItems = groups.reduce((acc, group) => acc + (group.checklist_items?.length || 0), 0);
     const completedItems = Object.values(checkedItems).filter(Boolean).length;
-    return Math.round((completedItems / totalItems) * 100);
+    return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
   };
 
   const getThemeColor = (theme: string) => {
@@ -377,10 +446,50 @@ const Checklist = () => {
                 Acompanhe seu progresso através dos marcos do projeto
               </p>
             </div>
-            <Button variant="outline" size="sm">
-              <Plus className="h-4 w-4 mr-2" />
-              Adicionar Item
-            </Button>
+            <Dialog open={isAddGroupOpen} onOpenChange={setIsAddGroupOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Adicionar Grupo
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Criar Novo Grupo</DialogTitle>
+                  <DialogDescription>
+                    Adicione um novo grupo de tarefas ao seu checklist
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="title">Título do Grupo</Label>
+                    <Input
+                      id="title"
+                      value={newGroupTitle}
+                      onChange={(e) => setNewGroupTitle(e.target.value)}
+                      placeholder="Ex: Fundamentos"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Descrição</Label>
+                    <Input
+                      id="description"
+                      value={newGroupDescription}
+                      onChange={(e) => setNewGroupDescription(e.target.value)}
+                      placeholder="Ex: Base conceitual do posicionamento"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setIsAddGroupOpen(false)}>
+                    Cancelar
+                  </Button>
+                  <Button onClick={createGroup} disabled={!newGroupTitle.trim()}>
+                    Criar Grupo
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
           
           
@@ -394,33 +503,33 @@ const Checklist = () => {
           </div>
         </div>
 
-        {/* Checklist Items */}
+        {/* Checklist Groups */}
         <div className="space-y-4">
-          {sections.map((section) => {
-            const progress = getSectionProgress(section.id);
-            const SectionIcon = section.icon;
+          {groups.map((group) => {
+            const progress = getSectionProgress(group.id);
+            const IconComponent = iconOptions.find(icon => icon.value === group.icon)?.icon || Circle;
             
             return (
-              <Card key={section.id} className="border border-border/50 shadow-sm">
-                {/* Section Header */}
+              <Card key={group.id} className="border border-border/50 shadow-sm">
+                {/* Group Header */}
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <SectionIcon className="h-4 w-4 text-primary" />
+                        <IconComponent className="h-4 w-4 text-primary" />
                       </div>
                       <div>
                         <CardTitle className="text-lg font-semibold text-foreground">
-                          {section.title}
+                          {group.title}
                         </CardTitle>
                         <CardDescription className="text-sm text-muted-foreground">
-                          {section.description}
+                          {group.description}
                         </CardDescription>
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="text-sm font-medium text-muted-foreground mb-1">
-                        {section.items.filter(item => checkedItems[item.id]).length}/{section.items.length}
+                        {group.checklist_items?.filter((item: any) => checkedItems[item.id]).length || 0}/{group.checklist_items?.length || 0}
                       </div>
                       <div className="w-16 h-1 bg-muted rounded-full overflow-hidden">
                         <div 
@@ -432,10 +541,10 @@ const Checklist = () => {
                   </div>
                 </CardHeader>
                 
-                {/* Section Items - Monday.com Style com Colunas */}
+                {/* Group Items */}
                 <CardContent className="pt-0">
                   <div className="grid gap-2">
-                    {section.items.map((item) => {
+                    {(group.checklist_items || []).map((item: any) => {
                       const selectedTheme = taskThemes[item.id];
                       const themeColor = selectedTheme ? getThemeColor(selectedTheme) : "bg-gray-200";
                       
