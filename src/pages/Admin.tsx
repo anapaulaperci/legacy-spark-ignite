@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,6 +27,12 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [newUserEmail, setNewUserEmail] = useState("");
+  const [newUserPassword, setNewUserPassword] = useState("");
+  const [newUserName, setNewUserName] = useState("");
+  const [newUserRole, setNewUserRole] = useState("user");
+  const [creating, setCreating] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -90,6 +97,80 @@ const Admin = () => {
         description: "Papel do usuário atualizado com sucesso!",
       });
       fetchProfiles();
+    }
+  };
+
+  const createNewUser = async () => {
+    if (!newUserEmail || !newUserPassword || !newUserName) {
+      toast({
+        title: "Erro",
+        description: "Todos os campos são obrigatórios.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setCreating(true);
+
+    try {
+      // Criar usuário no auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: newUserEmail,
+        password: newUserPassword,
+        options: {
+          data: {
+            display_name: newUserName
+          }
+        }
+      });
+
+      if (authError) {
+        toast({
+          title: "Erro",
+          description: `Erro ao criar usuário: ${authError.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (authData.user) {
+        // Atualizar o perfil com o papel especificado
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ 
+            role: newUserRole,
+            display_name: newUserName 
+          })
+          .eq('user_id', authData.user.id);
+
+        if (profileError) {
+          console.error('Erro ao atualizar perfil:', profileError);
+        }
+
+        toast({
+          title: "Sucesso",
+          description: "Usuário criado com sucesso!",
+        });
+
+        // Limpar formulário e fechar modal
+        setNewUserEmail("");
+        setNewUserPassword("");
+        setNewUserName("");
+        setNewUserRole("user");
+        setIsCreateDialogOpen(false);
+        
+        // Recarregar lista de usuários
+        fetchProfiles();
+      }
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      toast({
+        title: "Erro",
+        description: "Erro inesperado ao criar usuário.",
+        variant: "destructive",
+      });
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -193,13 +274,89 @@ const Admin = () => {
       {/* User Management */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Gerenciamento de Usuários
-          </CardTitle>
-          <CardDescription>
-            Visualize e gerencie todos os usuários do sistema
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Gerenciamento de Usuários
+              </CardTitle>
+              <CardDescription>
+                Visualize e gerencie todos os usuários do sistema
+              </CardDescription>
+            </div>
+            <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Criar Usuário
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Criar Novo Usuário</DialogTitle>
+                  <DialogDescription>
+                    Preencha os dados para criar um novo usuário no sistema.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="name">Nome</Label>
+                    <Input
+                      id="name"
+                      placeholder="Nome completo"
+                      value={newUserName}
+                      onChange={(e) => setNewUserName(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="email@exemplo.com"
+                      value={newUserEmail}
+                      onChange={(e) => setNewUserEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="password">Senha</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="Senha (mínimo 6 caracteres)"
+                      value={newUserPassword}
+                      onChange={(e) => setNewUserPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="role">Papel</Label>
+                    <Select value={newUserRole} onValueChange={setNewUserRole}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="user">Usuário</SelectItem>
+                        <SelectItem value="moderator">Moderador</SelectItem>
+                        <SelectItem value="admin">Administrador</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsCreateDialogOpen(false)}
+                    disabled={creating}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button onClick={createNewUser} disabled={creating}>
+                    {creating ? "Criando..." : "Criar Usuário"}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
         </CardHeader>
         <CardContent>
           {/* Search */}
