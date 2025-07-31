@@ -31,33 +31,32 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Processing Mailtrap action: ${action} for user: ${userEmail}`);
 
-    // Para ação send_welcome, buscar user pelo email diretamente
+    // Para ação send_welcome, não precisamos verificar o usuário no banco
+    // pois acabou de ser criado e pode não estar na tabela profiles ainda
     if (action === 'send_welcome') {
       console.log('Sending welcome email to:', userEmail);
-      
-      // Verificar se o usuário existe na tabela auth.users pelo email
-      const { data: authUser, error: authError } = await supabase.auth.admin.getUserByEmail(userEmail);
-      
-      if (authError || !authUser.user) {
-        console.error('Auth user not found:', authError);
-        return new Response(
-          JSON.stringify({ error: 'User not found in auth system' }),
-          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
+      // Pular verificação para welcome emails
     } else {
       // Para outras ações, verificar user na tabela profiles
-      const { data: user, error: userError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', (await supabase.auth.admin.getUserByEmail(userEmail)).data.user?.id)
-        .single();
+      try {
+        const { data: user, error: userError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('email', userEmail)
+          .single();
 
-      if (userError) {
-        console.error('User verification error:', userError);
+        if (userError) {
+          console.error('User verification error:', userError);
+          return new Response(
+            JSON.stringify({ error: 'User not found in system' }),
+            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+      } catch (error) {
+        console.error('Error checking user:', error);
         return new Response(
-          JSON.stringify({ error: 'User not found in system' }),
-          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          JSON.stringify({ error: 'Error verifying user' }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
     }
@@ -113,14 +112,36 @@ const handler = async (req: Request): Promise<Response> => {
         break;
 
       case 'update_user_access':
-        // Update user access level in database
-        const { error: updateError } = await supabase
-          .from('profiles')
-          .update({ role: accessLevel })
-          .eq('user_id', user.user_id);
+        // Update user access level in database - requer verificação de usuário
+        try {
+          const { data: user, error: getUserError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('email', userEmail)
+            .single();
 
-        if (updateError) {
-          console.error('Error updating user access:', updateError);
+          if (getUserError) {
+            console.error('Error finding user for access update:', getUserError);
+            return new Response(
+              JSON.stringify({ error: 'User not found for access update' }),
+              { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
+
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update({ role: accessLevel })
+            .eq('id', user.id);
+
+          if (updateError) {
+            console.error('Error updating user access:', updateError);
+            return new Response(
+              JSON.stringify({ error: 'Failed to update user access' }),
+              { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
+        } catch (error) {
+          console.error('Error in access update:', error);
           return new Response(
             JSON.stringify({ error: 'Failed to update user access' }),
             { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
