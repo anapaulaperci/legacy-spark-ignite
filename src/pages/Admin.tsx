@@ -113,42 +113,59 @@ const Admin = () => {
     setCreating(true);
 
     try {
-      // Criar um perfil diretamente na tabela profiles sem afetar a sessão atual
-      const randomUserId = crypto.randomUUID();
-      
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert({
-          user_id: randomUserId,
-          display_name: newUserName,
-          role: newUserRole,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        });
+      // Criar usuário usando signUp, mas sem confirmar email automaticamente
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: newUserEmail,
+        password: newUserPassword,
+        options: {
+          data: {
+            display_name: newUserName
+          },
+          emailRedirectTo: undefined // Não redirecionar automaticamente
+        }
+      });
 
-      if (profileError) {
+      if (authError) {
         toast({
           title: "Erro",
-          description: `Erro ao criar usuário: ${profileError.message}`,
+          description: `Erro ao criar usuário: ${authError.message}`,
           variant: "destructive",
         });
         return;
       }
 
-      toast({
-        title: "Sucesso",
-        description: `Usuário ${newUserName} criado com sucesso! Dados salvos localmente.`,
-      });
+      if (authData.user) {
+        // Aguardar um pouco para o perfil ser criado automaticamente
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Limpar formulário e fechar modal
-      setNewUserEmail("");
-      setNewUserPassword("");
-      setNewUserName("");
-      setNewUserRole("user");
-      setIsCreateDialogOpen(false);
-      
-      // Recarregar lista de usuários
-      fetchProfiles();
+        // Atualizar o perfil com o papel especificado
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ 
+            role: newUserRole,
+            display_name: newUserName 
+          })
+          .eq('user_id', authData.user.id);
+
+        if (profileError) {
+          console.error('Erro ao atualizar perfil:', profileError);
+        }
+
+        toast({
+          title: "Sucesso",
+          description: `Usuário ${newUserName} criado com sucesso! Email de confirmação enviado.`,
+        });
+
+        // Limpar formulário e fechar modal
+        setNewUserEmail("");
+        setNewUserPassword("");
+        setNewUserName("");
+        setNewUserRole("user");
+        setIsCreateDialogOpen(false);
+        
+        // Recarregar lista de usuários
+        fetchProfiles();
+      }
 
     } catch (error: any) {
       console.error('Erro ao criar usuário:', error);
