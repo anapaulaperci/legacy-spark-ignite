@@ -9,7 +9,7 @@ const Home = () => {
       name: "Ana Paula Perci",
       description: "Especialista em Posicionamento de Marca",
       instagram: "https://www.instagram.com/anapaulaperci/",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
+      image: "/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png"
     },
     {
       name: "Camilo Coutinho",
@@ -182,7 +182,7 @@ const Home = () => {
                   <div className="p-6 text-center">
                     <div className="flex items-center justify-center gap-3">
                       <img 
-                        src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+                        src="/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png" 
                         alt="Ana Paula Perci" 
                         className="w-10 h-10 rounded-full object-cover"
                       />
@@ -309,7 +309,7 @@ const Home = () => {
                   <div className="p-6 text-center">
                     <div className="flex items-center justify-center gap-3">
                       <img 
-                        src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+                        src="/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png" 
                         alt="Ana Paula Perci" 
                         className="w-10 h-10 rounded-full object-cover"
                       />
