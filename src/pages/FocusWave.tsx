@@ -109,9 +109,30 @@ const FocusWave: React.FC = () => {
       if (currentPreset === 'creative') {
         // Use music file for creative session
         if (!audioElementRef.current) {
-          audioElementRef.current = new Audio('/music/creative-session.mp3');
+          audioElementRef.current = new Audio();
           audioElementRef.current.volume = binauralVolume / 100;
           audioElementRef.current.loop = false;
+          
+          // Definir source e aguardar carregamento
+          audioElementRef.current.src = '/music/creative-session.mp3';
+          console.log('Carregando música de:', audioElementRef.current.src);
+          
+          // Aguardar o arquivo estar pronto para reproduzir
+          await new Promise((resolve, reject) => {
+            const audio = audioElementRef.current!;
+            
+            audio.oncanplaythrough = () => {
+              console.log('Música carregada com sucesso');
+              resolve(true);
+            };
+            
+            audio.onerror = (error) => {
+              console.error('Erro ao carregar música:', error);
+              reject(new Error('Falha ao carregar arquivo de música'));
+            };
+            
+            audio.load();
+          });
         }
         
         audioElementRef.current.currentTime = pausedTimeRef.current / 1000;
