@@ -90,17 +90,10 @@ const Home = () => {
       {/* Speakers Section */}
       <section className="py-16 bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header with title and button */}
-          <div className="flex items-center justify-between mb-12">
+          <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground">
               Palestrantes
             </h2>
-            <Button 
-              variant="default"
-              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-2 rounded-lg shadow-lg"
-            >
-              Ver todos os palestrantes
-            </Button>
           </div>
 
           {/* Speakers Grid */}
