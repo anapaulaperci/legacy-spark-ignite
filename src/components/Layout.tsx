@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import Footer from "./Footer";
 
 const Layout = () => {
   console.log("Layout component rendering...");
@@ -16,6 +17,7 @@ const Layout = () => {
         <div className="animate-fade-in">
           <Outlet />
         </div>
+        <Footer />
       </main>
     </div>
   );

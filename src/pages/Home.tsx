@@ -107,7 +107,7 @@ const Home = () => {
               <img 
                 src={speaker.image}
                 alt={speaker.name}
-                className="speaker-image"
+                className={`speaker-image ${speaker.name === 'Ana Paula Perci' ? 'object-top' : ''}`}
               />
               
               {/* Speaker Info */}
@@ -170,9 +170,9 @@ const Home = () => {
                   <div className="p-6 text-left">
                     <div className="flex items-center gap-4">
                       <img 
-                        src="/lovable-uploads/b03590df-78c3-43ae-9f8d-9cf0387a15ba.png"
+                        src="/lovable-uploads/b03590df-78c3-43ae-9f8d-9cf0387a15ba.png" 
                         alt="Ana Paula Perci" 
-                        className="w-12 h-12 rounded-full object-cover shadow-card"
+                        className="w-12 h-12 rounded-full object-cover object-top shadow-card"
                       />
                       <div>
                         <div className="text-foreground font-bold text-lg">Palestra: Ana Paula Perci</div>
@@ -297,9 +297,9 @@ const Home = () => {
                   <div className="p-6 text-left">
                     <div className="flex items-center gap-4">
                       <img 
-                        src="/lovable-uploads/b03590df-78c3-43ae-9f8d-9cf0387a15ba.png"
+                        src="/lovable-uploads/b03590df-78c3-43ae-9f8d-9cf0387a15ba.png" 
                         alt="Ana Paula Perci" 
-                        className="w-12 h-12 rounded-full object-cover shadow-card"
+                        className="w-12 h-12 rounded-full object-cover object-top shadow-card"
                       />
                       <div>
                         <div className="text-foreground font-bold text-lg">Encerramento: Ana Paula Perci</div>
