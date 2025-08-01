@@ -63,7 +63,6 @@ const MarkdownContent = ({ content }: { content: string }) => {
       elements.push(
         <div key={index} className="mt-16 mb-8 first:mt-0">
           <h2 className="text-3xl font-bold text-foreground mb-6" dangerouslySetInnerHTML={{ __html: parseMarkdown(title) }} />
-          <div className="w-full h-px bg-gradient-to-r from-primary/50 to-transparent"></div>
         </div>
       );
       return;
