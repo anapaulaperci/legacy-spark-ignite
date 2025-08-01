@@ -131,6 +131,19 @@ const Home = () => {
                   Falar com ele
                 </a>
               )}
+
+              {/* Melina Contact Link */}
+              {speaker.name === 'Melina Dantas' && (
+                <a
+                  href="https://www.instagram.com/melinadantas/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 text-primary hover:text-primary-glow transition-colors duration-200 text-sm font-medium"
+                >
+                  <Instagram className="w-4 h-4" />
+                  Falar com ela
+                </a>
+              )}
             </div>
           ))}
         </div>
