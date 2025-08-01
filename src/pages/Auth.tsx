@@ -150,36 +150,44 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-primary-glow to-accent flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back to Home - only show if not redirected from a protected route */}
         {!location.state?.from && (
           <div className="mb-6">
-            <Link to="/" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar ao início
             </Link>
           </div>
         )}
 
-        <Card className="backdrop-blur-sm bg-white/10 border-white/20">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-white">
-              Imersão Posicionamento
-            </CardTitle>
-            <CardDescription className="text-white/80">
+        <Card>
+          <CardHeader className="text-center space-y-6">
+            {/* Logo and Name */}
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center">
+                <span className="text-primary-foreground text-2xl font-bold">AP</span>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Ana Paula Perci</h1>
+                <p className="text-muted-foreground mt-1">Imersão Posicionamento</p>
+              </div>
+            </div>
+            
+            <CardDescription className="text-muted-foreground">
               Acesse sua conta ou crie uma nova
             </CardDescription>
           </CardHeader>
 
           <CardContent>
             <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-white/10">
-                <TabsTrigger value="signin" className="text-white data-[state=active]:bg-white data-[state=active]:text-primary">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="signin">
                   <LogIn className="h-4 w-4 mr-2" />
                   Entrar
                 </TabsTrigger>
-                <TabsTrigger value="signup" className="text-white data-[state=active]:bg-white data-[state=active]:text-primary">
+                <TabsTrigger value="signup">
                   <UserPlus className="h-4 w-4 mr-2" />
                   Cadastrar
                 </TabsTrigger>
@@ -189,7 +197,7 @@ const Auth = () => {
               <TabsContent value="signin">
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signin-email" className="text-white">Email</Label>
+                    <Label htmlFor="signin-email">Email</Label>
                     <Input
                       id="signin-email"
                       name="email"
@@ -198,12 +206,11 @@ const Auth = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signin-password" className="text-white">Senha</Label>
+                    <Label htmlFor="signin-password">Senha</Label>
                     <div className="relative">
                       <Input
                         id="signin-password"
@@ -213,12 +220,12 @@ const Auth = () => {
                         value={formData.password}
                         onChange={handleInputChange}
                         required
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/60 pr-10"
+                        className="pr-10"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
@@ -227,7 +234,7 @@ const Auth = () => {
 
                   <Button
                     type="submit"
-                    className="w-full bg-white text-primary hover:bg-white/90"
+                    className="w-full"
                     disabled={isLoading}
                   >
                     {isLoading ? "Entrando..." : "Entrar"}
@@ -239,7 +246,7 @@ const Auth = () => {
               <TabsContent value="signup">
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name" className="text-white">Nome</Label>
+                    <Label htmlFor="signup-name">Nome</Label>
                     <Input
                       id="signup-name"
                       name="displayName"
@@ -247,12 +254,11 @@ const Auth = () => {
                       placeholder="Seu nome completo"
                       value={formData.displayName}
                       onChange={handleInputChange}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-white">Email</Label>
+                    <Label htmlFor="signup-email">Email</Label>
                     <Input
                       id="signup-email"
                       name="email"
@@ -261,12 +267,11 @@ const Auth = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-white">Senha</Label>
+                    <Label htmlFor="signup-password">Senha</Label>
                     <div className="relative">
                       <Input
                         id="signup-password"
@@ -277,12 +282,12 @@ const Auth = () => {
                         onChange={handleInputChange}
                         required
                         minLength={6}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/60 pr-10"
+                        className="pr-10"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
@@ -290,7 +295,7 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password" className="text-white">Confirmar Senha</Label>
+                    <Label htmlFor="confirm-password">Confirmar Senha</Label>
                     <Input
                       id="confirm-password"
                       name="confirmPassword"
@@ -299,13 +304,12 @@ const Auth = () => {
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
 
                   <Button
                     type="submit"
-                    className="w-full bg-white text-primary hover:bg-white/90"
+                    className="w-full"
                     disabled={isLoading}
                   >
                     {isLoading ? "Cadastrando..." : "Criar Conta"}
