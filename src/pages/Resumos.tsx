@@ -125,7 +125,7 @@ const Resumos = () => {
       autor: "Martin Lindstrom",
       categoria: "Palestra 1",
       descricao: "Como pequenos detalhes do comportamento humano podem revelar grandes insights para inovação e crescimento de negócios.",
-      capa: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=400&fit=crop&crop=center",
+      capa: "/lovable-uploads/09c5877d-d784-4ad9-b961-8f685c34a0ce.png",
       linkCompra: "https://www.amazon.com.br/Small-Data-Indicam-Grandes-Tend%C3%AAncias/dp/8569809719"
     },
     {
