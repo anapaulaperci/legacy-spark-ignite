@@ -118,221 +118,161 @@ export default function Palestra() {
       image: "/lovable-uploads/17e9dc7e-85aa-43f2-bdd3-b74a55a72ce9.png",
       isNew: true,
       fullContent: `
-## Informações da Palestra
-**Data:** 08/01/2025  
-**Horário:** 10h da manhã  
-**Contexto:** Imersão de Posicionamento com uso de aplicativo próprio para anotações
+🎯 Objetivos de Aprendizagem
+Compreender a diferença entre persona e ICP (Ideal Customer Profile)
 
-## Objetivos de Aprendizagem
+Analisar como a clareza de persona impacta todo o funil de marketing e vendas
 
-- Dominar a diferenciação entre persona, público-alvo e matriz ICP
-- Identificar e criar elementos de autoridade específicos para cada nicho
-- Construir linha editorial estratégica que eleva nível de consciência
-- Implementar processo contínuo de escuta e adaptação do negócio
-- Conectar profundamente conteúdo com universo emocional do cliente
+Aplicar o conhecimento de ICP para desenvolver linha editorial estratégica
 
-## Conceitos-Chave Aprofundados
+Identificar elementos de autoridade, prova social e conexão emocional em conteúdos
 
-### 1. Persona vs ICP - A Diferença Crucial
+Explorar como adaptar soluções às dores e desejos reais da audiência
 
-**Persona:** Avatar geral com dados demográficos (onde mora, gênero, idade, filhos, CLT/empresário)
+📘 Conceitos-Chave
+Persona: Representação do público-alvo de forma ampla (ex: mulheres que querem emagrecer).
 
-**ICP (Ideal Customer Profile):** Conjunto específico de comportamentos ideais
+ICP (Ideal Customer Profile): Subgrupo dentro da persona que representa o cliente ideal — quem executa, aplica e valoriza a solução.
 
-**Exemplo Prático - Mentoria IA:**
-- **Persona:** "Toda pessoa querendo faturar 30-100k com IA"
-- **ICP:** "Executora, não mimizenta, visão longo prazo, disciplinada, produz conteúdo"
+Linha editorial estratégica: Planejamento de conteúdo que inclui autoridade, prova social, conexão emocional, atração e quebra de objeções.
 
-### 2. Elementos da Linha Editorial
+Prova social: Demonstração de resultados reais (ex: faturamento, depoimentos).
 
-Ana enfatizou que muitos confundem os elementos:
+Autoridade: Reconhecimento de mercado (ex: palestrar, estar em masterminds).
 
-**Autoridade ≠ Prova Social**
+Nível de consciência: Grau de entendimento que o cliente tem sobre seus problemas e possíveis soluções.
 
-- **Autoridade:** "Palestrar em mastermind, fazer eventos, estudar constantemente"
-- **NÃO é autoridade:** "Prints de faturamento" (isso é prova social)
+Custo de aquisição: Tempo ou dinheiro investido para trazer um lead qualificado até a venda.
 
-**Prova Social:** Demonstração tangível de resultados
-- "Se digo que você vai faturar X, olha que eu fiz"
-- Cases de clientes, transformações documentadas
+Funil de vendas: Jornada completa desde o primeiro contato com a marca até a conversão.
 
-**Quebra de Objeção:** Atacar medos específicos
-- "Se acham IA complexo, mostro fazendo em 5 minutos"
-- "Se querem dieta não rigorosa, mostro minha metodologia flexível"
+Conteúdo estratégico: Produções que educam, conectam e conduzem o lead na jornada de compra.
 
-**Conexão Emocional:** Entrar no universo mental do cliente
+Objeções: Barreiras mentais do lead que impedem a compra.
 
-### 3. Custo de Venda e Assertividade
+🧱 Conteúdo Principal
+📍1. O passo zero de qualquer negócio
+Todo negócio nasce para resolver a dor de alguém — não apenas gerar dinheiro.
 
-- Custo de reunião Zoom está altíssimo
-- Não pode entrar em reunião com lead de 5k querendo vender solução de 50k
-- Afunilar comunicação = diminuir custo de venda
+Sem entender quem é essa pessoa, não se constrói um funil escalável.
 
-## Conteúdo Principal Expandido
+Mesmo empresas de 7 dígitos não têm clareza sobre sua persona/ICP.
 
-### Seção 1: O Problema das Empresas Grandes
+📍2. Persona vs. ICP
+Persona: visão ampla e demográfica.
 
-Ana revelou insights de suas consultorias:
-- Empresas de 7 dígitos sem clareza de persona
-- Chegam em platô e não conseguem escalar
-- "Como escalo se não tenho clareza do meu funil?"
-- Funil começa no entendimento profundo da matriz ICP
+ICP: cliente ideal com comportamentos e características específicas.
 
-### Seção 2: O Exercício do Travesseiro
+Estratégia: comece pela persona, mas afunile para o ICP na hora da venda.
 
-**Pergunta fundamental:** "Quando seu lead coloca a cabeça no travesseiro, no que pensa?"
+📍3. Funil, Zoom e custo de reunião
+Fazer reuniões com leads desalinhados gera custo alto e desperdício de tempo.
 
-- Se está preocupado, pensa na preocupação
-- Se angustiado, pensa no problema complexo
-- Esse é o momento que abre celular e vê seu anúncio
-- "A pessoa que acorda com preguiça e abre Instagram"
+Exemplo: entrar no Zoom para vender algo de R$ 50 mil para quem só pode pagar R$ 5 mil.
 
-**Para empresas B2B:**
-- Processos organizados?
-- Ganham quanto poderiam?
-- Time está feliz?
-- Gestor satisfeito?
+Solução: segmentar bem antes de chamar para a reunião.
 
-### Seção 3: Análise Competitiva Inteligente
+📍4. Linha editorial que vende
+Precisa conter:
 
-Ana compartilhou método não convencional:
-- "O que top 3 do nicho estão fazendo?"
-- "Se é top e faz algo, tem insight valioso"
-- Analisar biblioteca de anúncios
-- "Se investe dinheiro no Facebook, tem potencial"
-- Não copiar, mas entender padrões de sucesso
+Autoridade
 
-### Seção 4: O Processo de Escuta Contínua
+Prova social
 
-**Filosofia central:** "Negócio digital é processo de escuta"
+Conexão emocional
 
-- Escutar o que cliente diz que quer
-- Identificar dificuldades relacionadas à solução
-- Descobrir o que tornaria vida mais fácil
-- "Nossa empresa existe para tornar vida do cliente mais fácil"
+Quebra de objeção
 
-**Exemplo do time de IA:**
-- Time jovem queria criar aplicativo complexo
-- Ana: "Cliente prefere WhatsApp, não complique"
-- "Empresa não existe para satisfazer o que EU preciso"
+Atração
 
-### Seção 5: Produção de Conteúdo Estratégico
+Exemplo: print de vendas = prova social, não autoridade.
 
-**Problema comum:** "Produzo muito conteúdo mas não vende"
+Autoridade = palestra, evento, mentoria, estar entre os grandes nomes do nicho.
 
-- Conteúdo fala com todo mundo = não gera conexão
-- Sem elementos de autoridade para público específico
-- Linha editorial fragmentada não eleva consciência
+📍5. Produção de conteúdo como parte da estratégia
+Produção de conteúdo não é um extra – é o coração da atração e do crescimento.
 
-**Solução - Consistência dos Elementos:**
-- Autoridade consistente
-- Prova social regular
-- Quebra de objeções recorrente
-- Conexão emocional constante
-- Elementos de atração
+Volume e consistência constroem autoridade e presença.
 
-### Seção 6: Nível de Consciência e Volume
+"Meu trabalho envolve criar conteúdo" — visão de mentalidade profissional.
 
-Ana compartilhou insight do mastermind:
-- "Nível de consciência sobre IA ainda muito baixo"
-- "Estamos numa bolha"
-- **Solução:** Conteúdo em volume para educar mercado
-- "Sem volume, não atrai gente suficiente (exceto ticket muito alto)"
+📍6. Ferramentas de IA e GPT personalizado
+GPTs personalizados têm limite de uso via OpenAI.
 
-## Exemplos e Casos Práticos Detalhados
+Para escala, usar API da OpenAI com controle de tokens.
 
-### Case IA de Vendas - Processo de Inovação
+Exemplo de uso: GPT criado para mapear matriz de ICP com profundidade comportamental.
 
-**Análise:** "Já tinha bastante gente fazendo"
+📍7. Universo do cliente e escuta ativa
+Pergunta central: "No que meu cliente pensa ao deitar a cabeça no travesseiro?"
 
-**Diferencial identificado:**
-- Outros não olhavam funil completo
-- Falta de personalização
-- Soluções incompletas
+Mapear as dores, desejos, desafios emocionais e cotidianos do lead.
 
-**Solução Ana:** Modelar para necessidades reais  
-**Melhoria contínua:** "Refazendo para otimizar baseado em feedback"
+Escuta ativa do cliente = base da criação de produtos e otimização da entrega.
 
-### Exemplo Nicho Financeiro
+📍8. Olhar para a concorrência
+Benchmark dos 3 principais players do nicho.
 
-- Consultoria com empresa do setor
-- "Acorda sem saber se Trump vai mexer no GPS"
-- Necessidade de adaptar comunicação ao contexto
-- Manter posicionamento mas considerar fatores externos
+Biblioteca de anúncios, tipo de produtos, abordagem de funil.
 
-### GPT Personalizado - Limitações
+Não para copiar, mas para entender o que já funciona no mercado.
 
-- Usa tokens da OpenAI
-- Limitação de uso (não indefinido)
-- **Solução para escala:** API própria
-- "Salvamos cliente que travou GPT para base grande"
+💡 Exemplos e Casos Práticos
+Mentoria de IA:
 
-## Insights Profundos e Filosofia
+Persona ampla: pessoas que querem lucrar com IA
 
-### Sobre Criação de Produtos
-"Você cria produto para resolver problema do lead, não seu problema de dinheiro"
-- Resolver problema = ganhar dinheiro naturalmente
-- Foco no dinheiro sem resolver problema = não funciona
+ICP: executores, disciplinados, que sabem produzir conteúdo próprio
 
-### Sobre Conteúdo e Consciência
-"Linha editorial fragmentada não vende"
-- Só autoridade = "fica estudando mas nunca mostra case"
-- Só emocional = "coach de boteco"
-- Só prova social = "ninguém sabe o que faz"
+IA de Vendas:
 
-### Sobre Adaptação de Mercado
-- Mercado muda, sociedade evolui
-- Não pode fingir que mudanças não existem
-- Adaptar mantendo princípios da empresa
+Concorrentes já existiam, mas entregavam de forma genérica
 
-## Dúvidas e Esclarecimentos Aprofundados
+Solução criada com foco em personalização e funil completo
 
-### Elementos de Autoridade por Nicho
-**Pergunta crucial:** "Vocês sabem o que seria conteúdo de autoridade para seu público?"
-- Varia drasticamente por persona
-- Print funciona para alguns, não para outros
-- Precisa mergulhar no universo específico
+Segmentação de emagrecimento:
 
-### Consistência vs Resultados
-- "No começo é dolorido"
-- "Fica confuso se é autoridade ou não"
-- "Vem da consistência"
-- "Depois fica automático"
+Persona: mulheres que querem emagrecer
 
-## Atividades Práticas Propostas
+ICP: mulheres de 20 a 40 anos que rejeitam dietas restritivas
 
-### Exercício de Mapeamento
-- Usar GPT personalizado fornecido
-- Mapear matriz ICP profundamente
-- Conectar com linha editorial
-- Identificar elementos para cada tipo de conteúdo
+❓ Dúvidas e Esclarecimentos
+Pergunta: Como saber se um conteúdo gera autoridade ou não?
+Resposta: Depende da percepção da sua ICP. Print pode funcionar para alguns, palestras para outros.
 
-### Análise de Universo
-- Responder: "No que meu lead pensa ao dormir?"
-- Mapear preocupações e angústias
-- Entender contexto de vida
-- Criar conteúdo que intercepta esses momentos
+Pergunta: O que é autoridade para meu público?
+Resposta: Depende do nicho. Precisa ser validado com base no comportamento do ICP, não por intuição.
 
-## Síntese Final Expandida
+📚 Recursos Complementares
+GPT personalizado da Ana Paula para mapeamento de ICP (baseado na metodologia da empresa)
 
-### Princípios Fundamentais
-- **Clareza antes de escala:** "Sem ICP claro, empresa não passa do platô"
-- **Escuta como filosofia:** "Negócio digital = processo contínuo de escuta"
-- **Facilitar, não complicar:** "Se não facilita vida do cliente, ele muda de empresa"
-- **Consistência editorial:** "Elementos fragmentados não elevam consciência"
-- **Volume com propósito:** "Produzir muito mas com estratégia clara"
+Recomendação: acessar biblioteca de anúncios do Meta Ads dos concorrentes
 
-### Aplicações Imediatas
-- Parar de fazer conteúdo genérico
-- Mapear profundamente o momento do travesseiro
-- Analisar top 3 concorrentes estrategicamente
-- Criar GPT ou sistema para escalar insights
-- Implementar os 4 elementos em cada peça
+Leitura sugerida (implícita): Building a StoryBrand, Invisible Selling Machine, Customer Avatar Worksheet
 
-### Conexão com Realidade Atual
-- Considerar contexto político/econômico
-- Adaptar para momento de baixa consciência sobre IA
-- Preparar para mudanças constantes do mercado
+📝 Atividades e Avaliações
+Exercício sugerido:
+
+Esboçar persona atual
+
+Identificar ICP
+
+Mapear elementos de linha editorial atual
+
+Criar pelo menos um conteúdo para cada tipo (autoridade, prova, emocional, objeção)
+
+Projeto longo: Criar planejamento editorial mensal baseado na matriz de ICP
+
+🔚 Síntese Final
+O negócio começa com clareza de persona e ICP — sem isso, não escala.
+
+Produzir conteúdo é estratégia central, não secundária.
+
+Linha editorial deve ser direcionada e balanceada entre autoridade, prova, emoção e objeções.
+
+O cliente ideal precisa ser ouvido constantemente, e os produtos devem nascer dessa escuta.
+
+Ferramentas de IA são úteis, mas exigem entendimento técnico para escalar.
       `
     },
     {
