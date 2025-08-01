@@ -1,6 +1,6 @@
 import { useParams, Navigate, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { User, ArrowLeft, ChevronRight } from "lucide-react";
+import { User, ArrowLeft, ChevronRight, Instagram } from "lucide-react";
 
 const Palestra = () => {
   const { id } = useParams();
@@ -8,11 +8,11 @@ const Palestra = () => {
   const resumos = [
     {
       id: 1,
-      title: "Palestra 01",
-      description: "Principais conceitos sobre como posicionar sua marca no ambiente digital e construir uma presença sólida online.",
-      author: "Ana Paula Perci",
-      category: "Fundamentos",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=200&fit=crop&crop=center",
+      title: "Rebrand - Criação de Marca",
+      description: "Estratégias avançadas de vídeo marketing e construção de marcas que realmente conectam com o público.",
+      author: "Camilo Coutinho",
+      category: "Branding",
+      image: "/lovable-uploads/cd1ea6f5-17be-4606-b2f6-86441fa7e6e7.png",
       isNew: true
     },
     {
@@ -81,7 +81,8 @@ const Palestra = () => {
     const colors = {
       "Fundamentos": "bg-primary/10 text-primary border-primary/20",
       "Estratégia": "bg-success/10 text-success border-success/20", 
-      "Público": "bg-accent/10 text-accent-foreground border-accent/20"
+      "Público": "bg-accent/10 text-accent-foreground border-accent/20",
+      "Branding": "bg-orange-500/10 text-orange-600 border-orange-200"
     };
     return colors[category as keyof typeof colors] || "bg-muted text-muted-foreground border-muted";
   };
@@ -140,6 +141,21 @@ const Palestra = () => {
                     </>
                   )}
                 </div>
+
+                {/* Instagram Link for Camilo */}
+                {resumo.author === 'Camilo Coutinho' && (
+                  <div className="mt-4">
+                    <a
+                      href="https://www.instagram.com/camilocoutinho/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-glow transition-colors text-sm font-medium"
+                    >
+                      <Instagram className="w-4 h-4" />
+                      Falar com Camilo
+                    </a>
+                  </div>
+                )}
               </div>
               {/* End Heading */}
 

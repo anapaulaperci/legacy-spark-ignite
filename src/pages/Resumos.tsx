@@ -59,11 +59,11 @@ const Resumos = () => {
   const resumos = [
     {
       id: 1,
-      title: "Palestra 01",
-      description: "Principais conceitos sobre como posicionar sua marca no ambiente digital e construir uma presença sólida online.",
-      author: "Ana Paula Perci",
-      category: "Fundamentos",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=200&fit=crop&crop=center",
+      title: "Rebrand - Criação de Marca",
+      description: "Estratégias avançadas de vídeo marketing e construção de marcas que realmente conectam com o público.",
+      author: "Camilo Coutinho",
+      category: "Branding",
+      image: "/lovable-uploads/cd1ea6f5-17be-4606-b2f6-86441fa7e6e7.png",
       rating: 4.9,
       isNew: true
     },
@@ -133,7 +133,8 @@ const Resumos = () => {
     const colors = {
       "Fundamentos": "bg-primary/10 text-primary border-primary/20",
       "Estratégia": "bg-success/10 text-success border-success/20", 
-      "Público": "bg-accent/10 text-accent-foreground border-accent/20"
+      "Público": "bg-accent/10 text-accent-foreground border-accent/20",
+      "Branding": "bg-orange-500/10 text-orange-600 border-orange-200"
     };
     return colors[category as keyof typeof colors] || "bg-muted text-muted-foreground border-muted";
   };
