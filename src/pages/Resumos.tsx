@@ -59,6 +59,16 @@ const Resumos = () => {
   const resumos = [
     {
       id: 1,
+      title: "Abertura",
+      description: "Bem-vindos à Imersão Posicionamento 2024! Uma jornada transformadora para acelerar sua presença digital.",
+      author: "Ana Paula Perci",
+      category: "Fundamentos",
+      image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop&crop=center",
+      rating: 4.9,
+      isNew: true
+    },
+    {
+      id: 2,
       title: "Criação de Marca",
       description: "Estratégias avançadas de vídeo marketing e construção de marcas que realmente conectam com o público.",
       author: "Camilo Coutinho",
@@ -68,20 +78,10 @@ const Resumos = () => {
       isNew: true
     },
     {
-      id: 2,
-      title: "Palestra 02",
-      description: "Como identificar e analisar seus concorrentes para criar vantagens competitivas sustentáveis.",
-      author: "Ana Paula Perci", 
-      category: "Estratégia",
-      image: "/lovable-uploads/2fc804ca-797b-447a-baad-a3ef8205e1f1.png",
-      rating: 4.8,
-      isNew: false
-    },
-    {
       id: 3,
       title: "Palestra 03",
       description: "Técnicas avançadas para identificar, segmentar e compreender profundamente seu público ideal.",
-      author: "Ana Paula Perci",
+      author: "Melina",
       category: "Público",
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop&crop=center",
       rating: 4.7,
@@ -89,11 +89,11 @@ const Resumos = () => {
     },
     {
       id: 4,
-      title: "Palestra 04",
-      description: "Como criar uma proposta de valor única que diferencia seu negócio no mercado competitivo.",
-      author: "Ana Paula Perci",
+      title: "Produção de Conteúdo no Youtube",
+      description: "Como criar conteúdo envolvente e estratégico para crescer seu canal no YouTube e conectar com sua audiência.",
+      author: "Victor",
       category: "Estratégia",
-      image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=400&h=200&fit=crop&crop=center",
+      image: "/lovable-uploads/7415a5cb-e16d-4cac-9ae6-36fc65ed4f92.png",
       rating: 4.9,
       isNew: true
     },
