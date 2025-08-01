@@ -325,7 +325,7 @@ const Resumos = () => {
                           rel="noopener noreferrer"
                           className="w-full"
                         >
-                          <Button variant="outline" size="sm" className="w-full text-xs">
+                          <Button variant="outline" size="sm" className="w-full text-xs bg-primary text-primary-foreground hover:bg-primary/90 border-primary">
                             📖 Ver Livro
                           </Button>
                         </a>
