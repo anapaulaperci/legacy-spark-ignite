@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { ArrowRight, Instagram } from "lucide-react";
+import { ArrowRight, Instagram, MessageCircle } from "lucide-react";
 
 const Home = () => {
   const speakers = [
@@ -155,6 +155,19 @@ const Home = () => {
                 >
                   <Instagram className="w-4 h-4" />
                   Falar com ela
+                </a>
+              )}
+
+              {/* Victor Contact Link */}
+              {speaker.name === 'Victor' && (
+                <a
+                  href="https://wa.me/5541998927030"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 text-green-600 hover:text-green-700 transition-colors duration-200 text-sm font-medium"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Falar com ele
                 </a>
               )}
 
