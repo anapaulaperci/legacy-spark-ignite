@@ -25,8 +25,8 @@ const Home = () => {
       image: "/lovable-uploads/6811a272-1c33-4ff6-b54b-e955acc9bdc0.png"
     },
     {
-      name: "Sabrina",
-      description: "Palestrante Convidada",
+      name: "Sabrina Oliveira",
+      description: "Educadora, neurocientista e cuidadora do programa VemMED",
       instagram: "#",
       image: "/lovable-uploads/e3453f5b-ac17-4f8e-a922-270689feaeed.png"
     },
@@ -257,12 +257,12 @@ const Home = () => {
                     <div className="flex items-center gap-4">
                        <img 
                          src="/lovable-uploads/e3453f5b-ac17-4f8e-a922-270689feaeed.png" 
-                         alt="Sabrina" 
+                         alt="Sabrina Oliveira" 
                          className="w-12 h-12 rounded-full object-cover shadow-card"
                        />
                       <div>
-                        <div className="text-foreground font-bold text-lg">Palestra: Sabrina</div>
-                        <div className="text-muted-foreground text-sm">Desenvolvimento de Conteúdo</div>
+                        <div className="text-foreground font-bold text-lg">Palestra: Sabrina Oliveira</div>
+                        <div className="text-muted-foreground text-sm">Educadora, neurocientista e cuidadora do programa VemMED</div>
                       </div>
                     </div>
                   </div>
