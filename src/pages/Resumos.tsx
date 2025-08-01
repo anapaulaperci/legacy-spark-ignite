@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { BookOpen, User, Play, Star, ArrowRight, Download } from "lucide-react";
 
 const Resumos = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [userRatings, setUserRatings] = useState<{[key: number]: number}>({});
 
   const handleRating = (resumoId: number, rating: number) => {
@@ -44,6 +46,14 @@ const Resumos = () => {
 
   const openPalestraContent = (resumo: typeof resumos[0]) => {
     navigate(`/palestra/${resumo.id}`);
+  };
+
+  const handlePdfDownload = () => {
+    toast({
+      title: "PDF em Desenvolvimento",
+      description: "A funcionalidade de download de PDF ficará pronta em breve. Aguarde!",
+      duration: 3000,
+    });
   };
 
   const resumos = [
@@ -191,7 +201,12 @@ const Resumos = () => {
 
                     {/* Action Buttons */}
                     <div className="flex items-center gap-3">
-                      <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-black hover:bg-yellow-400 transition-colors">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-muted-foreground hover:text-black hover:bg-yellow-400 transition-colors"
+                        onClick={handlePdfDownload}
+                      >
                         <Download className="h-4 w-4 mr-2" />
                         Baixar PDF
                       </Button>

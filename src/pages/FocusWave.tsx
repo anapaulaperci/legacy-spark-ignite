@@ -305,7 +305,7 @@ const FocusWave: React.FC = () => {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400 rounded-full filter blur-[128px]" />
       </div>
 
-      <div className="relative z-10 max-w-md mx-auto p-5 min-h-screen flex flex-col">
+      <div className="relative z-10 max-w-6xl mx-auto p-5 min-h-screen flex flex-col">
         {/* Header */}
         <header className="flex items-center justify-between py-5 mb-5">
           <h1 className="text-xl font-semibold">Focus Wave</h1>
@@ -314,100 +314,107 @@ const FocusWave: React.FC = () => {
           </button>
         </header>
 
-        {/* Now Playing */}
-        <div className="bg-[#232323] rounded-3xl p-8 mb-8 relative">
-          <div className="absolute top-5 right-5 bg-purple-500/20 px-4 py-2 rounded-full text-sm font-medium backdrop-blur">
-            {presets[currentPreset].state} {presets[currentPreset].frequency}Hz
+        {/* Main Content - Player and Presets */}
+        <div className="flex flex-col lg:flex-row gap-8 mb-8">
+          {/* Now Playing */}
+          <div className="bg-[#232323] rounded-3xl p-8 flex-1 relative">
+            <div className="absolute top-5 right-5 bg-purple-500/20 px-4 py-2 rounded-full text-sm font-medium backdrop-blur">
+              {presets[currentPreset].state} {presets[currentPreset].frequency}Hz
+            </div>
+
+            {/* Album Art / Visualizer */}
+            <div className="w-full max-w-72 h-72 mx-auto mb-8 bg-[#2a2a2a] rounded-2xl flex items-center justify-center">
+              <div className="flex items-center gap-1">
+                {[...Array(10)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-1 bg-purple-500 rounded-full transition-all ${
+                      isPlaying ? 'animate-pulse' : 'opacity-30'
+                    }`}
+                    style={{
+                      height: `${40 + Math.random() * 40}%`,
+                      animationDelay: `${i * 0.1}s`
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Track Info */}
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-semibold mb-2">{presets[currentPreset].name}</h2>
+              <p className="text-gray-400">{presets[currentPreset].subtitle}</p>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="mb-8">
+              <div className="h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
+                <div
+                  className="h-full bg-purple-500 rounded-full transition-all duration-100"
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-gray-400">
+                <span>{formatTime(currentTime)}</span>
+                <span>{sessionDuration}:00</span>
+              </div>
+            </div>
+
+            {/* Controls */}
+            <div className="flex items-center justify-center gap-5">
+              <button
+                onClick={previousPreset}
+                className="p-3 hover:bg-white/5 rounded-full transition-colors"
+              >
+                <SkipBack className="w-6 h-6" />
+              </button>
+              
+              <button
+                onClick={togglePlayback}
+                className="p-4 bg-purple-500 hover:bg-purple-600 rounded-full transition-all hover:scale-105"
+              >
+                {isPlaying ? (
+                  <Pause className="w-8 h-8" />
+                ) : (
+                  <Play className="w-8 h-8 ml-1" />
+                )}
+              </button>
+              
+              <button
+                onClick={nextPreset}
+                className="p-3 hover:bg-white/5 rounded-full transition-colors"
+              >
+                <SkipForward className="w-6 h-6" />
+              </button>
+            </div>
           </div>
 
-          {/* Album Art / Visualizer */}
-          <div className="w-72 h-72 mx-auto mb-8 bg-[#2a2a2a] rounded-2xl flex items-center justify-center">
-            <div className="flex items-center gap-1">
-              {[...Array(10)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-1 bg-purple-500 rounded-full transition-all ${
-                    isPlaying ? 'animate-pulse' : 'opacity-30'
+          {/* Preset Modes */}
+          <div className="lg:w-80">
+            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+              Modos de Foco
+            </h3>
+            <div className="grid grid-cols-2 lg:grid-cols-1 gap-3">
+              {Object.entries(presets).map(([id, preset]) => (
+                <button
+                  key={id}
+                  onClick={() => selectPreset(id)}
+                  className={`p-5 rounded-2xl border-2 transition-all ${
+                    currentPreset === id
+                      ? 'bg-purple-500/10 border-purple-500'
+                      : 'bg-[#232323] border-transparent hover:border-gray-600'
                   }`}
-                  style={{
-                    height: `${40 + Math.random() * 40}%`,
-                    animationDelay: `${i * 0.1}s`
-                  }}
-                />
+                >
+                  <div className="flex items-center lg:flex-col lg:items-start gap-3 lg:gap-2">
+                    <div className="text-2xl">{preset.icon}</div>
+                    <div className="flex-1 lg:flex-none text-left lg:text-left">
+                      <div className="text-sm font-semibold">{preset.name}</div>
+                      <div className="text-xs text-gray-400">{preset.state} {preset.frequency}Hz</div>
+                    </div>
+                  </div>
+                </button>
               ))}
             </div>
-          </div>
-
-          {/* Track Info */}
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-semibold mb-2">{presets[currentPreset].name}</h2>
-            <p className="text-gray-400">{presets[currentPreset].subtitle}</p>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="mb-8">
-            <div className="h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
-              <div
-                className="h-full bg-purple-500 rounded-full transition-all duration-100"
-                style={{ width: `${progressPercentage}%` }}
-              />
-            </div>
-            <div className="flex justify-between mt-2 text-xs text-gray-400">
-              <span>{formatTime(currentTime)}</span>
-              <span>{sessionDuration}:00</span>
-            </div>
-          </div>
-
-          {/* Controls */}
-          <div className="flex items-center justify-center gap-5">
-            <button
-              onClick={previousPreset}
-              className="p-3 hover:bg-white/5 rounded-full transition-colors"
-            >
-              <SkipBack className="w-6 h-6" />
-            </button>
-            
-            <button
-              onClick={togglePlayback}
-              className="p-4 bg-purple-500 hover:bg-purple-600 rounded-full transition-all hover:scale-105"
-            >
-              {isPlaying ? (
-                <Pause className="w-8 h-8" />
-              ) : (
-                <Play className="w-8 h-8 ml-1" />
-              )}
-            </button>
-            
-            <button
-              onClick={nextPreset}
-              className="p-3 hover:bg-white/5 rounded-full transition-colors"
-            >
-              <SkipForward className="w-6 h-6" />
-            </button>
-          </div>
-        </div>
-
-        {/* Preset Modes */}
-        <div className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
-            Modos de Foco
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            {Object.entries(presets).map(([id, preset]) => (
-              <button
-                key={id}
-                onClick={() => selectPreset(id)}
-                className={`p-5 rounded-2xl border-2 transition-all ${
-                  currentPreset === id
-                    ? 'bg-purple-500/10 border-purple-500'
-                    : 'bg-[#232323] border-transparent hover:border-gray-600'
-                }`}
-              >
-                <div className="text-2xl mb-2">{preset.icon}</div>
-                <div className="text-sm font-semibold">{preset.name}</div>
-                <div className="text-xs text-gray-400">{preset.state} {preset.frequency}Hz</div>
-              </button>
-            ))}
           </div>
         </div>
 
