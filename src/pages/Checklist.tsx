@@ -660,19 +660,6 @@ const Checklist = () => {
                   </div>
                 </CardHeader>
                 
-                {/* Botão Adicionar Item */}
-                <div className="px-6 pb-4">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => openAddItemModal(group.id)}
-                    className="w-full border-dashed border-2 hover:border-primary hover:bg-primary/5"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Adicionar Item
-                  </Button>
-                </div>
-                
                 {/* Group Items */}
                 <CardContent className="pt-0">
                   <div className="grid gap-2">
@@ -799,6 +786,19 @@ const Checklist = () => {
                         </div>
                       );
                     })}
+                    
+                    {/* Botão Adicionar Item - no final dos itens */}
+                    <div className="mt-4">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => openAddItemModal(group.id)}
+                        className="w-full border-dashed border-2 hover:border-primary hover:bg-primary/5"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Adicionar Item
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
