@@ -328,8 +328,12 @@ const Home = () => {
             </div>
             
             <div className="mb-8">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-4">
-                Unnichat
+              <div className="flex items-center justify-center mb-6">
+                <img 
+                  src="/lovable-uploads/24085614-c765-489c-8a0d-81953f526209.png" 
+                  alt="Unnichat Logo" 
+                  className="h-16 md:h-20 object-contain"
+                />
               </div>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
                 A plataforma completa de atendimento que integra WhatsApp, Instagram, Facebook e muito mais em um só lugar.
@@ -341,15 +345,15 @@ const Home = () => {
                 🎉 Oferta Especial para Participantes da Imersão
               </div>
               <p className="text-lg text-foreground font-semibold mb-3">
-                30% OFF nos primeiros 30 dias
+                30 dias grátis para testar
               </p>
               <p className="text-sm text-muted-foreground">
-                Use o cupom: <span className="font-mono bg-background px-2 py-1 rounded font-bold">IMERSAO30</span>
+                Experimente todas as funcionalidades sem compromisso
               </p>
             </div>
 
             <a
-              href="https://unnichat.com.br?ref=imersao&discount=IMERSAO30"
+              href="https://links.unnichat.com.br/30-dias-gratis-unnichat"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block"
