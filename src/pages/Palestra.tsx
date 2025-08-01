@@ -157,21 +157,19 @@ export default function Palestra() {
 * **Aplicar** o conhecimento de ICP para desenvolver linha editorial estratégica
 * **Identificar** elementos de autoridade, prova social e conexão emocional em conteúdos
 * **Explorar** como adaptar soluções às dores e desejos reais da audiência
-
 ---
-
 ## **📘 Conceitos-Chave**
 
-1. **Persona**: Representação do público-alvo de forma ampla (ex: mulheres que querem emagrecer).
-2. **ICP (Ideal Customer Profile)**: Subgrupo dentro da persona que representa o cliente ideal — quem executa, aplica e valoriza a solução.
-3. **Linha editorial estratégica**: Planejamento de conteúdo que inclui *autoridade*, *prova social*, *conexão emocional*, *atração* e *quebra de objeções*.
-4. **Prova social**: Demonstração de resultados reais (ex: faturamento, depoimentos).
-5. **Autoridade**: Reconhecimento de mercado (ex: palestrar, estar em masterminds).
-6. **Nível de consciência**: Grau de entendimento que o cliente tem sobre seus problemas e possíveis soluções.
-7. **Custo de aquisição**: Tempo ou dinheiro investido para trazer um lead qualificado até a venda.
-8. **Funil de vendas**: Jornada completa desde o primeiro contato com a marca até a conversão.
-9. **Conteúdo estratégico**: Produções que educam, conectam e conduzem o lead na jornada de compra.
-10. **Objeções**: Barreiras mentais do lead que impedem a compra.
+* **Persona**: Representação do público-alvo de forma ampla (ex: mulheres que querem emagrecer).
+* **ICP (Ideal Customer Profile)**: Subgrupo dentro da persona que representa o cliente ideal — quem executa, aplica e valoriza a solução.
+* **Linha editorial estratégica**: Planejamento de conteúdo que inclui *autoridade*, *prova social*, *conexão emocional*, *atração* e *quebra de objeções*.
+* **Prova social**: Demonstração de resultados reais (ex: faturamento, depoimentos).
+* **Autoridade**: Reconhecimento de mercado (ex: palestrar, estar em masterminds).
+* **Nível de consciência**: Grau de entendimento que o cliente tem sobre seus problemas e possíveis soluções.
+* **Custo de aquisição**: Tempo ou dinheiro investido para trazer um lead qualificado até a venda.
+* **Funil de vendas**: Jornada completa desde o primeiro contato com a marca até a conversão.
+* **Conteúdo estratégico**: Produções que educam, conectam e conduzem o lead na jornada de compra.
+* **Objeções**: Barreiras mentais do lead que impedem a compra.
 
 ---
 
