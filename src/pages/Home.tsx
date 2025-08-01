@@ -152,7 +152,7 @@ const Home = () => {
               <div className="divide-y divide-border">
                 {/* Registros no Sistema */}
                 <div className="grid grid-cols-2 hover:bg-secondary/30 transition-colors duration-200">
-                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FAC6A7' }}>
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FEF6E7' }}>
                     <div className="text-foreground font-bold text-lg">09:00 - 10:00</div>
                     <div className="text-muted-foreground text-sm">Registros</div>
                   </div>
@@ -163,7 +163,7 @@ const Home = () => {
 
                 {/* Ana Paula - Início */}
                 <div className="grid grid-cols-2 hover:bg-secondary/30 transition-colors duration-200">
-                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FAC6A7' }}>
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FEF6E7' }}>
                     <div className="text-foreground font-bold text-lg">10:00</div>
                     <div className="text-muted-foreground text-sm">Abertura</div>
                   </div>
@@ -184,7 +184,7 @@ const Home = () => {
 
                 {/* Camilo Coutinho */}
                 <div className="grid grid-cols-2 hover:bg-secondary/30 transition-colors duration-200">
-                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FAC6A7' }}>
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FEF6E7' }}>
                     <div className="text-foreground font-bold text-lg">11:00</div>
                     <div className="text-muted-foreground text-sm">Palestra</div>
                   </div>
@@ -205,7 +205,7 @@ const Home = () => {
 
                 {/* Almoço */}
                 <div className="grid grid-cols-2 bg-warning-light hover:bg-warning-light/80 transition-colors duration-200">
-                  <div className="p-6 border-r border-border">
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#E6E6E6' }}>
                     <div className="text-foreground font-bold text-lg">12:30 - 14:00</div>
                     <div className="text-muted-foreground text-sm">Intervalo</div>
                   </div>
@@ -216,7 +216,7 @@ const Home = () => {
 
                 {/* Melina Dantas */}
                 <div className="grid grid-cols-2 hover:bg-secondary/30 transition-colors duration-200">
-                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FAC6A7' }}>
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FEF6E7' }}>
                     <div className="text-foreground font-bold text-lg">14:00</div>
                     <div className="text-muted-foreground text-sm">Palestra</div>
                   </div>
@@ -237,7 +237,7 @@ const Home = () => {
 
                 {/* Sabrina */}
                 <div className="grid grid-cols-2 hover:bg-secondary/30 transition-colors duration-200">
-                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FAC6A7' }}>
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FEF6E7' }}>
                     <div className="text-foreground font-bold text-lg">15:00</div>
                     <div className="text-muted-foreground text-sm">Palestra</div>
                   </div>
@@ -258,7 +258,7 @@ const Home = () => {
 
                 {/* Victor */}
                 <div className="grid grid-cols-2 hover:bg-secondary/30 transition-colors duration-200">
-                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FAC6A7' }}>
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FEF6E7' }}>
                     <div className="text-foreground font-bold text-lg">16:00</div>
                     <div className="text-muted-foreground text-sm">Palestra</div>
                   </div>
@@ -279,7 +279,7 @@ const Home = () => {
 
                 {/* Pausa Lanche */}
                 <div className="grid grid-cols-2 hover:bg-secondary/30 transition-colors duration-200">
-                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FAC6A7' }}>
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#E6E6E6' }}>
                     <div className="text-foreground font-bold text-lg">17:00</div>
                     <div className="text-muted-foreground text-sm">Pausa</div>
                   </div>
@@ -290,7 +290,7 @@ const Home = () => {
 
                 {/* Ana Paula Perci - Encerramento */}
                 <div className="grid grid-cols-2 hover:bg-secondary/30 transition-colors duration-200">
-                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FAC6A7' }}>
+                  <div className="p-6 border-r border-border" style={{ backgroundColor: '#FEF6E7' }}>
                     <div className="text-foreground font-bold text-lg">17:30</div>
                     <div className="text-muted-foreground text-sm">Encerramento</div>
                   </div>
