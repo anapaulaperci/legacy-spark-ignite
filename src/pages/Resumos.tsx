@@ -63,7 +63,7 @@ const Resumos = () => {
       description: "Bem-vindos à Imersão Posicionamento 2024! Uma jornada transformadora para acelerar sua presença digital.",
       author: "Ana Paula Perci",
       category: "Fundamentos",
-      image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop&crop=center",
+      image: "/lovable-uploads/17e9dc7e-85aa-43f2-bdd3-b74a55a72ce9.png",
       rating: 4.9,
       isNew: true
     },
@@ -116,16 +116,6 @@ const Resumos = () => {
       image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop&crop=center",
       rating: 4.6,
       isNew: false
-    },
-    {
-      id: 7,
-      title: "Palestra 07",
-      description: "Como medir e acompanhar o sucesso das suas estratégias de posicionamento de marca.",
-      author: "Ana Paula Perci",
-      category: "Estratégia",
-      image: "https://images.unsplash.com/photo-1485833077593-4278bba3f11f?w=400&h=200&fit=crop&crop=center",
-      rating: 4.8,
-      isNew: true
     }
   ];
 
