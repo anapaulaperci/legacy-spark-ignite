@@ -21,7 +21,7 @@ const presets: Record<string, Preset> = {
   },
   creative: {
     name: 'Criatividade',
-    subtitle: 'Ondas Alpha • Pensamento Criativo',
+    subtitle: 'Música Criativa • 15 min',
     frequency: 10,
     state: 'Alpha',
     baseFreq: 180,
@@ -34,14 +34,6 @@ const presets: Record<string, Preset> = {
     state: 'Beta',
     baseFreq: 190,
     icon: '📚'
-  },
-  relax: {
-    name: 'Relaxamento',
-    subtitle: 'Ondas Theta • Redução de Stress',
-    frequency: 6,
-    state: 'Theta',
-    baseFreq: 160,
-    icon: '🧘'
   }
 };
 
