@@ -116,9 +116,9 @@ const FocusWave: React.FC = () => {
           
           // Lista de URLs para tentar, em ordem de prioridade
           const musicUrls = [
-            './music/creative-session.mp3',
             '/music/creative-session.mp3',
-            'https://cvbjtjmogseupckocmeb.supabase.co/storage/v1/object/public/music/creative-session.mp3'
+            './music/creative-session.mp3',
+            'https://drive.google.com/uc?export=download&id=1nTv0K9eL0RvthVFI5pq1qYvNFR78iwzj'
           ];
           
           let audioLoaded = false;
@@ -130,11 +130,15 @@ const FocusWave: React.FC = () => {
               
               await new Promise((resolve, reject) => {
                 const audio = audioElementRef.current!;
-                const timeout = setTimeout(() => reject(new Error('Timeout')), 5000);
+                const timeout = setTimeout(() => {
+                  console.log('⏰ Timeout ao carregar de:', url);
+                  reject(new Error('Timeout'));
+                }, 10000); // Aumentei para 10 segundos
                 
                 audio.oncanplaythrough = () => {
                   clearTimeout(timeout);
                   console.log('✅ Música carregada com sucesso de:', url);
+                  console.log('📊 Duração da música:', audio.duration, 'segundos');
                   resolve(true);
                 };
                 
@@ -142,6 +146,14 @@ const FocusWave: React.FC = () => {
                   clearTimeout(timeout);
                   console.log('❌ Erro ao carregar de:', url, error);
                   reject(error);
+                };
+                
+                audio.onloadstart = () => {
+                  console.log('📥 Iniciando carregamento de:', url);
+                };
+                
+                audio.onprogress = () => {
+                  console.log('📈 Progresso do carregamento...');
                 };
                 
                 audio.load();
