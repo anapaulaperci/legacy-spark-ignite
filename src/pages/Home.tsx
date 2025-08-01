@@ -9,7 +9,7 @@ const Home = () => {
       name: "Ana Paula Perci",
       description: "Estrategista de Marketing, especialista em IA e Lançamento",
       instagram: "https://www.instagram.com/anapaulaperci/",
-      image: "/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png"
+      image: "/lovable-uploads/b03590df-78c3-43ae-9f8d-9cf0387a15ba.png"
     },
     {
       name: "Camilo Coutinho",
@@ -170,7 +170,7 @@ const Home = () => {
                   <div className="p-6 text-left">
                     <div className="flex items-center gap-4">
                       <img 
-                        src="/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png" 
+                        src="/lovable-uploads/b03590df-78c3-43ae-9f8d-9cf0387a15ba.png"
                         alt="Ana Paula Perci" 
                         className="w-12 h-12 rounded-full object-cover shadow-card"
                       />
@@ -209,7 +209,7 @@ const Home = () => {
                     <div className="text-foreground font-bold text-lg">12:30 - 14:00</div>
                     <div className="text-muted-foreground text-sm">Intervalo</div>
                   </div>
-                  <div className="p-6 text-left">
+                  <div className="p-6 text-left" style={{ backgroundColor: '#E6E6E6' }}>
                     <div className="text-foreground font-bold text-lg">Almoço & Relacionamento</div>
                   </div>
                 </div>
@@ -283,7 +283,7 @@ const Home = () => {
                     <div className="text-foreground font-bold text-lg">17:00</div>
                     <div className="text-muted-foreground text-sm">Pausa</div>
                   </div>
-                  <div className="p-6 text-left">
+                  <div className="p-6 text-left" style={{ backgroundColor: '#E6E6E6' }}>
                     <div className="text-foreground font-bold text-lg">Pausa para Lanche</div>
                   </div>
                 </div>
@@ -297,7 +297,7 @@ const Home = () => {
                   <div className="p-6 text-left">
                     <div className="flex items-center gap-4">
                       <img 
-                        src="/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png" 
+                        src="/lovable-uploads/b03590df-78c3-43ae-9f8d-9cf0387a15ba.png"
                         alt="Ana Paula Perci" 
                         className="w-12 h-12 rounded-full object-cover shadow-card"
                       />
