@@ -166,8 +166,12 @@ const Auth = () => {
           <CardHeader className="text-center space-y-6">
             {/* Logo and Name */}
             <div className="flex flex-col items-center space-y-4">
-              <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-primary-foreground text-2xl font-bold">AP</span>
+              <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center overflow-hidden">
+                <img 
+                  src="/lovable-uploads/da4a1b4f-7426-4531-bd3a-a48207005dd7.png" 
+                  alt="Ana Paula Perci" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Ana Paula Perci</h1>
