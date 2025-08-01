@@ -133,7 +133,7 @@ const Resumos = () => {
       autor: "Margaret Mark e Carol S. Pearson",
       categoria: "Branding",
       descricao: "Descubra como usar arquétipos universais para criar marcas poderosas e memoráveis que conectam emocionalmente com seu público.",
-      capa: "https://m.media-amazon.com/images/I/41QMGM1jGgL._SY445_SX342_.jpg",
+      capa: "/lovable-uploads/0e398d8a-36f5-4826-85fb-e891d6308ef3.png",
       linkCompra: "https://www.amazon.com.br/her%C3%B3i-fora-lei-extraordin%C3%A1rias-arqu%C3%A9tipos/dp/8531608090"
     }
   ];
