@@ -27,7 +27,7 @@ const MarkdownContent = ({ content }: { content: string }) => {
   const flushList = () => {
     if (listItems.length > 0) {
       elements.push(
-        <ul key={`list-${listIndex++}`} className="space-y-2 mb-6 ml-6">
+        <ul key={`list-${listIndex++}`} className="space-y-3 mb-8 ml-6">
           {listItems.map((item, idx) => (
             <li key={idx} className="list-disc text-muted-foreground leading-relaxed text-lg" 
                 dangerouslySetInnerHTML={{ __html: parseMarkdown(item) }} />
@@ -43,51 +43,78 @@ const MarkdownContent = ({ content }: { content: string }) => {
     
     if (trimmedLine === '') {
       flushList();
-      elements.push(<div key={`space-${index}`} className="h-4" />);
+      elements.push(<div key={`space-${index}`} className="h-6" />);
       return;
     }
 
-    if (trimmedLine.startsWith('## ')) {
+    // Seções principais com emoji (🎯, 📘, 🧱, etc.)
+    if (/^[🎯📘🧱💡❓📚📝🔚]\s/.test(trimmedLine)) {
       flushList();
-      const title = trimmedLine.replace('## ', '');
+      const [emoji, ...titleParts] = trimmedLine.split(' ');
+      const title = titleParts.join(' ');
       elements.push(
-        <h2 key={index} className="text-3xl font-bold text-foreground mt-16 mb-6 first:mt-0 pb-3 border-b border-border">
-          {title}
-        </h2>
+        <div key={index} className="mt-16 mb-8 first:mt-0">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-4xl">{emoji}</span>
+            <h2 className="text-3xl font-bold text-foreground">
+              {title}
+            </h2>
+          </div>
+          <div className="w-full h-px bg-gradient-to-r from-primary/50 to-transparent"></div>
+        </div>
       );
       return;
     }
 
-    if (trimmedLine.startsWith('### ')) {
+    // Subtítulos numerados (📍1., 📍2., etc.)
+    if (/^📍\d+\.\s/.test(trimmedLine)) {
       flushList();
-      const title = trimmedLine.replace('### ', '');
+      const title = trimmedLine.replace(/^📍\d+\.\s/, '');
       elements.push(
-        <h3 key={index} className="text-2xl font-semibold text-foreground mt-12 mb-4">
+        <h3 key={index} className="text-2xl font-semibold text-foreground mt-12 mb-6 flex items-center gap-3">
+          <span className="w-2 h-2 bg-primary rounded-full"></span>
           {title}
         </h3>
       );
       return;
     }
 
-    if (trimmedLine.startsWith('- ')) {
-      const item = trimmedLine.replace('- ', '');
-      listItems.push(item);
+    // Subtítulos simples sem emoji
+    if (trimmedLine.endsWith(':') && !trimmedLine.includes('Persona:') && !trimmedLine.includes('ICP:')) {
+      flushList();
+      const title = trimmedLine.replace(':', '');
+      elements.push(
+        <h4 key={index} className="text-xl font-semibold text-foreground mt-10 mb-4">
+          {title}
+        </h4>
+      );
+      return;
+    }
+
+    // Items de lista simples
+    if (trimmedLine.match(/^[A-Za-z\s]+:/)) {
+      flushList();
+      const [label, ...descParts] = trimmedLine.split(':');
+      const description = descParts.join(':').trim();
+      elements.push(
+        <div key={index} className="bg-muted/30 p-4 rounded-lg border-l-4 border-primary mb-4">
+          <p className="text-lg">
+            <span className="font-semibold text-foreground">{label}:</span>
+            {description && <span className="text-muted-foreground ml-2" dangerouslySetInnerHTML={{ __html: parseMarkdown(description) }} />}
+          </p>
+        </div>
+      );
+      return;
+    }
+
+    // Listas normais
+    if (trimmedLine.match(/^[A-Za-z]/)) {
+      listItems.push(trimmedLine);
       return;
     }
 
     // Se chegou aqui e temos itens de lista pendentes, vamos processar a lista
     flushList();
-
-    // Verificar se é um parágrafo destacado (começando e terminando com **)
-    if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**') && trimmedLine.length > 4) {
-      const text = trimmedLine.replace(/^\*\*|\*\*$/g, '');
-      elements.push(
-        <div key={index} className="bg-muted/30 p-4 rounded-lg border-l-4 border-primary mt-8 mb-6">
-          <p className="text-lg font-semibold text-foreground" dangerouslySetInnerHTML={{ __html: parseMarkdown(text) }} />
-        </div>
-      );
-      return;
-    }
 
     // Parágrafo normal
     if (trimmedLine.length > 0) {
