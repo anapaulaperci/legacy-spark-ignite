@@ -49,6 +49,7 @@ const FocusWave: React.FC = () => {
 
   const audioContextRef = useRef<AudioContext | null>(null);
   const nodesRef = useRef<any>({});
+  const audioElementRef = useRef<HTMLAudioElement | null>(null);
   const startTimeRef = useRef<number>(0);
   const pausedTimeRef = useRef<number>(0);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -105,24 +106,35 @@ const FocusWave: React.FC = () => {
 
   const startSession = async () => {
     try {
-      // Ensure audio context is created and ready
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      
-      if (audioContextRef.current.state === 'suspended') {
-        await audioContextRef.current.resume();
-      }
+      if (currentPreset === 'creative') {
+        // Use music file for creative session
+        if (!audioElementRef.current) {
+          audioElementRef.current = new Audio('/music/creative-session.mp3');
+          audioElementRef.current.volume = binauralVolume / 100;
+          audioElementRef.current.loop = false;
+        }
+        
+        audioElementRef.current.currentTime = pausedTimeRef.current / 1000;
+        await audioElementRef.current.play();
+      } else {
+        // Use binaural beats for other sessions
+        if (!audioContextRef.current) {
+          audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        }
+        
+        if (audioContextRef.current.state === 'suspended') {
+          await audioContextRef.current.resume();
+        }
 
-      // Ensure context is running
-      if (audioContextRef.current.state !== 'running') {
-        console.log('Audio context state:', audioContextRef.current.state);
-        await audioContextRef.current.resume();
-      }
+        if (audioContextRef.current.state !== 'running') {
+          console.log('Audio context state:', audioContextRef.current.state);
+          await audioContextRef.current.resume();
+        }
 
-      const preset = presets[currentPreset];
-      setupAudioNodes(preset);
-      startAudioNodes();
+        const preset = presets[currentPreset];
+        setupAudioNodes(preset);
+        startAudioNodes();
+      }
 
       setIsPlaying(true);
       
@@ -130,7 +142,7 @@ const FocusWave: React.FC = () => {
         startTimeRef.current = Date.now() - pausedTimeRef.current;
       } else {
         startTimeRef.current = Date.now();
-        pausedTimeRef.current = 0; // Reset paused time
+        pausedTimeRef.current = 0;
       }
 
       timerIntervalRef.current = setInterval(() => {
@@ -147,25 +159,31 @@ const FocusWave: React.FC = () => {
   const pauseSession = () => {
     if (!isPlaying) return;
 
-    // Stop all audio nodes instead of suspending context
-    if (nodesRef.current.leftOsc) {
-      try {
-        nodesRef.current.leftOsc.stop();
-      } catch (e) {}
-    }
-    if (nodesRef.current.rightOsc) {
-      try {
-        nodesRef.current.rightOsc.stop();
-      } catch (e) {}
-    }
-    if (nodesRef.current.noise) {
-      try {
-        nodesRef.current.noise.stop();
-      } catch (e) {}
+    if (currentPreset === 'creative' && audioElementRef.current) {
+      // Pause music file
+      audioElementRef.current.pause();
+    } else {
+      // Stop all audio nodes instead of suspending context
+      if (nodesRef.current.leftOsc) {
+        try {
+          nodesRef.current.leftOsc.stop();
+        } catch (e) {}
+      }
+      if (nodesRef.current.rightOsc) {
+        try {
+          nodesRef.current.rightOsc.stop();
+        } catch (e) {}
+      }
+      if (nodesRef.current.noise) {
+        try {
+          nodesRef.current.noise.stop();
+        } catch (e) {}
+      }
+
+      // Clear nodes but keep the context
+      nodesRef.current = {};
     }
 
-    // Clear nodes but keep the context
-    nodesRef.current = {};
     setIsPlaying(false);
     pausedTimeRef.current = Date.now() - startTimeRef.current;
 
@@ -177,16 +195,22 @@ const FocusWave: React.FC = () => {
   const stopSession = () => {
     if (!isPlaying && pausedTimeRef.current === 0) return;
 
-    if (nodesRef.current.masterGain) {
-      const now = audioContextRef.current!.currentTime;
-      nodesRef.current.masterGain.gain.linearRampToValueAtTime(0, now + 1);
+    if (currentPreset === 'creative' && audioElementRef.current) {
+      // Stop music file
+      audioElementRef.current.pause();
+      audioElementRef.current.currentTime = 0;
+    } else {
+      if (nodesRef.current.masterGain) {
+        const now = audioContextRef.current!.currentTime;
+        nodesRef.current.masterGain.gain.linearRampToValueAtTime(0, now + 1);
 
-      setTimeout(() => {
-        if (nodesRef.current.leftOsc) nodesRef.current.leftOsc.stop();
-        if (nodesRef.current.rightOsc) nodesRef.current.rightOsc.stop();
-        if (nodesRef.current.noise) nodesRef.current.noise.stop();
-        nodesRef.current = {};
-      }, 1000);
+        setTimeout(() => {
+          if (nodesRef.current.leftOsc) nodesRef.current.leftOsc.stop();
+          if (nodesRef.current.rightOsc) nodesRef.current.rightOsc.stop();
+          if (nodesRef.current.noise) nodesRef.current.noise.stop();
+          nodesRef.current = {};
+        }, 1000);
+      }
     }
 
     setIsPlaying(false);
@@ -471,7 +495,7 @@ const FocusWave: React.FC = () => {
         <div className="bg-[#232323] rounded-2xl p-5 mb-5">
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-400">Batida Binaural</span>
+              <span className="text-sm text-gray-400">{currentPreset === 'creative' ? 'Volume' : 'Batida Binaural'}</span>
               <span className="text-sm text-purple-400 font-medium">{binauralVolume}%</span>
             </div>
             <div className="flex items-center gap-3">
@@ -485,7 +509,10 @@ const FocusWave: React.FC = () => {
                   const value = parseInt(e.target.value);
                   setBinauralVolume(value);
                   localStorage.setItem('binauralVolume', value.toString());
-                  if (nodesRef.current.binauralGain) {
+                  
+                  if (currentPreset === 'creative' && audioElementRef.current) {
+                    audioElementRef.current.volume = value / 100;
+                  } else if (nodesRef.current.binauralGain) {
                     nodesRef.current.binauralGain.gain.value = value / 100 * 0.3;
                   }
                 }}
@@ -494,30 +521,32 @@ const FocusWave: React.FC = () => {
             </div>
           </div>
 
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-400">Ruído Rosa</span>
-              <span className="text-sm text-purple-400 font-medium">{noiseVolume}%</span>
+          {currentPreset !== 'creative' && (
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm text-gray-400">Ruído Rosa</span>
+                <span className="text-sm text-purple-400 font-medium">{noiseVolume}%</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Volume2 className="w-5 h-5 text-gray-400" />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={noiseVolume}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    setNoiseVolume(value);
+                    localStorage.setItem('noiseVolume', value.toString());
+                    if (nodesRef.current.noiseGain) {
+                      nodesRef.current.noiseGain.gain.value = value / 100 * 0.2;
+                    }
+                  }}
+                  className="flex-1 h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-purple-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer"
+                />
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Volume2 className="w-5 h-5 text-gray-400" />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={noiseVolume}
-                onChange={(e) => {
-                  const value = parseInt(e.target.value);
-                  setNoiseVolume(value);
-                  localStorage.setItem('noiseVolume', value.toString());
-                  if (nodesRef.current.noiseGain) {
-                    nodesRef.current.noiseGain.gain.value = value / 100 * 0.2;
-                  }
-                }}
-                className="flex-1 h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-purple-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer"
-              />
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Session Timer */}
