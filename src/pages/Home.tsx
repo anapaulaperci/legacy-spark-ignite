@@ -314,6 +314,62 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Sponsor Section */}
+      <section className="py-16 bg-gradient-to-r from-primary/5 to-secondary/10 border-t border-border">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="bg-card rounded-2xl shadow-elegant border border-border p-8">
+            <div className="mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                Patrocinador Oficial
+              </h3>
+              <p className="text-muted-foreground">
+                Conheça a ferramenta que está revolucionando o atendimento digital
+              </p>
+            </div>
+            
+            <div className="mb-8">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-4">
+                Unnichat
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+                A plataforma completa de atendimento que integra WhatsApp, Instagram, Facebook e muito mais em um só lugar.
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 mb-6">
+              <div className="text-2xl font-bold text-primary mb-2">
+                🎉 Oferta Especial para Participantes da Imersão
+              </div>
+              <p className="text-lg text-foreground font-semibold mb-3">
+                30% OFF nos primeiros 30 dias
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Use o cupom: <span className="font-mono bg-background px-2 py-1 rounded font-bold">IMERSAO30</span>
+              </p>
+            </div>
+
+            <a
+              href="https://unnichat.com.br?ref=imersao&discount=IMERSAO30"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow text-primary-foreground px-8 py-4 text-lg shadow-elegant hover:scale-105 transition-all duration-300"
+              >
+                Aproveitar Desconto
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </a>
+
+            <p className="text-xs text-muted-foreground mt-4">
+              *Oferta válida apenas para novos usuários durante o período da imersão
+            </p>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 };
