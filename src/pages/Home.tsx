@@ -157,6 +157,19 @@ const Home = () => {
                   Falar com ela
                 </a>
               )}
+
+              {/* Ana Paula Contact Link */}
+              {speaker.name === 'Ana Paula Perci' && (
+                <a
+                  href="https://www.instagram.com/anapaulaperci/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 text-primary hover:text-primary-glow transition-colors duration-200 text-sm font-medium"
+                >
+                  <Instagram className="w-4 h-4" />
+                  Falar com ela
+                </a>
+              )}
             </div>
           ))}
         </div>
