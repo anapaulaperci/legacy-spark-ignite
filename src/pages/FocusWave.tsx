@@ -463,18 +463,18 @@ const FocusWave: React.FC = () => {
   const progressPercentage = (currentTime / (sessionDuration * 60)) * 100;
 
   return (
-    <div className="min-h-screen bg-[#191919] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background to-card text-foreground relative overflow-hidden">
       {/* Background effect */}
-      <div className="fixed inset-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full filter blur-[128px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400 rounded-full filter blur-[128px]" />
+      <div className="fixed inset-0 opacity-20">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary rounded-full filter blur-[128px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent rounded-full filter blur-[128px]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto p-5 min-h-screen flex flex-col">
         {/* Header */}
         <header className="flex items-center justify-between py-5 mb-5">
           <h1 className="text-xl font-semibold">Focus Wave</h1>
-          <button className="p-2 hover:bg-white/5 rounded-full transition-colors">
+          <button className="p-2 hover:bg-muted/10 rounded-full transition-colors">
             <Settings className="w-6 h-6" />
           </button>
         </header>
@@ -482,18 +482,18 @@ const FocusWave: React.FC = () => {
         {/* Main Content - Player and Presets */}
         <div className="flex flex-col lg:flex-row gap-8 mb-8">
           {/* Now Playing */}
-          <div className="bg-[#232323] rounded-3xl p-8 flex-1 relative">
-            <div className="absolute top-5 right-5 bg-purple-500/20 px-4 py-2 rounded-full text-sm font-medium backdrop-blur">
+          <div className="bg-card/50 backdrop-blur-sm border border-border rounded-3xl p-8 flex-1 relative shadow-card">
+            <div className="absolute top-5 right-5 bg-primary/20 px-4 py-2 rounded-full text-sm font-medium backdrop-blur">
               {presets[currentPreset].state} {presets[currentPreset].frequency}Hz
             </div>
 
             {/* Album Art / Visualizer */}
-            <div className="w-full max-w-72 h-72 mx-auto mb-8 bg-[#2a2a2a] rounded-2xl flex items-center justify-center">
+            <div className="w-full max-w-72 h-72 mx-auto mb-8 bg-muted/20 backdrop-blur-sm border border-border rounded-2xl flex items-center justify-center">
               <div className="flex items-center gap-1">
                 {[...Array(10)].map((_, i) => (
                   <div
                     key={i}
-                    className={`w-1 bg-purple-500 rounded-full transition-all ${
+                    className={`w-1 bg-primary rounded-full transition-all ${
                       isPlaying ? 'animate-pulse' : 'opacity-30'
                     }`}
                     style={{
@@ -508,18 +508,18 @@ const FocusWave: React.FC = () => {
             {/* Track Info */}
             <div className="text-center mb-8">
               <h2 className="text-2xl font-semibold mb-2">{presets[currentPreset].name}</h2>
-              <p className="text-gray-400">{presets[currentPreset].subtitle}</p>
+              <p className="text-muted-foreground">{presets[currentPreset].subtitle}</p>
             </div>
 
             {/* Progress Bar */}
             <div className="mb-8">
-              <div className="h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
+              <div className="h-1 bg-muted/30 rounded-full overflow-hidden cursor-pointer">
                 <div
-                  className="h-full bg-purple-500 rounded-full transition-all duration-100"
+                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-100"
                   style={{ width: `${progressPercentage}%` }}
                 />
               </div>
-              <div className="flex justify-between mt-2 text-xs text-gray-400">
+              <div className="flex justify-between mt-2 text-xs text-muted-foreground">
                 <span>{formatTime(currentTime)}</span>
                 <span>{sessionDuration}:00</span>
               </div>
@@ -529,14 +529,14 @@ const FocusWave: React.FC = () => {
             <div className="flex items-center justify-center gap-5">
               <button
                 onClick={previousPreset}
-                className="p-3 hover:bg-white/5 rounded-full transition-colors"
+                className="p-3 hover:bg-muted/20 rounded-full transition-colors"
               >
                 <SkipBack className="w-6 h-6" />
               </button>
               
               <button
                 onClick={togglePlayback}
-                className="p-4 bg-purple-500 hover:bg-purple-600 rounded-full transition-all hover:scale-105"
+                className="p-4 bg-gradient-to-r from-primary to-accent hover:shadow-glow rounded-full transition-all hover:scale-105"
               >
                 {isPlaying ? (
                   <Pause className="w-8 h-8" />
@@ -547,7 +547,7 @@ const FocusWave: React.FC = () => {
               
               <button
                 onClick={nextPreset}
-                className="p-3 hover:bg-white/5 rounded-full transition-colors"
+                className="p-3 hover:bg-muted/20 rounded-full transition-colors"
               >
                 <SkipForward className="w-6 h-6" />
               </button>
@@ -556,7 +556,7 @@ const FocusWave: React.FC = () => {
 
           {/* Preset Modes */}
           <div className="lg:w-80">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
               Modos de Foco
             </h3>
             <div className="grid grid-cols-2 lg:grid-cols-1 gap-3">
@@ -564,17 +564,17 @@ const FocusWave: React.FC = () => {
                 <button
                   key={id}
                   onClick={() => selectPreset(id)}
-                  className={`p-5 rounded-2xl border-2 transition-all ${
+                  className={`p-5 rounded-2xl border-2 transition-all shadow-card ${
                     currentPreset === id
-                      ? 'bg-purple-500/10 border-purple-500'
-                      : 'bg-[#232323] border-transparent hover:border-gray-600'
+                      ? 'bg-primary/10 border-primary backdrop-blur-sm'
+                      : 'bg-card/30 border-border hover:border-primary/50 backdrop-blur-sm'
                   }`}
                 >
                   <div className="flex items-center lg:flex-col lg:items-start gap-3 lg:gap-2">
                     <div className="text-2xl">{preset.icon}</div>
                     <div className="flex-1 lg:flex-none text-left lg:text-left">
                       <div className="text-sm font-semibold">{preset.name}</div>
-                      <div className="text-xs text-gray-400">{preset.state} {preset.frequency}Hz</div>
+                      <div className="text-xs text-muted-foreground">{preset.state} {preset.frequency}Hz</div>
                     </div>
                   </div>
                 </button>
@@ -584,14 +584,14 @@ const FocusWave: React.FC = () => {
         </div>
 
         {/* Volume Controls */}
-        <div className="bg-[#232323] rounded-2xl p-5 mb-5">
+        <div className="bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-5 mb-5 shadow-card">
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-400">{currentPreset === 'creative' ? 'Volume' : 'Batida Binaural'}</span>
-              <span className="text-sm text-purple-400 font-medium">{binauralVolume}%</span>
+              <span className="text-sm text-muted-foreground">{currentPreset === 'creative' ? 'Volume' : 'Batida Binaural'}</span>
+              <span className="text-sm text-primary font-medium">{binauralVolume}%</span>
             </div>
             <div className="flex items-center gap-3">
-              <Volume2 className="w-5 h-5 text-gray-400" />
+              <Volume2 className="w-5 h-5 text-muted-foreground" />
               <input
                 type="range"
                 min="0"
@@ -608,7 +608,7 @@ const FocusWave: React.FC = () => {
                     nodesRef.current.binauralGain.gain.value = value / 100 * 0.3;
                   }
                 }}
-                className="flex-1 h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-purple-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer"
+                className="flex-1 h-1 bg-muted/30 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer"
               />
             </div>
           </div>
@@ -616,11 +616,11 @@ const FocusWave: React.FC = () => {
           {currentPreset !== 'creative' && (
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-400">Ruído Rosa</span>
-                <span className="text-sm text-purple-400 font-medium">{noiseVolume}%</span>
+                <span className="text-sm text-muted-foreground">Ruído Rosa</span>
+                <span className="text-sm text-primary font-medium">{noiseVolume}%</span>
               </div>
               <div className="flex items-center gap-3">
-                <Volume2 className="w-5 h-5 text-gray-400" />
+                <Volume2 className="w-5 h-5 text-muted-foreground" />
                 <input
                   type="range"
                   min="0"
@@ -634,7 +634,7 @@ const FocusWave: React.FC = () => {
                       nodesRef.current.noiseGain.gain.value = value / 100 * 0.2;
                     }
                   }}
-                  className="flex-1 h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-purple-500 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer"
+                  className="flex-1 h-1 bg-muted/30 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer"
                 />
               </div>
             </div>
@@ -642,7 +642,7 @@ const FocusWave: React.FC = () => {
         </div>
 
         {/* Session Timer */}
-        <div className="bg-[#232323] rounded-2xl p-5 text-center">
+        <div className="bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-5 text-center shadow-card">
           <div className="text-4xl font-light mb-4 tabular-nums">{formatTime(currentTime)}</div>
           <div className="flex items-center justify-center gap-2">
             {[15, 25, 45, 60].map((duration) => (
@@ -654,8 +654,8 @@ const FocusWave: React.FC = () => {
                 }}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   sessionDuration === duration
-                    ? 'bg-purple-500'
-                    : 'bg-white/5 hover:bg-white/10'
+                    ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground'
+                    : 'bg-muted/20 hover:bg-muted/30 backdrop-blur-sm'
                 }`}
               >
                 {duration}min
@@ -667,12 +667,12 @@ const FocusWave: React.FC = () => {
         {/* Error Modal */}
         {showError && (
           <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-5">
-            <div className="bg-[#232323] rounded-2xl p-8 max-w-sm w-full text-center">
+            <div className="bg-card border border-border rounded-2xl p-8 max-w-sm w-full text-center shadow-elegant backdrop-blur-sm">
               <h3 className="text-xl font-semibold mb-4">⚠️ Atenção</h3>
-              <p className="text-gray-400 mb-6">{errorMessage}</p>
+              <p className="text-muted-foreground mb-6">{errorMessage}</p>
               <button
                 onClick={() => setShowError(false)}
-                className="bg-purple-500 hover:bg-purple-600 px-8 py-2 rounded-lg font-medium transition-colors"
+                className="bg-gradient-to-r from-primary to-accent hover:shadow-glow text-primary-foreground px-8 py-2 rounded-lg font-medium transition-all"
               >
                 OK
               </button>
