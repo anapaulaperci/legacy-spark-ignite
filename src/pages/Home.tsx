@@ -16,7 +16,7 @@ const Home = () => {
       description: "Estrategista Digital e autoridade em video marketing e construção de marcas",
       bio: "Sou estrategista especializado em vídeo marketing e criação de conteúdo de vendas, com a missão de transformar qualquer mensagem em vídeos que realmente convertem, em qualquer plataforma. Autor do livro Vídeos que Vendem Mais (2020), ajudo empresas e criadores a dominarem o poder das suas marcas e empresas em conteúdos que impulsionam resultados.",
       instagram: "#",
-      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
+      image: "/lovable-uploads/20480f60-63bc-423c-a703-ec778a012ca4.png"
     },
     {
       name: "Melina Dantas",
@@ -191,7 +191,7 @@ const Home = () => {
                   <div className="p-6 text-left">
                     <div className="flex items-center gap-4">
                       <img 
-                        src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
+                        src="/lovable-uploads/20480f60-63bc-423c-a703-ec778a012ca4.png" 
                         alt="Camilo Coutinho" 
                         className="w-12 h-12 rounded-full object-cover shadow-card"
                       />
