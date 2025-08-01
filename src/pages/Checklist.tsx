@@ -7,11 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CheckSquare, Circle, Trophy, Target, Clock, TrendingUp, Plus, Calendar } from "lucide-react";
+import { CheckSquare, Circle, Trophy, Target, Clock, TrendingUp, Plus, Calendar, Download } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import * as XLSX from 'xlsx';
 
 const Checklist = () => {
   const { user } = useAuth();
@@ -477,7 +478,129 @@ const Checklist = () => {
       case "Análise":
         return "bg-red-500";
       default:
-        return "bg-gray-400";
+        return "bg-gray-500";
+    }
+  };
+
+  // Função para exportar progresso para Excel
+  const exportToExcel = () => {
+    try {
+      // Preparar dados para exportação
+      const exportData: any[] = [];
+      
+      groups.forEach((group) => {
+        // Adicionar linha do grupo
+        exportData.push({
+          'Tipo': 'GRUPO',
+          'Nome': group.title,
+          'Descrição': group.description || '',
+          'Progresso': `${getSectionProgress(group.id)}%`,
+          'Total de Itens': group.checklist_items?.length || 0,
+          'Itens Concluídos': group.checklist_items?.filter((item: any) => checkedItems[item.id]).length || 0,
+          'Tarefa': '',
+          'Tema': '',
+          'Responsável': '',
+          'Prioridade': '',
+          'Status': ''
+        });
+        
+        // Adicionar itens do grupo
+        if (group.checklist_items && group.checklist_items.length > 0) {
+          group.checklist_items
+            .sort((a: any, b: any) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime())
+            .forEach((item: any) => {
+              exportData.push({
+                'Tipo': 'ITEM',
+                'Nome': '',
+                'Descrição': '',
+                'Progresso': '',
+                'Total de Itens': '',
+                'Itens Concluídos': '',
+                'Tarefa': item.task,
+                'Tema': taskThemes[item.id] || '',
+                'Responsável': taskResponsibles[item.id] || '',
+                'Prioridade': taskPriorities[item.id] || item.priority || '',
+                'Status': checkedItems[item.id] ? 'Concluído' : 'Pendente'
+              });
+            });
+        }
+        
+        // Adicionar linha vazia para separar grupos
+        exportData.push({
+          'Tipo': '',
+          'Nome': '',
+          'Descrição': '',
+          'Progresso': '',
+          'Total de Itens': '',
+          'Itens Concluídos': '',
+          'Tarefa': '',
+          'Tema': '',
+          'Responsável': '',
+          'Prioridade': '',
+          'Status': ''
+        });
+      });
+      
+      // Adicionar resumo geral no final
+      const totalItems = groups.reduce((acc, group) => acc + (group.checklist_items?.length || 0), 0);
+      const completedItems = Object.values(checkedItems).filter(Boolean).length;
+      
+      exportData.push({
+        'Tipo': 'RESUMO GERAL',
+        'Nome': 'Total do Checklist',
+        'Descrição': 'Progresso geral de todos os grupos',
+        'Progresso': `${getTotalProgress()}%`,
+        'Total de Itens': totalItems,
+        'Itens Concluídos': completedItems,
+        'Tarefa': '',
+        'Tema': '',
+        'Responsável': '',
+        'Prioridade': '',
+        'Status': ''
+      });
+      
+      // Criar workbook e worksheet
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      
+      // Configurar larguras das colunas
+      const columnWidths = [
+        { wch: 15 }, // Tipo
+        { wch: 30 }, // Nome
+        { wch: 40 }, // Descrição
+        { wch: 12 }, // Progresso
+        { wch: 15 }, // Total de Itens
+        { wch: 18 }, // Itens Concluídos
+        { wch: 50 }, // Tarefa
+        { wch: 20 }, // Tema
+        { wch: 20 }, // Responsável
+        { wch: 15 }, // Prioridade
+        { wch: 12 }  // Status
+      ];
+      worksheet['!cols'] = columnWidths;
+      
+      // Adicionar worksheet ao workbook
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Progresso do Checklist');
+      
+      // Gerar nome do arquivo com data atual
+      const currentDate = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
+      const fileName = `checklist_progresso_${currentDate}.xlsx`;
+      
+      // Fazer download do arquivo
+      XLSX.writeFile(workbook, fileName);
+      
+      toast({
+        title: "Sucesso",
+        description: "Arquivo Excel exportado com sucesso!",
+      });
+      
+    } catch (error) {
+      console.error('Erro ao exportar para Excel:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao exportar arquivo Excel. Tente novamente.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -808,7 +931,13 @@ const Checklist = () => {
 
         {/* Footer Actions */}
         <div className="mt-8 flex justify-center">
-          <Button variant="outline" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={exportToExcel}
+            className="flex items-center gap-2"
+          >
+            <Download className="h-4 w-4" />
             Exportar Progresso
           </Button>
         </div>
