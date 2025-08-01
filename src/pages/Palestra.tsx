@@ -151,17 +151,23 @@ export default function Palestra() {
       const margin = 20;
       let yPosition = margin;
 
+      // Helper function to remove emojis
+      const removeEmojis = (text: string) => {
+        return text.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim();
+      };
+
       // Helper function to add text with word wrap
       const addText = (text: string, fontSize: number, isBold = false, isCenter = false) => {
+        const cleanText = removeEmojis(text);
         pdf.setFontSize(fontSize);
         pdf.setFont("helvetica", isBold ? "bold" : "normal");
         
         if (isCenter) {
-          const textWidth = pdf.getStringUnitWidth(text) * fontSize / pdf.internal.scaleFactor;
+          const textWidth = pdf.getStringUnitWidth(cleanText) * fontSize / pdf.internal.scaleFactor;
           const textOffset = (pageWidth - textWidth) / 2;
-          pdf.text(text, textOffset, yPosition);
+          pdf.text(cleanText, textOffset, yPosition);
         } else {
-          const lines = pdf.splitTextToSize(text, pageWidth - 2 * margin);
+          const lines = pdf.splitTextToSize(cleanText, pageWidth - 2 * margin);
           pdf.text(lines, margin, yPosition);
           yPosition += (lines.length - 1) * fontSize * 0.35;
         }
@@ -175,8 +181,9 @@ export default function Palestra() {
         }
       };
 
-      // Header
-      pdf.setFillColor(74, 144, 226); // Primary color
+      // Header - usando a cor principal do sistema (--primary: 270 100% 30%)
+      // Convertendo HSL para RGB: 270° 100% 30% = RGB(153, 0, 153)
+      pdf.setFillColor(153, 0, 153); // Cor primária do sistema
       pdf.rect(0, 0, pageWidth, 40, 'F');
       
       pdf.setTextColor(255, 255, 255);
@@ -215,36 +222,36 @@ export default function Palestra() {
           // Headers
           if (trimmedLine.startsWith('## ')) {
             yPosition += 5;
-            const title = trimmedLine.replace('## ', '').replace(/\*\*/g, '');
+            const title = removeEmojis(trimmedLine.replace('## ', '').replace(/\*\*/g, ''));
             addText(title, 16, true);
             yPosition += 5;
           }
           // Subheaders
           else if (trimmedLine.startsWith('### ')) {
             yPosition += 3;
-            const title = trimmedLine.replace('### ', '').replace(/\*\*/g, '');
+            const title = removeEmojis(trimmedLine.replace('### ', '').replace(/\*\*/g, ''));
             addText('• ' + title, 14, true);
             yPosition += 3;
           }
           // Lists
           else if (trimmedLine.startsWith('* ')) {
-            const item = trimmedLine.replace('* ', '').replace(/\*\*/g, '').replace(/\*/g, '');
+            const item = removeEmojis(trimmedLine.replace('* ', '').replace(/\*\*/g, '').replace(/\*/g, ''));
             addText('  • ' + item, 10);
           }
           // Questions and answers
           else if (trimmedLine.startsWith('**Pergunta:**') || trimmedLine.startsWith('**Resposta:**')) {
             yPosition += 3;
-            const text = trimmedLine.replace(/\*\*/g, '');
+            const text = removeEmojis(trimmedLine.replace(/\*\*/g, ''));
             addText(text, 11, true);
           }
           // Numbered lists
           else if (/^\d+\./.test(trimmedLine)) {
-            const text = trimmedLine.replace(/\*\*/g, '').replace(/\*/g, '');
+            const text = removeEmojis(trimmedLine.replace(/\*\*/g, '').replace(/\*/g, ''));
             addText(text, 10);
           }
           // Regular paragraphs
           else if (trimmedLine.length > 0) {
-            const text = trimmedLine.replace(/\*\*/g, '').replace(/\*/g, '');
+            const text = removeEmojis(trimmedLine.replace(/\*\*/g, '').replace(/\*/g, ''));
             addText(text, 10);
             yPosition += 2;
           }
