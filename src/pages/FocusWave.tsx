@@ -113,12 +113,19 @@ const FocusWave: React.FC = () => {
 
   const startSession = async () => {
     try {
+      // Ensure audio context is created and ready
       if (!audioContextRef.current) {
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-        
-        if (audioContextRef.current.state === 'suspended') {
-          await audioContextRef.current.resume();
-        }
+      }
+      
+      if (audioContextRef.current.state === 'suspended') {
+        await audioContextRef.current.resume();
+      }
+
+      // Ensure context is running
+      if (audioContextRef.current.state !== 'running') {
+        console.log('Audio context state:', audioContextRef.current.state);
+        await audioContextRef.current.resume();
       }
 
       const preset = presets[currentPreset];
@@ -131,6 +138,7 @@ const FocusWave: React.FC = () => {
         startTimeRef.current = Date.now() - pausedTimeRef.current;
       } else {
         startTimeRef.current = Date.now();
+        pausedTimeRef.current = 0; // Reset paused time
       }
 
       timerIntervalRef.current = setInterval(() => {
@@ -147,10 +155,25 @@ const FocusWave: React.FC = () => {
   const pauseSession = () => {
     if (!isPlaying) return;
 
-    if (audioContextRef.current && audioContextRef.current.state === 'running') {
-      audioContextRef.current.suspend();
+    // Stop all audio nodes instead of suspending context
+    if (nodesRef.current.leftOsc) {
+      try {
+        nodesRef.current.leftOsc.stop();
+      } catch (e) {}
+    }
+    if (nodesRef.current.rightOsc) {
+      try {
+        nodesRef.current.rightOsc.stop();
+      } catch (e) {}
+    }
+    if (nodesRef.current.noise) {
+      try {
+        nodesRef.current.noise.stop();
+      } catch (e) {}
     }
 
+    // Clear nodes but keep the context
+    nodesRef.current = {};
     setIsPlaying(false);
     pausedTimeRef.current = Date.now() - startTimeRef.current;
 
@@ -185,27 +208,49 @@ const FocusWave: React.FC = () => {
 
   const setupAudioNodes = (preset: Preset) => {
     const ctx = audioContextRef.current!;
+    
+    // Clear any existing nodes first
     const nodes = nodesRef.current;
+    if (nodes.leftOsc) {
+      try { nodes.leftOsc.stop(); } catch (e) {}
+    }
+    if (nodes.rightOsc) {
+      try { nodes.rightOsc.stop(); } catch (e) {}
+    }
+    if (nodes.noise) {
+      try { nodes.noise.stop(); } catch (e) {}
+    }
+    
+    // Reset nodes object
+    nodesRef.current = {};
+    const newNodes = nodesRef.current;
 
     // Create oscillators for binaural beats
-    nodes.leftOsc = ctx.createOscillator();
-    nodes.leftOsc.type = 'sine';
-    nodes.leftOsc.frequency.value = preset.baseFreq;
+    newNodes.leftOsc = ctx.createOscillator();
+    newNodes.leftOsc.type = 'sine';
+    newNodes.leftOsc.frequency.value = preset.baseFreq;
 
-    nodes.rightOsc = ctx.createOscillator();
-    nodes.rightOsc.type = 'sine';
-    nodes.rightOsc.frequency.value = preset.baseFreq + preset.frequency;
+    newNodes.rightOsc = ctx.createOscillator();
+    newNodes.rightOsc.type = 'sine';
+    newNodes.rightOsc.frequency.value = preset.baseFreq + preset.frequency;
+
+    // Create stereo panner for left and right channels
+    newNodes.leftPanner = ctx.createStereoPanner();
+    newNodes.leftPanner.pan.value = -1; // Left channel
+    
+    newNodes.rightPanner = ctx.createStereoPanner();
+    newNodes.rightPanner.pan.value = 1; // Right channel
 
     // Gain nodes
-    nodes.binauralGain = ctx.createGain();
-    nodes.binauralGain.gain.value = binauralVolume / 100 * 0.3;
+    newNodes.binauralGain = ctx.createGain();
+    newNodes.binauralGain.gain.value = binauralVolume / 100 * 0.3;
 
     // Pink noise
     const bufferSize = ctx.sampleRate * 2;
-    nodes.noiseBuffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
+    newNodes.noiseBuffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate);
 
     for (let channel = 0; channel < 2; channel++) {
-      const output = nodes.noiseBuffer.getChannelData(channel);
+      const output = newNodes.noiseBuffer.getChannelData(channel);
       let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
 
       for (let i = 0; i < bufferSize; i++) {
@@ -221,26 +266,30 @@ const FocusWave: React.FC = () => {
       }
     }
 
-    nodes.noise = ctx.createBufferSource();
-    nodes.noise.buffer = nodes.noiseBuffer;
-    nodes.noise.loop = true;
+    newNodes.noise = ctx.createBufferSource();
+    newNodes.noise.buffer = newNodes.noiseBuffer;
+    newNodes.noise.loop = true;
 
-    nodes.noiseGain = ctx.createGain();
-    nodes.noiseGain.gain.value = noiseVolume / 100 * 0.2;
+    newNodes.noiseGain = ctx.createGain();
+    newNodes.noiseGain.gain.value = noiseVolume / 100 * 0.2;
 
     // Master gain
-    nodes.masterGain = ctx.createGain();
-    nodes.masterGain.gain.value = 0;
+    newNodes.masterGain = ctx.createGain();
+    newNodes.masterGain.gain.value = 0;
 
-    // Connect nodes
-    nodes.leftOsc.connect(nodes.binauralGain);
-    nodes.rightOsc.connect(nodes.binauralGain);
-    nodes.binauralGain.connect(nodes.masterGain);
+    // Connect nodes properly
+    newNodes.leftOsc.connect(newNodes.leftPanner);
+    newNodes.rightOsc.connect(newNodes.rightPanner);
+    
+    newNodes.leftPanner.connect(newNodes.binauralGain);
+    newNodes.rightPanner.connect(newNodes.binauralGain);
+    
+    newNodes.binauralGain.connect(newNodes.masterGain);
 
-    nodes.noise.connect(nodes.noiseGain);
-    nodes.noiseGain.connect(nodes.masterGain);
+    newNodes.noise.connect(newNodes.noiseGain);
+    newNodes.noiseGain.connect(newNodes.masterGain);
 
-    nodes.masterGain.connect(ctx.destination);
+    newNodes.masterGain.connect(ctx.destination);
   };
 
   const startAudioNodes = () => {
@@ -270,8 +319,16 @@ const FocusWave: React.FC = () => {
     localStorage.setItem('lastPreset', presetId);
 
     if (isPlaying) {
+      // Save current playing state
+      const wasPlaying = isPlaying;
       stopSession();
-      setTimeout(() => startSession(), 500);
+      
+      // Restart with new preset after a brief delay
+      setTimeout(async () => {
+        if (wasPlaying) {
+          await startSession();
+        }
+      }, 100);
     }
   };
 
