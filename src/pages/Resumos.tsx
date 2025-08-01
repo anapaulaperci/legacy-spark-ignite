@@ -127,6 +127,14 @@ const Resumos = () => {
       descricao: "Como pequenos detalhes do comportamento humano podem revelar grandes insights para inovação e crescimento de negócios.",
       capa: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=400&fit=crop&crop=center",
       linkCompra: "https://www.amazon.com.br/Small-Data-Indicam-Grandes-Tend%C3%AAncias/dp/8569809719"
+    },
+    {
+      titulo: "O Herói e o Fora-da-Lei: Como Construir Marcas Extraordinárias Usando o Poder dos Arquétipos",
+      autor: "Margaret Mark e Carol S. Pearson",
+      categoria: "Branding",
+      descricao: "Descubra como usar arquétipos universais para criar marcas poderosas e memoráveis que conectam emocionalmente com seu público.",
+      capa: "https://m.media-amazon.com/images/I/41QMGM1jGgL._SY445_SX342_.jpg",
+      linkCompra: "https://www.amazon.com.br/her%C3%B3i-fora-lei-extraordin%C3%A1rias-arqu%C3%A9tipos/dp/8531608090"
     }
   ];
 
