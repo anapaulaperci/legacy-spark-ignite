@@ -59,7 +59,7 @@ const Resumos = () => {
   const resumos = [
     {
       id: 1,
-      title: "Construção de Negócios Digitais e Marca Pessoal - Estratégias Completas",
+      title: "O começo - Conheça seu publico",
       description: "Palestra de abertura da Imersão de Posicionamento com foco em diferenciação entre persona e ICP, construção de autoridade e linha editorial estratégica.",
       author: "Ana",
       category: "Fundamentos",
