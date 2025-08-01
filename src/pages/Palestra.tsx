@@ -1,10 +1,12 @@
-import { useParams, Navigate, Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
-import { User, ArrowLeft, ChevronRight, Instagram } from "lucide-react";
+import { useState } from 'react';
+import { useParams, Navigate, Link } from 'react-router-dom';
+import { ArrowLeft, Star, User, Instagram, BookOpen } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
-const Palestra = () => {
+export default function Palestra() {
   const { id } = useParams();
-  
+  const [userRatings, setUserRatings] = useState<{[key: number]: number}>({});
+
   const resumos = [
     {
       id: 1,
@@ -285,6 +287,10 @@ Ana compartilhou insight do mastermind:
     return <Navigate to="/resumos" replace />;
   }
 
+  const handleRating = (resumoId: number, rating: number) => {
+    setUserRatings(prev => ({ ...prev, [resumoId]: rating }));
+  };
+
   const getCategoryColor = (category: string) => {
     const colors = {
       "Fundamentos": "bg-primary/10 text-primary border-primary/20",
@@ -301,237 +307,242 @@ Ana compartilhou insight do mastermind:
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="flex">
-        {/* Main Content */}
-        <div className="flex-1 max-w-4xl mx-auto">
-          {/* Navigation */}
-          <div className="px-4 sm:px-6 lg:px-8 pt-6">
-            <Link 
-              to="/resumos" 
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Voltar para Material de Estudos
-            </Link>
-          </div>
+      {/* Header Navigation */}
+      <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <Link 
+            to="/resumos" 
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar para Material de Estudos
+          </Link>
+        </div>
+      </header>
 
-          {/* Hero */}
-          <div className="px-4 sm:px-6 lg:px-8">
-            <div className="pt-10 md:pt-20 pb-14 md:pb-20">
-              {/* Heading */}
-              <div className="mb-10 max-w-xl mx-auto text-center">
-                <h1 className="font-bold text-foreground text-4xl md:text-5xl mb-5">
-                  {resumo.title}
-                </h1>
-
-                <p className="mt-5 text-sm md:text-lg text-muted-foreground">
-                  {resumo.description}
-                </p>
-                
-                {/* Meta info */}
-                <div className="mt-6 flex justify-center items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
-                      <User className="h-3 w-3 text-primary" />
-                    </div>
-                    <span><strong>Instrutor:</strong> {resumo.author}</span>
-                  </div>
-                  <span>·</span>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className={`${getCategoryColor(resumo.category)} text-xs`}>
-                      {resumo.category}
-                    </Badge>
-                  </div>
-                  {resumo.isNew && (
-                    <>
-                      <span>·</span>
-                      <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-200 text-xs">
-                        Novo
-                      </Badge>
-                    </>
-                  )}
-                </div>
-
-                {/* Instagram Link for Camilo */}
-                {resumo.author === 'Camilo Coutinho' && (
-                  <div className="mt-4">
-                    <a
-                      href="https://www.instagram.com/camilocoutinho/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-glow transition-colors text-sm font-medium"
-                    >
-                      <Instagram className="w-4 h-4" />
-                      Falar com Camilo
-                    </a>
-                  </div>
-                )}
-              </div>
-              {/* End Heading */}
-
-              <div className="w-full h-64 md:h-96 bg-muted rounded-xl overflow-hidden">
-                <img 
-                  className="w-full h-full object-cover rounded-xl" 
-                  src={resumo.image} 
-                  alt={resumo.title} 
-                />
-              </div>
+      {/* Article Container */}
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Article Header */}
+        <header className="py-12 md:py-20 border-b border-border">
+          <div className="max-w-3xl mx-auto text-center">
+            {/* Category Badge */}
+            <div className="mb-6">
+              <Badge variant="secondary" className={`${getCategoryColor(resumo.category)} text-sm font-medium`}>
+                {resumo.category}
+              </Badge>
+              {resumo.isNew && (
+                <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-200 text-sm font-medium ml-2">
+                  Novo
+                </Badge>
+              )}
             </div>
-          </div>
-          {/* End Hero */}
 
-          {/* Title Description */}
-          <div className="px-4 sm:px-6 lg:px-8">
-            {/* Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-10">
-              <div className="lg:pe-[20%]">
-                <h2 className="font-semibold text-2xl md:text-3xl text-foreground">
-                  Conteúdo em desenvolvimento
-                </h2>
-              </div>
-              {/* End Col */}
+            {/* Title */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+              {resumo.title}
+            </h1>
 
-              <div className="space-y-5">
-                {resumo.id === 1 && resumo.fullContent ? (
-                  <div className="prose prose-lg max-w-none text-muted-foreground">
-                    {resumo.fullContent.split('\n').map((line, index) => {
-                      if (line.startsWith('## ')) {
-                        return <h2 key={index} className="text-2xl font-bold text-foreground mt-8 mb-4">{line.replace('## ', '')}</h2>
-                      }
-                      if (line.startsWith('### ')) {
-                        return <h3 key={index} className="text-xl font-semibold text-foreground mt-6 mb-3">{line.replace('### ', '')}</h3>
-                      }
-                      if (line.startsWith('**') && line.endsWith('**')) {
-                        return <p key={index} className="font-semibold text-foreground mt-4 mb-2">{line.replace(/\*\*/g, '')}</p>
-                      }
-                      if (line.startsWith('- ')) {
-                        return <li key={index} className="ml-4 mb-2">{line.replace('- ', '')}</li>
-                      }
-                      if (line.trim() === '') {
-                        return <br key={index} />
-                      }
-                      return <p key={index} className="mb-3 leading-relaxed">{line}</p>
-                    })}
-                  </div>
-                ) : (
-                  <>
-                    <p className="text-muted-foreground">
-                      Este material está sendo preparado especialmente para você. Em breve, todo o conteúdo detalhado estará disponível.
-                    </p>
-                    <p className="text-muted-foreground">
-                      Enquanto isso, acompanhe nossos outros materiais disponíveis e fique atento às atualizações.
-                    </p>
-                  </>
-                )}
-              </div>
-              {/* End Col */}
-            </div>
-            {/* End Grid */}
+            {/* Description */}
+            <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
+              {resumo.description}
+            </p>
             
-            <div className="mt-12 p-8 bg-muted/30 rounded-xl text-center">
+            {/* Author Info */}
+            <div className="flex items-center justify-center gap-4 text-muted-foreground">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <User className="h-5 w-5 text-primary" />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-medium text-foreground">{resumo.author}</p>
+                  <p className="text-xs text-muted-foreground">Instrutor</p>
+                </div>
+              </div>
+              
+              {/* Instagram Link for Camilo */}
+              {resumo.author === 'Camilo Coutinho' && (
+                <>
+                  <span className="text-muted-foreground">·</span>
+                  <a
+                    href="https://www.instagram.com/camilocoutinho/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-primary hover:text-primary-glow transition-colors text-sm font-medium"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    Falar com Camilo
+                  </a>
+                </>
+              )}
+            </div>
+          </div>
+        </header>
+
+        {/* Featured Image */}
+        <div className="py-12">
+          <div className="w-full h-64 md:h-96 lg:h-[500px] bg-muted rounded-2xl overflow-hidden shadow-lg">
+            <img 
+              className="w-full h-full object-cover" 
+              src={resumo.image} 
+              alt={resumo.title} 
+            />
+          </div>
+        </div>
+
+        {/* Article Content */}
+        <div className="pb-20">
+          <div className="max-w-3xl mx-auto">
+            {resumo.id === 1 && resumo.fullContent ? (
+              <div className="prose prose-lg prose-slate max-w-none">
+                {resumo.fullContent.split('\n').map((line, index) => {
+                  if (line.startsWith('## ')) {
+                    return (
+                      <h2 key={index} className="text-3xl font-bold text-foreground mt-16 mb-6 first:mt-0 pb-3 border-b border-border">
+                        {line.replace('## ', '')}
+                      </h2>
+                    )
+                  }
+                  if (line.startsWith('### ')) {
+                    return (
+                      <h3 key={index} className="text-2xl font-semibold text-foreground mt-12 mb-4">
+                        {line.replace('### ', '')}
+                      </h3>
+                    )
+                  }
+                  if (line.startsWith('**') && line.endsWith('**') && line.length > 4) {
+                    return (
+                      <p key={index} className="text-lg font-semibold text-foreground mt-8 mb-4 bg-muted/30 p-4 rounded-lg border-l-4 border-primary">
+                        {line.replace(/\*\*/g, '')}
+                      </p>
+                    )
+                  }
+                  if (line.startsWith('- ')) {
+                    return (
+                      <li key={index} className="mb-3 text-muted-foreground leading-relaxed list-disc ml-6">
+                        {line.replace('- ', '')}
+                      </li>
+                    )
+                  }
+                  if (line.trim() === '') {
+                    return <div key={index} className="h-4" />
+                  }
+                  if (line.trim().length > 0) {
+                    return (
+                      <p key={index} className="mb-6 text-muted-foreground leading-relaxed text-lg">
+                        {line}
+                      </p>
+                    )
+                  }
+                  return null
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <div className="max-w-md mx-auto">
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
+                    <BookOpen className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-4">
+                    Conteúdo em Desenvolvimento
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    Este material está sendo preparado especialmente para você. Em breve, todo o conteúdo detalhado estará disponível.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Enquanto isso, acompanhe nossos outros materiais disponíveis e fique atento às atualizações.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Article Footer */}
+        <footer className="border-t border-border py-12">
+          <div className="max-w-3xl mx-auto">
+            {/* Rating Section */}
+            <div className="text-center mb-12">
+              <h3 className="text-xl font-semibold text-foreground mb-2">
+                Como você avalia este conteúdo?
+              </h3>
               <p className="text-muted-foreground text-sm mb-8">
-                <strong>Material Exclusivo da Imersão Posicionamento 2024</strong><br />
+                Sua avaliação nos ajuda a melhorar continuamente nossos materiais
+              </p>
+              
+              <div className="flex items-center justify-center gap-2 mb-6">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => handleRating(resumo.id, star)}
+                    className="group transition-transform hover:scale-110"
+                  >
+                    <Star 
+                      className={`w-8 h-8 transition-colors ${
+                        star <= (userRatings[resumo.id] || 0)
+                          ? 'fill-yellow-400 text-yellow-400' 
+                          : 'text-muted-foreground group-hover:text-yellow-400'
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+              
+              {userRatings[resumo.id] && (
+                <p className="text-sm text-muted-foreground">
+                  Você avaliou com {userRatings[resumo.id]} estrela{userRatings[resumo.id] !== 1 ? 's' : ''}
+                </p>
+              )}
+            </div>
+
+            {/* Material Info */}
+            <div className="bg-muted/30 rounded-xl p-8 text-center">
+              <p className="text-muted-foreground text-sm">
+                <strong className="text-foreground">Material Exclusivo da Imersão Posicionamento 2024</strong><br />
                 Conteúdo desenvolvido especialmente para acelerar sua jornada profissional
               </p>
             </div>
-
-            {/* User Rating Section */}
-            <div className="mt-8 p-8 bg-gradient-to-br from-primary/5 via-primary/3 to-transparent border border-primary/10 rounded-2xl">
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-foreground mb-2">
-                  Como você avalia este conteúdo?
-                </h3>
-                <p className="text-muted-foreground text-sm mb-8">
-                  Sua avaliação nos ajuda a melhorar continuamente nossos materiais
-                </p>
-                
-                <div className="flex items-center justify-center gap-3 mb-6">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      className="group/star transition-all duration-200 hover:scale-110"
-                    >
-                      <svg 
-                        className="h-8 w-8 text-muted-foreground hover:text-yellow-400 transition-colors cursor-pointer" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth={1.5} 
-                          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" 
-                        />
-                      </svg>
-                    </button>
-                  ))}
-                </div>
-                
-                <div className="flex justify-center gap-2 text-xs text-muted-foreground">
-                  <span>Ruim</span>
-                  <span className="px-8">Regular</span>
-                  <span>Excelente</span>
-                </div>
-              </div>
-            </div>
           </div>
-          {/* End Title Description */}
-        </div>
+        </footer>
+      </article>
 
-        {/* Sidebar - Other Lectures */}
-        <div className="hidden xl:block w-80 border-l border-border/30 bg-background">
-          <div className="sticky top-0 p-8 h-screen overflow-y-auto">
-            <h3 className="font-normal text-lg text-foreground mb-8">
-              Mais para ler
-            </h3>
-            
-            <div className="divide-y divide-border/30 space-y-0">
-              {otherResumes.map((lecture) => (
-                <Link
-                  key={lecture.id}
-                  to={`/palestra/${lecture.id}`}
-                  className="block group"
-                >
-                  <article className="group-hover:opacity-75 transition-opacity duration-200 py-8 first:pt-0">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Badge variant="secondary" className={`${getCategoryColor(lecture.category)} text-xs border-none`}>
-                          {lecture.category}
-                        </Badge>
-                        {lecture.isNew && (
-                          <span className="text-xs text-emerald-600 font-medium">Novo</span>
-                        )}
-                      </div>
-                      
-                      <h4 className="font-medium text-foreground text-base leading-snug line-clamp-2 group-hover:underline">
-                        {lecture.title}
-                      </h4>
-                      
-                      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                        {lecture.description}
-                      </p>
-                      
-                      <div className="pt-2">
-                        <span className="text-xs text-muted-foreground">{lecture.author}</span>
-                      </div>
-                    </div>
-                  </article>
-                </Link>
-              ))}
-            </div>
-            
-            {/* Footer */}
-            <div className="mt-12 pt-8 border-t border-border/30 text-center">
-              <p className="text-xs text-muted-foreground">
-                © 2025 Ana Paula Perci
-              </p>
-            </div>
+      {/* Related Content Sidebar - Fixed Position */}
+      {otherResumes.length > 0 && (
+        <aside className="fixed right-6 top-1/2 -translate-y-1/2 w-80 bg-card border border-border rounded-xl shadow-lg p-6 hidden xl:block">
+          <h3 className="font-semibold text-foreground mb-4 text-lg">
+            Mais para ler
+          </h3>
+          <div className="space-y-4">
+            {otherResumes.slice(0, 3).map((item) => (
+              <Link
+                key={item.id}
+                to={`/palestra/${item.id}`}
+                className="block group"
+              >
+                <div className="flex gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                  <div className="w-16 h-16 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                    <img 
+                      src={item.image} 
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-foreground text-sm line-clamp-2 group-hover:text-primary transition-colors">
+                      {item.title}
+                    </h4>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {item.author}
+                    </p>
+                    <Badge variant="secondary" className={`${getCategoryColor(item.category)} text-xs mt-2`}>
+                      {item.category}
+                    </Badge>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
-        </div>
-      </div>
+        </aside>
+      )}
     </div>
   );
-};
-
-export default Palestra;
+}
