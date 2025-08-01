@@ -7,13 +7,13 @@ const Home = () => {
   const speakers = [
     {
       name: "Ana Paula Perci",
-      description: "Especialista em Posicionamento de Marca",
+      description: "Estrategista de Marketing, especialista em IA e Lançamento",
       instagram: "https://www.instagram.com/anapaulaperci/",
       image: "/lovable-uploads/c85b5bb7-f5f4-4baa-a602-61b2fad66181.png"
     },
     {
       name: "Camilo Coutinho",
-      description: "Estrategista digital e autoridade em Video Marketing",
+      description: "Estrategista Digital e autoridade em video marketing e construção de marcas",
       bio: "Sou estrategista especializado em vídeo marketing e criação de conteúdo de vendas, com a missão de transformar qualquer mensagem em vídeos que realmente convertem, em qualquer plataforma. Autor do livro Vídeos que Vendem Mais (2020), ajudo empresas e criadores a dominarem o poder das suas marcas e empresas em conteúdos que impulsionam resultados.",
       instagram: "#",
       image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
@@ -209,7 +209,7 @@ const Home = () => {
                       />
                       <div>
                         <div className="text-foreground font-bold text-lg">Palestra: Camilo Coutinho</div>
-                        <div className="text-muted-foreground text-sm">Marketing de Vídeo e Produção de Conteúdo</div>
+                        <div className="text-muted-foreground text-sm">Estrategista Digital e autoridade em video marketing e construção de marcas</div>
                       </div>
                     </div>
                   </div>
