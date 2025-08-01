@@ -20,7 +20,7 @@ const Home = () => {
     },
     {
       name: "Melina Dantas",
-      description: "Palestrante Convidada",
+      description: "Especialista em criação de times de venda de alta performace",
       instagram: "#",
       image: "/lovable-uploads/6811a272-1c33-4ff6-b54b-e955acc9bdc0.png"
     },
@@ -32,7 +32,7 @@ const Home = () => {
     },
     {
       name: "Victor",
-      description: "Palestrante Convidado",
+      description: "Eu sou estrategista de YouTube e especialista em thumbnails",
       instagram: "#",
       image: "/lovable-uploads/c6993261-b266-40b5-aba1-09af95ef9cea.png"
     }
@@ -241,7 +241,7 @@ const Home = () => {
                        />
                       <div>
                         <div className="text-foreground font-bold text-lg">Palestra: Melina Dantas</div>
-                        <div className="text-muted-foreground text-sm">Estratégias de Marca</div>
+                        <div className="text-muted-foreground text-sm">Especialista em criação de times de venda de alta performace</div>
                       </div>
                     </div>
                   </div>
@@ -283,7 +283,7 @@ const Home = () => {
                        />
                       <div>
                         <div className="text-foreground font-bold text-lg">Palestra: Victor</div>
-                        <div className="text-muted-foreground text-sm">Estratégias Digitais</div>
+                        <div className="text-muted-foreground text-sm">Eu sou estrategista de YouTube e especialista em thumbnails</div>
                       </div>
                     </div>
                   </div>
