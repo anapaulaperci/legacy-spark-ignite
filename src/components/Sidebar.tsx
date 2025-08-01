@@ -15,7 +15,8 @@ import {
   X,
   LogOut,
   Settings,
-  Brain
+  Brain,
+  Music
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -68,6 +69,12 @@ const Sidebar = () => {
       title: "Plano de Implementação",
       icon: CheckSquare,
       path: "/checklist"
+    },
+    {
+      id: "focus-wave",
+      title: "Focus Wave",
+      icon: Music,
+      path: "/focus-wave"
     },
     {
       id: "ia",
