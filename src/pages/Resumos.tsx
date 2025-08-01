@@ -269,68 +269,80 @@ const Resumos = () => {
       </div>
 
       {/* Seção de Livros Indicados */}
-      <div className="border-t border-border/40 bg-muted/30">
-        <div className="max-w-4xl mx-auto px-6 py-16">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-normal text-foreground mb-4 leading-tight">
-              Livros <span className="italic">Indicados</span>
+      <div className="border-t border-border/40 bg-gradient-to-br from-muted/30 via-background to-muted/20">
+        <div className="max-w-6xl mx-auto px-6 py-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+              Livros <span className="italic bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">Indicados</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Uma curadoria especial de livros essenciais para aprofundar seus conhecimentos em posicionamento digital
             </p>
           </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {livrosIndicados.map((livro, index) => (
-                <article key={index} className="group h-full">
-                  <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-border/20 h-full flex flex-col">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {livrosIndicados.map((livro, index) => (
+              <article key={index} className="group h-full">
+                <div className="relative bg-gradient-to-br from-white via-white to-gray-50/50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-border/30 h-full flex flex-col group-hover:scale-[1.02] group-hover:-translate-y-1">
+                  
+                  {/* Gradient overlay effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  
                   {/* Capa do Livro */}
-                  <div className="aspect-[3/4] bg-gradient-to-br from-primary/10 to-accent/10 relative overflow-hidden">
+                  <div className="relative aspect-[3/4] bg-gradient-to-br from-muted/30 to-muted/60 overflow-hidden">
                     {livro.capa ? (
                       <img 
                         src={livro.capa} 
                         alt={`Capa do livro ${livro.titulo}`}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <div className="text-6xl text-primary/30">📚</div>
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                        <div className="text-6xl text-primary/40">📚</div>
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-
-                  {/* Informações do Livro */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    <div className="mb-3">
-                      <Badge variant="secondary" className={`${getCategoryColor(livro.categoria)} text-xs`}>
+                    
+                    {/* Overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Category badge floating */}
+                    <div className="absolute top-4 left-4 z-10">
+                      <Badge variant="secondary" className={`${getCategoryColor(livro.categoria)} text-xs font-semibold backdrop-blur-sm bg-white/90 border-white/50 shadow-lg`}>
                         {livro.categoria}
                       </Badge>
                     </div>
+                  </div>
+
+                  {/* Informações do Livro */}
+                  <div className="relative p-8 flex-1 flex flex-col space-y-4">
                     
-                    <h3 className="text-xl font-bold text-foreground mb-2 leading-tight group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors duration-300 line-clamp-2">
                       {livro.titulo}
                     </h3>
                     
-                    <p className="text-sm text-muted-foreground mb-2 font-medium">
-                      por {livro.autor}
+                    <p className="text-sm text-muted-foreground font-medium tracking-wide">
+                      por <span className="text-foreground font-semibold">{livro.autor}</span>
                     </p>
                     
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
+                    <p className="text-muted-foreground text-sm leading-relaxed flex-1 line-clamp-4">
                       {livro.descricao}
                     </p>
 
-                    {/* Botões de Ação */}
-                    <div className="flex gap-2 mt-auto">
+                    {/* Botão de Ação */}
+                    <div className="pt-4 mt-auto">
                       {livro.linkCompra && (
                         <a
                           href={livro.linkCompra}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full"
+                          className="block w-full"
                         >
-                          <Button variant="outline" size="sm" className="w-full text-xs bg-primary text-primary-foreground hover:bg-primary/90 border-primary">
-                            📖 Ver Livro
+                          <Button 
+                            className="w-full bg-primary hover:bg-primary-glow text-primary-foreground font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:translate-y-0 transform translate-y-1"
+                          >
+                            <span className="flex items-center justify-center gap-2">
+                              📖 <span>Ver Livro</span>
+                            </span>
                           </Button>
                         </a>
                       )}
@@ -341,11 +353,14 @@ const Resumos = () => {
             ))}
           </div>
 
-          {/* Call to Action */}
-          <div className="mt-12 text-center">
-            <p className="text-muted-foreground text-sm">
-              <strong>Dica:</strong> Estes livros foram cuidadosamente selecionados para complementar o conteúdo da imersão
-            </p>
+          {/* Call to Action aprimorado */}
+          <div className="mt-16 text-center">
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full border border-primary/20">
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+              <p className="text-muted-foreground text-sm font-medium">
+                <strong className="text-foreground">Dica:</strong> Estes livros foram cuidadosamente selecionados para complementar o conteúdo da imersão
+              </p>
+            </div>
           </div>
         </div>
       </div>
