@@ -12,18 +12,20 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Users, Shield, UserX, Plus, Search, Crown, Trash2, AlertTriangle } from "lucide-react";
 
-interface Profile {
-  id: string;
-  user_id: string;
-  display_name: string;
+interface UserWithProfile {
+  auth_user_id: string;
+  email: string;
+  created_at_auth: string;
+  profile_id?: string;
+  display_name?: string;
   avatar_url?: string;
   role: string;
-  created_at: string;
-  updated_at: string;
+  created_at_profile?: string;
+  updated_at?: string;
 }
 
 const Admin = () => {
-  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [profiles, setProfiles] = useState<UserWithProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -64,11 +66,10 @@ const Admin = () => {
     setLoading(true);
     
     const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .rpc('get_all_users_with_profiles');
 
     if (error) {
+      console.error('Error fetching users:', error);
       toast({
         title: "Erro",
         description: "Erro ao carregar usuários.",
@@ -82,24 +83,49 @@ const Admin = () => {
   };
 
   const updateUserRole = async (userId: string, newRole: string) => {
-    const { error } = await supabase
-      .from('profiles')
-      .update({ role: newRole })
-      .eq('user_id', userId);
+    // Se o usuário não tem perfil, criar um primeiro
+    const userProfile = profiles.find(p => p.auth_user_id === userId);
+    
+    if (!userProfile?.profile_id) {
+      // Criar perfil primeiro
+      const { error: createError } = await supabase
+        .from('profiles')
+        .insert({ 
+          user_id: userId, 
+          role: newRole,
+          display_name: userProfile?.email?.split('@')[0] || 'Usuário'
+        });
 
-    if (error) {
-      toast({
-        title: "Erro",
-        description: "Erro ao atualizar papel do usuário.",
-        variant: "destructive",
-      });
+      if (createError) {
+        toast({
+          title: "Erro",
+          description: "Erro ao criar perfil do usuário.",
+          variant: "destructive",
+        });
+        return;
+      }
     } else {
-      toast({
-        title: "Sucesso",
-        description: "Papel do usuário atualizado com sucesso!",
-      });
-      fetchProfiles();
+      // Atualizar perfil existente
+      const { error } = await supabase
+        .from('profiles')
+        .update({ role: newRole })
+        .eq('user_id', userId);
+
+      if (error) {
+        toast({
+          title: "Erro",
+          description: "Erro ao atualizar papel do usuário.",
+          variant: "destructive",
+        });
+        return;
+      }
     }
+
+    toast({
+      title: "Sucesso",
+      description: "Papel do usuário atualizado com sucesso!",
+    });
+    fetchProfiles();
   };
 
   const createNewUser = async () => {
@@ -185,19 +211,17 @@ const Admin = () => {
     setDeleting(true);
     
     try {
-      // Delete user profile
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .delete()
-        .eq('user_id', userId);
+      // Delete user profile if exists
+      const userProfile = profiles.find(p => p.auth_user_id === userId);
+      if (userProfile?.profile_id) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .delete()
+          .eq('user_id', userId);
 
-      if (profileError) {
-        toast({
-          title: "Erro",
-          description: "Erro ao excluir perfil do usuário.",
-          variant: "destructive",
-        });
-        return;
+        if (profileError) {
+          console.error('Error deleting profile:', profileError);
+        }
       }
 
       // Delete auth user (requires admin API call)
@@ -232,7 +256,8 @@ const Admin = () => {
 
   const filteredProfiles = profiles.filter(profile =>
     profile.display_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    profile.user_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    profile.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    profile.auth_user_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
     profile.role.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -474,7 +499,7 @@ const Admin = () => {
                   </TableRow>
                 ) : (
                   filteredProfiles.map((profile) => (
-                    <TableRow key={profile.id}>
+                    <TableRow key={profile.auth_user_id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
@@ -482,16 +507,16 @@ const Admin = () => {
                           </div>
                           <div>
                             <div className="font-medium">
-                              {profile.display_name || 'Sem nome'}
+                              {profile.display_name || profile.email?.split('@')[0] || 'Sem nome'}
                             </div>
                             <div className="text-sm text-muted-foreground">
-                              {profile.user_id}
+                              {profile.email}
                             </div>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell className="font-mono text-sm">
-                        {profile.user_id.slice(0, 8)}...
+                        {profile.auth_user_id.slice(0, 8)}...
                       </TableCell>
                       <TableCell>
                         <Badge variant={getRoleBadgeVariant(profile.role)}>
@@ -500,14 +525,14 @@ const Admin = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {new Date(profile.created_at).toLocaleDateString('pt-BR')}
+                        {new Date(profile.created_at_auth).toLocaleDateString('pt-BR')}
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex items-center justify-center gap-2">
                           <Select
                             value={profile.role}
-                            onValueChange={(newRole) => updateUserRole(profile.user_id, newRole)}
-                            disabled={profile.user_id === user?.id}
+                            onValueChange={(newRole) => updateUserRole(profile.auth_user_id, newRole)}
+                            disabled={profile.auth_user_id === user?.id}
                           >
                             <SelectTrigger className="w-32">
                               <SelectValue />
@@ -519,11 +544,11 @@ const Admin = () => {
                             </SelectContent>
                           </Select>
                           
-                          {profile.user_id !== user?.id && (
+                          {profile.auth_user_id !== user?.id && (
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => setDeleteUserId(profile.user_id)}
+                              onClick={() => setDeleteUserId(profile.auth_user_id)}
                               className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
                             >
                               <Trash2 className="h-4 w-4" />

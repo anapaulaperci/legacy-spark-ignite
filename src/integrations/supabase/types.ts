@@ -338,15 +338,7 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "client_notes_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
       client_tasks: {
         Row: {
@@ -1715,6 +1707,20 @@ export type Database = {
       ensure_admin_setup: {
         Args: { user_email: string }
         Returns: string
+      }
+      get_all_users_with_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          auth_user_id: string
+          email: string
+          created_at_auth: string
+          profile_id: string
+          display_name: string
+          avatar_url: string
+          role: string
+          created_at_profile: string
+          updated_at: string
+        }[]
       }
       get_current_user_role: {
         Args: Record<PropertyKey, never>
