@@ -247,12 +247,155 @@ Para escala, usar **API da OpenAI** com controle de tokens.
     },
     {
       id: 2,
-      title: "Criação de Marca",
+      title: "Fundamentos da Marca Pessoal",
       description: "Estratégias avançadas de vídeo marketing e construção de marcas que realmente conectam com o público.",
       author: "Camilo Coutinho",
       category: "Branding",
       image: "/lovable-uploads/cd1ea6f5-17be-4606-b2f6-86441fa7e6e7.png",
-      isNew: true
+      isNew: true,
+      fullContent: `
+## **🎯 Objetivos de Aprendizagem**
+
+* **Compreender** a importância estratégica da marca pessoal para profissionais e empresas
+* **Identificar** os pilares essenciais para construir uma marca forte e autêntica
+* **Aplicar** o conceito de arquétipos junguianos para diferenciar marcas no mercado
+* **Analisar** a percepção externa da marca pessoal e promover alinhamento com sua essência
+* **Criar** um mapa de marca funcional para guiar design, conteúdo e posicionamento
+
+---
+
+## **📘 Conceitos-Chave**
+
+1. **Marca pessoal**: Não é apenas o logotipo, mas a percepção emocional, estratégica e simbólica que o mercado tem de você.
+2. **Percepção de valor**: Como as pessoas julgam sua competência e autoridade com base em sinais visuais, narrativos e comportamentais.
+3. **Arquétipos de marca**: Modelos universais de personalidade que moldam a comunicação da marca (ex: herói, cuidador, rebelde).
+4. **Consistência de marca**: Alinhamento entre imagem, narrativa e presença digital. Gera confiança.
+5. **Mapa da marca**: Framework visual que conecta estratégia, identidade e execução da comunicação.
+6. **Presença estratégica**: Estar onde o seu público está e manter relevância com constância.
+7. **Design com propósito**: O visual deve traduzir a personalidade e intenção da marca, não apenas seguir estéticas genéricas.
+8. **Autoconhecimento**: Primeiro passo para uma marca autêntica é entender sua essência, forças, valores e estilo.
+9. **Tom de voz**: Como a marca se comunica verbalmente — tom, ritmo e escolha de palavras.
+
+---
+
+## **🧱 Conteúdo Principal**
+
+### **📍1. O que é Marca Pessoal e Por que Importa?**
+
+* Marca pessoal é **como você é lembrado** quando não está presente.
+* Vai além de visual: é sobre *identidade*, *posicionamento*, *energia* e *impacto*.
+* **70% das pessoas** pesquisam online antes de contratar um profissional.
+* Profissionais com marca pessoal forte **cobram mais**, são mais lembrados e têm mais oportunidades.
+
+### **📍2. Pilares de uma Marca Forte**
+
+* **Posicionamento**: Como você quer ser lembrado? Por quais habilidades e diferenciais?
+* **Propósito**: Qual a causa maior que motiva seu trabalho? Por que você faz o que faz?
+* **Presença**: Onde você aparece e se comunica? Você está onde seu público está?
+* **Público**: Quem você quer atrair? Qual o problema que resolve para esse público?
+
+Esses pilares devem estar **alinhados** para gerar consistência.
+
+### **📍3. O Poder do Autoconhecimento na Marca**
+
+Sem autoconhecimento, cria-se uma marca **artificial**, **insustentável** a longo prazo.
+
+É preciso entender:
+* **Quem você é** (valores, personalidade, singularidades)
+* **O que você faz** (competências, história, diferenciais)  
+* **Para quem você serve** (segmento, perfil ideal, dores que resolve)
+
+### **📍4. O Exercício das 5 Perguntas**
+
+Enviar a **10 pessoas** (5 do pessoal, 5 do profissional):
+
+1. O que eu faço bem e não percebo?
+2. Qual foi sua primeira impressão de mim e ela mudou?
+3. O que posso melhorar na minha comunicação?
+4. Algo que sempre quis saber de mim?
+5. Uma história que te marcou comigo?
+
+Esse exercício revela **percepções ocultas** que impactam diretamente sua imagem.
+
+### **📍5. Introdução aos Arquétipos de Marca**
+
+Divididos em **4 grandes funções**:
+
+* **Guiar** (Governante, Sábio, Inocente)
+* **Inspirar** (Herói, Criador, Amante)
+* **Conectar** (Cuidador, Cara Comum, Bobo da Corte)
+* **Animar** (Explorador, Mágico, Fora da Lei)
+
+Cada um tem **luz e sombra**. Ex: Herói é um resolvedor de problemas, mas pode ser arrogante.
+
+### **📍6. Exemplo de Análise Visual (Caso Ana)**
+
+* Três fotos foram avaliadas com base na **essência percebida** x **identidade real**
+* A imagem que melhor expressa a Ana (Geek-Herói) não era a mais "sofisticada", mas a **mais autêntica**
+* Fotos, expressões, roupas, cores e objetos **comunicam sua marca**, mesmo sem você dizer uma palavra
+
+### **📍7. Aplicando o Mapa da Marca**
+
+O framework completo possui **3 camadas**:
+
+1. **Estratégia** (quem sou, como sou percebido, para onde vou)
+2. **Identidade** (visual, verbal, narrativa, simbólica)
+3. **Marketing** (produtos, conteúdo, canais, campanhas, escuta social)
+
+Evita confusão sobre o que postar, como se vestir, como se comunicar.
+Traz **clareza** para designer, social media, vídeos, pitch de vendas e muito mais.
+
+---
+
+## **💡 Exemplos e Casos Práticos**
+
+* **Bake Love**: marca criada do zero, com nome, ícone e visual baseados em sensações ("amor + sabor").
+* **Vista o Extraordinário**: marca de camisetas com arquétipo de Bobo da Corte, visual inspirado no produto (camiseta com pesponto).
+* **Cliente enfermeira em Portugal**: branding autêntico com **aumento de 40 mil euros** em 3 meses, sem mudar sua essência calma.
+
+---
+
+## **❓ Dúvidas e Esclarecimentos**
+
+**Pergunta:** Devo adaptar meu arquétipo ao público?
+**Resposta:** Não. Adapte a linguagem, nunca a sua essência.
+
+**Pergunta:** Cuidador vende menos?
+**Resposta:** Não. Se comunicar corretamente, o cuidador gera percepção de valor emocional, que justifica preço.
+
+**Pergunta:** Sou visto como arrogante. E agora?
+**Resposta:** Às vezes é apenas um ruído de comunicação. A essência precisa ser realinhada com a expressão externa.
+
+---
+
+## **📚 Recursos Complementares**
+
+* **Livro**: *O Herói e o Fora da Lei* (Mark & Pearson)
+* **Ferramenta**: Mapa de Empatia (para alinhar imagem vs. percepção)
+* **Outros**: Artigos da Exame e Estadão sobre influenciadores-fundadores
+
+---
+
+## **📝 Atividades e Avaliações**
+
+* **Exercício sugerido:**
+  1. Aplicar o exercício das 5 perguntas de percepção externa
+  2. Preencher os 4 pilares da marca pessoal
+  3. Identificar o arquétipo predominante
+  4. Fazer mapa da marca (base para designer e social media)
+
+---
+
+## **🔚 Síntese Final**
+
+1. **Marca pessoal é um sistema**: começa na essência e se manifesta em cada ponto de contato
+2. **Arquétipos oferecem direcionamento** para a identidade e o conteúdo
+3. **O design é a expressão final** de uma estratégia de marca bem definida
+4. **Presença sem consistência é ruído**. Consistência com autenticidade gera valor
+
+### **💫 Frase de Encerramento:**
+*"Você está exatamente onde deveria estar. O que você faz com isso é o que define sua marca."*
+      `
     },
     {
       id: 3,
@@ -403,7 +546,7 @@ Para escala, usar **API da OpenAI** com controle de tokens.
         {/* Article Content */}
         <div className="pb-20">
           <div className="max-w-3xl mx-auto">
-            {resumo.id === 1 && resumo.fullContent ? (
+            {(resumo.id === 1 || resumo.id === 2) && resumo.fullContent ? (
               <MarkdownContent content={resumo.fullContent} />
             ) : (
               <div className="text-center py-20">
