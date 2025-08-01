@@ -59,7 +59,7 @@ const Resumos = () => {
   const resumos = [
     {
       id: 1,
-      title: "Rebrand - Criação de Marca",
+      title: "Criação de Marca",
       description: "Estratégias avançadas de vídeo marketing e construção de marcas que realmente conectam com o público.",
       author: "Camilo Coutinho",
       category: "Branding",
@@ -228,7 +228,7 @@ const Resumos = () => {
 
                 {/* Image */}
                 <div className="order-1 md:order-2 md:w-48 md:flex-shrink-0">
-                  <div className="relative aspect-video md:aspect-square overflow-hidden rounded-lg bg-muted">
+                  <div className="relative aspect-[4/3] md:aspect-square overflow-hidden rounded-lg bg-muted">
                     <img 
                       src={resumo.image} 
                       alt={resumo.title}

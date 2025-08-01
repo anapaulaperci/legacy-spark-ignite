@@ -8,7 +8,7 @@ const Palestra = () => {
   const resumos = [
     {
       id: 1,
-      title: "Rebrand - Criação de Marca",
+      title: "Criação de Marca",
       description: "Estratégias avançadas de vídeo marketing e construção de marcas que realmente conectam com o público.",
       author: "Camilo Coutinho",
       category: "Branding",
