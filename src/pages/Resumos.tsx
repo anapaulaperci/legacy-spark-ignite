@@ -188,10 +188,10 @@ const Resumos = () => {
                       <span className="text-sm text-muted-foreground">{resumo.author}</span>
                       {resumo.author === 'Victor' && (
                         <a
-                          href="https://wa.me/41998927030"
+                          href="https://wa.me/5541998927030"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-primary hover:text-primary-glow transition-colors text-xs"
+                          className="inline-flex items-center gap-1 text-green-600 hover:text-green-700 transition-colors text-xs"
                         >
                           <MessageCircle className="w-3 h-3" />
                           Falar com Victor
