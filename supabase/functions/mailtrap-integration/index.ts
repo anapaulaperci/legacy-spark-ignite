@@ -101,7 +101,7 @@ const handler = async (req: Request): Promise<Response> => {
                   <li>Anotações personalizadas</li>
                 </ul>
               </div>
-              <a href="https://anapaulaperci.com.br" 
+              <a href="https://imersaonv.lovable.app/" 
                  style="display: inline-block; background: #8B5CF6; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin: 20px 0;">
                 Acessar Plataforma
               </a>
