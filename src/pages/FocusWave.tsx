@@ -112,27 +112,86 @@ const FocusWave: React.FC = () => {
           audioElementRef.current = new Audio();
           audioElementRef.current.volume = binauralVolume / 100;
           audioElementRef.current.loop = false;
+          audioElementRef.current.preload = 'auto';
           
-          // Definir source e aguardar carregamento
-          audioElementRef.current.src = '/music/creative-session.mp3';
-          console.log('Carregando música de:', audioElementRef.current.src);
+          // Lista de URLs para tentar, em ordem de prioridade
+          const musicUrls = [
+            './music/creative-session.mp3',
+            '/music/creative-session.mp3',
+            'https://cvbjtjmogseupckocmeb.supabase.co/storage/v1/object/public/music/creative-session.mp3'
+          ];
           
-          // Aguardar o arquivo estar pronto para reproduzir
-          await new Promise((resolve, reject) => {
-            const audio = audioElementRef.current!;
+          let audioLoaded = false;
+          
+          for (const url of musicUrls) {
+            try {
+              console.log('🎵 Tentando carregar música de:', url);
+              audioElementRef.current.src = url;
+              
+              await new Promise((resolve, reject) => {
+                const audio = audioElementRef.current!;
+                const timeout = setTimeout(() => reject(new Error('Timeout')), 5000);
+                
+                audio.oncanplaythrough = () => {
+                  clearTimeout(timeout);
+                  console.log('✅ Música carregada com sucesso de:', url);
+                  resolve(true);
+                };
+                
+                audio.onerror = (error) => {
+                  clearTimeout(timeout);
+                  console.log('❌ Erro ao carregar de:', url, error);
+                  reject(error);
+                };
+                
+                audio.load();
+              });
+              
+              audioLoaded = true;
+              break;
+              
+            } catch (error) {
+              console.log('⚠️ Falha ao carregar de:', url, error);
+              continue;
+            }
+          }
+          
+          if (!audioLoaded) {
+            console.error('💥 Nenhuma fonte de áudio funcionou, usando sons binaurais como fallback');
+            // Fallback para sons binaurais se o arquivo não carregar
+            audioElementRef.current = null;
             
-            audio.oncanplaythrough = () => {
-              console.log('Música carregada com sucesso');
-              resolve(true);
-            };
+            // Usar sons binaurais como fallback
+            if (!audioContextRef.current) {
+              audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+            }
             
-            audio.onerror = (error) => {
-              console.error('Erro ao carregar música:', error);
-              reject(new Error('Falha ao carregar arquivo de música'));
-            };
+            if (audioContextRef.current.state === 'suspended') {
+              await audioContextRef.current.resume();
+            }
+
+            const preset = presets[currentPreset];
+            setupAudioNodes(preset);
+            startAudioNodes();
             
-            audio.load();
-          });
+            showErrorModal('Arquivo de música não encontrado. Usando sons binaurais.');
+            
+            setIsPlaying(true);
+            
+            if (pausedTimeRef.current > 0) {
+              startTimeRef.current = Date.now() - pausedTimeRef.current;
+            } else {
+              startTimeRef.current = Date.now();
+              pausedTimeRef.current = 0;
+            }
+
+            timerIntervalRef.current = setInterval(() => {
+              const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+              setCurrentTime(elapsed);
+            }, 1000);
+            
+            return; // Sair da função aqui pois já configuramos o fallback
+          }
         }
         
         audioElementRef.current.currentTime = pausedTimeRef.current / 1000;
