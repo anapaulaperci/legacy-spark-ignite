@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Shield, UserX, Plus, Search, Crown } from "lucide-react";
+import { Users, Shield, UserX, Plus, Search, Crown, Trash2, AlertTriangle } from "lucide-react";
 
 interface Profile {
   id: string;
@@ -33,6 +33,8 @@ const Admin = () => {
   const [newUserName, setNewUserName] = useState("");
   const [newUserRole, setNewUserRole] = useState("user");
   const [creating, setCreating] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -179,6 +181,55 @@ const Admin = () => {
     }
   };
 
+  const deleteUser = async (userId: string) => {
+    setDeleting(true);
+    
+    try {
+      // Delete user profile
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('user_id', userId);
+
+      if (profileError) {
+        toast({
+          title: "Erro",
+          description: "Erro ao excluir perfil do usuário.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Delete auth user (requires admin API call)
+      const { error: authError } = await supabase.auth.admin.deleteUser(userId);
+
+      if (authError) {
+        toast({
+          title: "Erro",
+          description: "Erro ao excluir usuário do sistema de autenticação.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Sucesso",
+        description: "Usuário excluído com sucesso!",
+      });
+      
+      setDeleteUserId(null);
+      fetchProfiles();
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro inesperado ao excluir usuário.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const filteredProfiles = profiles.filter(profile =>
     profile.display_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     profile.user_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -226,76 +277,93 @@ const Admin = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Administração</h1>
-          <p className="text-muted-foreground">Gerencie usuários e permissões do sistema</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+      <div className="p-6 space-y-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-600 rounded-3xl blur opacity-20 animate-pulse"></div>
+              <div className="relative p-6 bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-3xl shadow-xl border border-white/20">
+                <Crown className="h-16 w-16 text-transparent bg-gradient-to-br from-red-600 to-orange-600 bg-clip-text" />
+              </div>
+            </div>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-red-600 via-orange-600 to-red-800 bg-clip-text text-transparent">
+              Administração
+            </span>
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Controle total do sistema - Gerencie usuários, permissões e configurações
+          </p>
+          <Badge variant="destructive" className="flex items-center gap-2 mx-auto w-fit mt-4">
+            <Crown className="h-4 w-4" />
+            Acesso Administrativo
+          </Badge>
         </div>
-        <Badge variant="destructive" className="flex items-center gap-2">
-          <Crown className="h-4 w-4" />
-          Administrador
-        </Badge>
-      </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{profiles.length}</div>
-          </CardContent>
-        </Card>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200 dark:border-blue-800 shadow-lg">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-300">Total de Usuários</CardTitle>
+              <Users className="h-5 w-5 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-blue-900 dark:text-blue-100">{profiles.length}</div>
+              <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">usuários registrados</p>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Administradores</CardTitle>
-            <Crown className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {profiles.filter(p => p.role === 'admin').length}
-            </div>
-          </CardContent>
-        </Card>
+          <Card className="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 border-red-200 dark:border-red-800 shadow-lg">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-red-700 dark:text-red-300">Administradores</CardTitle>
+              <Crown className="h-5 w-5 text-red-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-red-900 dark:text-red-100">
+                {profiles.filter(p => p.role === 'admin').length}
+              </div>
+              <p className="text-xs text-red-600 dark:text-red-400 mt-1">com acesso total</p>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {profiles.filter(p => p.role === 'user').length}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900 border-emerald-200 dark:border-emerald-800 shadow-lg">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-emerald-700 dark:text-emerald-300">Usuários Ativos</CardTitle>
+              <Shield className="h-5 w-5 text-emerald-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">
+                {profiles.filter(p => p.role === 'user').length}
+              </div>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">usuários padrão</p>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* User Management */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Gerenciamento de Usuários
-              </CardTitle>
-              <CardDescription>
-                Visualize e gerencie todos os usuários do sistema
-              </CardDescription>
-            </div>
-            <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="flex items-center gap-2">
-                  <Plus className="h-4 w-4" />
-                  Criar Usuário
-                </Button>
-              </DialogTrigger>
+        {/* User Management */}
+        <div className="max-w-6xl mx-auto">
+          <Card className="shadow-2xl border-0 bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-slate-800">
+            <CardHeader className="bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-700 rounded-t-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-3 text-2xl">
+                    <Users className="h-6 w-6" />
+                    Gerenciamento de Usuários
+                  </CardTitle>
+                  <CardDescription className="text-base mt-2">
+                    Controle completo sobre usuários, permissões e acesso ao sistema
+                  </CardDescription>
+                </div>
+                <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg" size="lg">
+                      <Plus className="h-4 w-4" />
+                      Criar Usuário
+                    </Button>
+                  </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                   <DialogTitle>Criar Novo Usuário</DialogTitle>
@@ -360,10 +428,10 @@ const Admin = () => {
                   </Button>
                 </DialogFooter>
               </DialogContent>
-            </Dialog>
-          </div>
-        </CardHeader>
-        <CardContent>
+                </Dialog>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6">
           {/* Search */}
           <div className="mb-6">
             <Label htmlFor="search" className="sr-only">Buscar usuários</Label>
@@ -388,7 +456,7 @@ const Admin = () => {
                   <TableHead>ID</TableHead>
                   <TableHead>Papel</TableHead>
                   <TableHead>Criado em</TableHead>
-                  <TableHead>Ações</TableHead>
+                  <TableHead className="text-center">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -434,21 +502,34 @@ const Admin = () => {
                       <TableCell>
                         {new Date(profile.created_at).toLocaleDateString('pt-BR')}
                       </TableCell>
-                      <TableCell>
-                        <Select
-                          value={profile.role}
-                          onValueChange={(newRole) => updateUserRole(profile.user_id, newRole)}
-                          disabled={profile.user_id === user?.id}
-                        >
-                          <SelectTrigger className="w-32">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="user">Usuário</SelectItem>
-                            <SelectItem value="moderator">Moderador</SelectItem>
-                            <SelectItem value="admin">Admin</SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <TableCell className="text-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <Select
+                            value={profile.role}
+                            onValueChange={(newRole) => updateUserRole(profile.user_id, newRole)}
+                            disabled={profile.user_id === user?.id}
+                          >
+                            <SelectTrigger className="w-32">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="user">Usuário</SelectItem>
+                              <SelectItem value="moderator">Moderador</SelectItem>
+                              <SelectItem value="admin">Admin</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          
+                          {profile.user_id !== user?.id && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setDeleteUserId(profile.user_id)}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))
@@ -456,8 +537,47 @@ const Admin = () => {
               </TableBody>
             </Table>
           </div>
+
+          {/* Delete Confirmation Dialog */}
+          <Dialog open={!!deleteUserId} onOpenChange={() => setDeleteUserId(null)}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-red-600">
+                  <AlertTriangle className="h-5 w-5" />
+                  Confirmar Exclusão
+                </DialogTitle>
+                <DialogDescription>
+                  Esta ação é <strong>irreversível</strong>. O usuário será excluído permanentemente do sistema, incluindo todos os seus dados.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="bg-red-50 dark:bg-red-950 p-4 rounded-lg border border-red-200 dark:border-red-800">
+                <p className="text-sm text-red-700 dark:text-red-300">
+                  ⚠️ <strong>Atenção:</strong> Todos os dados relacionados a este usuário serão perdidos permanentemente.
+                </p>
+              </div>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setDeleteUserId(null)}
+                  disabled={deleting}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => deleteUserId && deleteUser(deleteUserId)}
+                  disabled={deleting}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  {deleting ? "Excluindo..." : "Excluir Usuário"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </CardContent>
       </Card>
+        </div>
+      </div>
     </div>
   );
 };
