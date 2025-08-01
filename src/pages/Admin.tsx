@@ -255,10 +255,12 @@ const Admin = () => {
   };
 
   const filteredProfiles = profiles.filter(profile =>
-    profile.display_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    profile.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    profile.auth_user_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    profile.role.toLowerCase().includes(searchTerm.toLowerCase())
+    profile.auth_user_id && (
+      profile.display_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      profile.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      profile.auth_user_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      profile.role.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   );
 
   const getRoleBadgeVariant = (role: string) => {
@@ -499,7 +501,7 @@ const Admin = () => {
                   </TableRow>
                 ) : (
                   filteredProfiles.map((profile) => (
-                    <TableRow key={profile.auth_user_id}>
+                    <TableRow key={profile.auth_user_id || 'unknown'}>
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
@@ -510,13 +512,13 @@ const Admin = () => {
                               {profile.display_name || profile.email?.split('@')[0] || 'Sem nome'}
                             </div>
                             <div className="text-sm text-muted-foreground">
-                              {profile.email}
+                              {profile.email || 'Email não disponível'}
                             </div>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell className="font-mono text-sm">
-                        {profile.auth_user_id.slice(0, 8)}...
+                        {profile.auth_user_id ? `${profile.auth_user_id.slice(0, 8)}...` : 'N/A'}
                       </TableCell>
                       <TableCell>
                         <Badge variant={getRoleBadgeVariant(profile.role)}>
@@ -525,14 +527,14 @@ const Admin = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {new Date(profile.created_at_auth).toLocaleDateString('pt-BR')}
+                        {profile.created_at_auth ? new Date(profile.created_at_auth).toLocaleDateString('pt-BR') : 'N/A'}
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex items-center justify-center gap-2">
                           <Select
                             value={profile.role}
-                            onValueChange={(newRole) => updateUserRole(profile.auth_user_id, newRole)}
-                            disabled={profile.auth_user_id === user?.id}
+                            onValueChange={(newRole) => profile.auth_user_id && updateUserRole(profile.auth_user_id, newRole)}
+                            disabled={profile.auth_user_id === user?.id || !profile.auth_user_id}
                           >
                             <SelectTrigger className="w-32">
                               <SelectValue />
@@ -544,7 +546,7 @@ const Admin = () => {
                             </SelectContent>
                           </Select>
                           
-                          {profile.auth_user_id !== user?.id && (
+                          {profile.auth_user_id && profile.auth_user_id !== user?.id && (
                             <Button
                               variant="outline"
                               size="sm"
