@@ -35,6 +35,15 @@ const Palestra = () => {
     },
     {
       id: 4,
+      title: "Narrativa para Produção de Conteúdo",
+      description: "Como criar narrativas envolventes e estratégicas que conectam com sua audiência e convertem em resultados.",
+      author: "Sabrina",
+      category: "Estratégia",
+      image: "/lovable-uploads/d4242b89-2846-46e8-a772-305652e6d729.png",
+      isNew: true
+    },
+    {
+      id: 5,
       title: "Produção de Conteúdo no Youtube",
       description: "Como criar conteúdo envolvente e estratégico para crescer seu canal no YouTube e conectar com sua audiência.",
       author: "Victor",
@@ -43,8 +52,8 @@ const Palestra = () => {
       isNew: true
     },
     {
-      id: 5,
-      title: "Palestra 05",
+      id: 6,
+      title: "Palestra 06",
       description: "Aprenda a contar a história da sua marca de forma envolvente e memorável para seu público.",
       author: "Ana Paula Perci",
       category: "Fundamentos",
@@ -52,21 +61,12 @@ const Palestra = () => {
       isNew: false
     },
     {
-      id: 6,
-      title: "Palestra 06",
+      id: 7,
+      title: "Palestra 07",
       description: "Como medir e acompanhar o sucesso das suas estratégias de posicionamento de marca.",
       author: "Ana Paula Perci",
       category: "Estratégia",
       image: "https://images.unsplash.com/photo-1485833077593-4278bba3f11f?w=400&h=200&fit=crop&crop=center",
-      isNew: true
-    },
-    {
-      id: 7,
-      title: "Palestra 07",
-      description: "Estratégias avançadas para consolidar e expandir seu posicionamento no mercado digital.",
-      author: "Ana Paula Perci",
-      category: "Estratégia",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&crop=center",
       isNew: true
     }
   ];
