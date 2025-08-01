@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { ArrowLeft, Star, User, Instagram, BookOpen, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Star, User, Instagram, BookOpen, MessageCircle, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import jsPDF from 'jspdf';
 
 // Função para processar markdown
 const parseMarkdown = (text: string) => {
@@ -138,6 +141,138 @@ const MarkdownContent = ({ content }: { content: string }) => {
 export default function Palestra() {
   const { id } = useParams();
   const [userRatings, setUserRatings] = useState<{[key: number]: number}>({});
+  const { toast } = useToast();
+
+  const generatePDF = (resumo: typeof resumos[0]) => {
+    try {
+      const pdf = new jsPDF();
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 20;
+      let yPosition = margin;
+
+      // Helper function to add text with word wrap
+      const addText = (text: string, fontSize: number, isBold = false, isCenter = false) => {
+        pdf.setFontSize(fontSize);
+        pdf.setFont("helvetica", isBold ? "bold" : "normal");
+        
+        if (isCenter) {
+          const textWidth = pdf.getStringUnitWidth(text) * fontSize / pdf.internal.scaleFactor;
+          const textOffset = (pageWidth - textWidth) / 2;
+          pdf.text(text, textOffset, yPosition);
+        } else {
+          const lines = pdf.splitTextToSize(text, pageWidth - 2 * margin);
+          pdf.text(lines, margin, yPosition);
+          yPosition += (lines.length - 1) * fontSize * 0.35;
+        }
+        yPosition += fontSize * 0.5;
+      };
+
+      const checkPageBreak = (neededSpace: number) => {
+        if (yPosition + neededSpace > pageHeight - margin) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+      };
+
+      // Header
+      pdf.setFillColor(74, 144, 226); // Primary color
+      pdf.rect(0, 0, pageWidth, 40, 'F');
+      
+      pdf.setTextColor(255, 255, 255);
+      yPosition = 25;
+      addText("Imersão de Posicionamento 2024", 18, true, true);
+      
+      pdf.setTextColor(0, 0, 0);
+      yPosition = 60;
+      
+      // Title
+      addText(resumo.title, 22, true, true);
+      yPosition += 10;
+      
+      // Author and category
+      addText(`Por: ${resumo.author} | Categoria: ${resumo.category}`, 12, false, true);
+      yPosition += 15;
+      
+      // Description
+      addText(resumo.description, 11);
+      yPosition += 10;
+
+      // Content processing
+      if (resumo.fullContent) {
+        const lines = resumo.fullContent.split('\n');
+        
+        lines.forEach((line) => {
+          const trimmedLine = line.trim();
+          
+          if (trimmedLine === '' || trimmedLine === '---') {
+            yPosition += 5;
+            return;
+          }
+
+          checkPageBreak(20);
+
+          // Headers
+          if (trimmedLine.startsWith('## ')) {
+            yPosition += 5;
+            const title = trimmedLine.replace('## ', '').replace(/\*\*/g, '');
+            addText(title, 16, true);
+            yPosition += 5;
+          }
+          // Subheaders
+          else if (trimmedLine.startsWith('### ')) {
+            yPosition += 3;
+            const title = trimmedLine.replace('### ', '').replace(/\*\*/g, '');
+            addText('• ' + title, 14, true);
+            yPosition += 3;
+          }
+          // Lists
+          else if (trimmedLine.startsWith('* ')) {
+            const item = trimmedLine.replace('* ', '').replace(/\*\*/g, '').replace(/\*/g, '');
+            addText('  • ' + item, 10);
+          }
+          // Questions and answers
+          else if (trimmedLine.startsWith('**Pergunta:**') || trimmedLine.startsWith('**Resposta:**')) {
+            yPosition += 3;
+            const text = trimmedLine.replace(/\*\*/g, '');
+            addText(text, 11, true);
+          }
+          // Numbered lists
+          else if (/^\d+\./.test(trimmedLine)) {
+            const text = trimmedLine.replace(/\*\*/g, '').replace(/\*/g, '');
+            addText(text, 10);
+          }
+          // Regular paragraphs
+          else if (trimmedLine.length > 0) {
+            const text = trimmedLine.replace(/\*\*/g, '').replace(/\*/g, '');
+            addText(text, 10);
+            yPosition += 2;
+          }
+        });
+      }
+
+      // Footer
+      pdf.setFontSize(8);
+      pdf.setTextColor(128, 128, 128);
+      pdf.text("Gerado em " + new Date().toLocaleDateString('pt-BR'), margin, pageHeight - 10);
+      pdf.text("© 2024 Imersão de Posicionamento - Material Exclusivo", pageWidth - margin - 100, pageHeight - 10);
+
+      // Save the PDF
+      pdf.save(`${resumo.title.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`);
+      
+      toast({
+        title: "PDF Gerado com Sucesso!",
+        description: `O material "${resumo.title}" foi baixado para seu dispositivo.`,
+      });
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+      toast({
+        title: "Erro ao Gerar PDF",
+        description: "Ocorreu um erro ao gerar o PDF. Tente novamente.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const resumos = [
     {
@@ -574,7 +709,28 @@ Traz **clareza** para designer, social media, vídeos, pitch de vendas e muito m
         <div className="pb-20">
           <div className="max-w-3xl mx-auto">
             {(resumo.id === 1 || resumo.id === 2) && resumo.fullContent ? (
-              <MarkdownContent content={resumo.fullContent} />
+              <>
+                <MarkdownContent content={resumo.fullContent} />
+                
+                {/* Download PDF Button */}
+                <div className="mt-16 pt-8 border-t border-border">
+                  <div className="text-center">
+                    <h3 className="text-xl font-semibold text-foreground mb-4">
+                      Baixar Material em PDF
+                    </h3>
+                    <p className="text-muted-foreground mb-6 text-sm max-w-md mx-auto">
+                      Faça o download deste conteúdo em formato PDF para estudar offline e ter como referência
+                    </p>
+                    <Button 
+                      onClick={() => generatePDF(resumo)}
+                      className="bg-gradient-to-r from-primary to-primary-glow hover:shadow-glow text-primary-foreground px-6 py-3 shadow-elegant hover:scale-105 transition-all duration-300"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Baixar PDF
+                    </Button>
+                  </div>
+                </div>
+              </>
             ) : (
               <div className="text-center py-20">
                 <div className="max-w-md mx-auto">
