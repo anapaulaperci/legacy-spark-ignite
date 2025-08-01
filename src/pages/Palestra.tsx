@@ -3,6 +3,107 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { ArrowLeft, Star, User, Instagram, BookOpen } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
+// Função para processar markdown
+const parseMarkdown = (text: string) => {
+  // Processar texto em negrito **texto**
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  
+  // Processar texto em itálico *texto*
+  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  
+  // Processar links [texto](url)
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:text-primary-glow underline" target="_blank" rel="noopener noreferrer">$1</a>');
+  
+  return text;
+};
+
+// Componente para renderizar conteúdo markdown
+const MarkdownContent = ({ content }: { content: string }) => {
+  const lines = content.split('\n');
+  const elements: JSX.Element[] = [];
+  let listItems: string[] = [];
+  let listIndex = 0;
+
+  const flushList = () => {
+    if (listItems.length > 0) {
+      elements.push(
+        <ul key={`list-${listIndex++}`} className="space-y-2 mb-6 ml-6">
+          {listItems.map((item, idx) => (
+            <li key={idx} className="list-disc text-muted-foreground leading-relaxed text-lg" 
+                dangerouslySetInnerHTML={{ __html: parseMarkdown(item) }} />
+          ))}
+        </ul>
+      );
+      listItems = [];
+    }
+  };
+
+  lines.forEach((line, index) => {
+    const trimmedLine = line.trim();
+    
+    if (trimmedLine === '') {
+      flushList();
+      elements.push(<div key={`space-${index}`} className="h-4" />);
+      return;
+    }
+
+    if (trimmedLine.startsWith('## ')) {
+      flushList();
+      const title = trimmedLine.replace('## ', '');
+      elements.push(
+        <h2 key={index} className="text-3xl font-bold text-foreground mt-16 mb-6 first:mt-0 pb-3 border-b border-border">
+          {title}
+        </h2>
+      );
+      return;
+    }
+
+    if (trimmedLine.startsWith('### ')) {
+      flushList();
+      const title = trimmedLine.replace('### ', '');
+      elements.push(
+        <h3 key={index} className="text-2xl font-semibold text-foreground mt-12 mb-4">
+          {title}
+        </h3>
+      );
+      return;
+    }
+
+    if (trimmedLine.startsWith('- ')) {
+      const item = trimmedLine.replace('- ', '');
+      listItems.push(item);
+      return;
+    }
+
+    // Se chegou aqui e temos itens de lista pendentes, vamos processar a lista
+    flushList();
+
+    // Verificar se é um parágrafo destacado (começando e terminando com **)
+    if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**') && trimmedLine.length > 4) {
+      const text = trimmedLine.replace(/^\*\*|\*\*$/g, '');
+      elements.push(
+        <div key={index} className="bg-muted/30 p-4 rounded-lg border-l-4 border-primary mt-8 mb-6">
+          <p className="text-lg font-semibold text-foreground" dangerouslySetInnerHTML={{ __html: parseMarkdown(text) }} />
+        </div>
+      );
+      return;
+    }
+
+    // Parágrafo normal
+    if (trimmedLine.length > 0) {
+      elements.push(
+        <p key={index} className="mb-6 text-muted-foreground leading-relaxed text-lg" 
+           dangerouslySetInnerHTML={{ __html: parseMarkdown(trimmedLine) }} />
+      );
+    }
+  });
+
+  // Processar última lista se existir
+  flushList();
+
+  return <div className="prose prose-lg prose-slate max-w-none">{elements}</div>;
+};
+
 export default function Palestra() {
   const { id } = useParams();
   const [userRatings, setUserRatings] = useState<{[key: number]: number}>({});
@@ -393,49 +494,7 @@ Ana compartilhou insight do mastermind:
         <div className="pb-20">
           <div className="max-w-3xl mx-auto">
             {resumo.id === 1 && resumo.fullContent ? (
-              <div className="prose prose-lg prose-slate max-w-none">
-                {resumo.fullContent.split('\n').map((line, index) => {
-                  if (line.startsWith('## ')) {
-                    return (
-                      <h2 key={index} className="text-3xl font-bold text-foreground mt-16 mb-6 first:mt-0 pb-3 border-b border-border">
-                        {line.replace('## ', '')}
-                      </h2>
-                    )
-                  }
-                  if (line.startsWith('### ')) {
-                    return (
-                      <h3 key={index} className="text-2xl font-semibold text-foreground mt-12 mb-4">
-                        {line.replace('### ', '')}
-                      </h3>
-                    )
-                  }
-                  if (line.startsWith('**') && line.endsWith('**') && line.length > 4) {
-                    return (
-                      <p key={index} className="text-lg font-semibold text-foreground mt-8 mb-4 bg-muted/30 p-4 rounded-lg border-l-4 border-primary">
-                        {line.replace(/\*\*/g, '')}
-                      </p>
-                    )
-                  }
-                  if (line.startsWith('- ')) {
-                    return (
-                      <li key={index} className="mb-3 text-muted-foreground leading-relaxed list-disc ml-6">
-                        {line.replace('- ', '')}
-                      </li>
-                    )
-                  }
-                  if (line.trim() === '') {
-                    return <div key={index} className="h-4" />
-                  }
-                  if (line.trim().length > 0) {
-                    return (
-                      <p key={index} className="mb-6 text-muted-foreground leading-relaxed text-lg">
-                        {line}
-                      </p>
-                    )
-                  }
-                  return null
-                })}
-              </div>
+              <MarkdownContent content={resumo.fullContent} />
             ) : (
               <div className="text-center py-20">
                 <div className="max-w-md mx-auto">
