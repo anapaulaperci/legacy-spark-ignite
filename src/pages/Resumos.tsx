@@ -79,11 +79,11 @@ const Resumos = () => {
     },
     {
       id: 3,
-      title: "Palestra 03",
-      description: "Técnicas avançadas para identificar, segmentar e compreender profundamente seu público ideal.",
+      title: "Funil de Vendas",
+      description: "Estratégias avançadas para construir um funil de vendas eficiente que converte prospects em clientes fiéis.",
       author: "Melina",
-      category: "Público",
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=200&fit=crop&crop=center",
+      category: "Vendas",
+      image: "/lovable-uploads/783accb5-3ea0-482f-9285-dfdc4d9883fc.png",
       rating: 4.7,
       isNew: false
     },
@@ -109,10 +109,10 @@ const Resumos = () => {
     },
     {
       id: 6,
-      title: "Palestra 06",
-      description: "Aprenda a contar a história da sua marca de forma envolvente e memorável para seu público.",
+      title: "Linha Editorial e IA",
+      description: "Como criar uma linha editorial consistente utilizando inteligência artificial para otimizar seu conteúdo.",
       author: "Ana Paula Perci",
-      category: "Fundamentos",
+      category: "Linha Editorial",
       image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop&crop=center",
       rating: 4.6,
       isNew: false
@@ -134,7 +134,9 @@ const Resumos = () => {
       "Fundamentos": "bg-primary/10 text-primary border-primary/20",
       "Estratégia": "bg-success/10 text-success border-success/20", 
       "Público": "bg-accent/10 text-accent-foreground border-accent/20",
-      "Branding": "bg-orange-500/10 text-orange-600 border-orange-200"
+      "Branding": "bg-orange-500/10 text-orange-600 border-orange-200",
+      "Vendas": "bg-red-500/10 text-red-600 border-red-200",
+      "Linha Editorial": "bg-purple-500/10 text-purple-600 border-purple-200"
     };
     return colors[category as keyof typeof colors] || "bg-muted text-muted-foreground border-muted";
   };
