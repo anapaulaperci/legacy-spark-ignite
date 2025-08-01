@@ -49,25 +49,17 @@ const IA = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
       <div className="p-2 sm:p-5 sm:py-0 md:pt-5 space-y-8">
-        {/* Profile Image */}
-        <div className="flex justify-center mb-8">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-20 animate-pulse"></div>
-            <img 
-              src="/lovable-uploads/da4a1b4f-7426-4531-bd3a-a48207005dd7.png" 
-              alt="Ana Paula Perci" 
-              className="relative w-32 h-32 md:w-40 md:h-40 rounded-full shadow-2xl border-4 border-white dark:border-slate-800 object-cover"
-            />
-          </div>
-        </div>
-
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-8">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur opacity-20 animate-pulse"></div>
               <div className="relative p-6 bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-3xl shadow-xl border border-white/20">
-                <Brain className="h-16 w-16 text-transparent bg-gradient-to-br from-blue-600 to-purple-600 bg-clip-text" />
+                <img 
+                  src="/lovable-uploads/da4a1b4f-7426-4531-bd3a-a48207005dd7.png" 
+                  alt="Ana Paula Perci" 
+                  className="w-16 h-16 rounded-full object-cover"
+                />
                 <Sparkles className="h-6 w-6 text-yellow-500 absolute -top-1 -right-1 animate-pulse" />
               </div>
             </div>
