@@ -116,9 +116,9 @@ const FocusWave: React.FC = () => {
           
           // Lista de URLs para tentar, em ordem de prioridade
           const musicUrls = [
+            'http://venturize.com.br/criatividade.wav',
             '/music/creative-session.mp3',
-            './music/creative-session.mp3',
-            'https://drive.google.com/uc?export=download&id=1nTv0K9eL0RvthVFI5pq1qYvNFR78iwzj'
+            './music/creative-session.mp3'
           ];
           
           let audioLoaded = false;
