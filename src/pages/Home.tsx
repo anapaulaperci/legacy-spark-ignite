@@ -96,28 +96,42 @@ const Home = () => {
         {/* Speakers Grid */}
         <div className="speakers-grid">
           {speakers.map((speaker, index) => (
-            <a 
-              key={index}
-              href={speaker.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="speaker-card"
-            >
-              {/* Speaker Image */}
-              <img 
-                src={speaker.image}
-                alt={speaker.name}
-                className={`speaker-image ${speaker.name === 'Ana Paula Perci' ? 'object-top' : ''}`}
-              />
+            <div key={index} className="speaker-card">
+              <a 
+                href={speaker.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                {/* Speaker Image */}
+                <img 
+                  src={speaker.image}
+                  alt={speaker.name}
+                  className={`speaker-image ${speaker.name === 'Ana Paula Perci' ? 'object-top' : ''}`}
+                />
+                
+                {/* Speaker Info */}
+                <h3 className="speaker-name">
+                  {speaker.name}
+                </h3>
+                <p className="speaker-role">
+                  {speaker.description}
+                </p>
+              </a>
               
-              {/* Speaker Info */}
-              <h3 className="speaker-name">
-                {speaker.name}
-              </h3>
-              <p className="speaker-role">
-                {speaker.description}
-              </p>
-            </a>
+              {/* Camilo Contact Link */}
+              {speaker.name === 'Camilo Coutinho' && (
+                <a
+                  href="https://www.instagram.com/camilocoutinho/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 text-primary hover:text-primary-glow transition-colors duration-200 text-sm font-medium"
+                >
+                  <Instagram className="w-4 h-4" />
+                  Falar com ele
+                </a>
+              )}
+            </div>
           ))}
         </div>
       </section>
