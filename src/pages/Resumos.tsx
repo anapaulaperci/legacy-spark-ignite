@@ -121,52 +121,12 @@ const Resumos = () => {
 
   const livrosIndicados = [
     {
-      titulo: "Posicionamento: A Batalha por Sua Mente",
-      autor: "Al Ries e Jack Trout",
-      categoria: "Posicionamento",
-      descricao: "O livro clássico que define os fundamentos do posicionamento de marca e como conquistar um espaço na mente do consumidor.",
-      capa: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop&crop=center",
-      linkCompra: "https://www.amazon.com.br/s?k=posicionamento+batalha+mente"
-    },
-    {
-      titulo: "Content Inc.",
-      autor: "Joe Pulizzi",
-      categoria: "Produção de Conteúdo",
-      descricao: "Como construir um negócio de milhões de dólares sem dinheiro de marketing, apenas criando conteúdo que as pessoas querem.",
-      capa: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=400&fit=crop&crop=center",
-      linkCompra: "https://www.amazon.com.br/s?k=content+inc+joe+pulizzi"
-    },
-    {
-      titulo: "Storybrand",
-      autor: "Donald Miller",
-      categoria: "Branding",
-      descricao: "Aprenda a clarificar sua mensagem para que os clientes escutem usando o poder das histórias.",
-      capa: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=400&fit=crop&crop=center",
-      linkCompra: "https://www.amazon.com.br/s?k=storybrand+donald+miller"
-    },
-    {
-      titulo: "Marketing de Conteúdo",
-      autor: "Rafael Rez",
-      categoria: "Linha Editorial",
-      descricao: "A moeda do século XXI: como criar conteúdo relevante para conquistar audiências e gerar resultados.",
-      capa: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=300&h=400&fit=crop&crop=center",
-      linkCompra: "https://www.amazon.com.br/s?k=marketing+conteudo+rafael+rez"
-    },
-    {
-      titulo: "Dotcom Secrets",
-      autor: "Russell Brunson",
-      categoria: "Vendas",
-      descricao: "Os funis de vendas online que transformaram uma empresa iniciante em um império de oito dígitos.",
-      capa: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=400&fit=crop&crop=center",
-      linkCompra: "https://www.amazon.com.br/s?k=dotcom+secrets+russell+brunson"
-    },
-    {
-      titulo: "Purple Cow",
-      autor: "Seth Godin", 
-      categoria: "Estratégia",
-      descricao: "Transforme seu negócio sendo notável. Aprenda por que ser seguro é arriscado e ser arriscado é seguro.",
-      capa: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop&crop=center",
-      linkCompra: "https://www.amazon.com.br/s?k=purple+cow+seth+godin"
+      titulo: "Small Data: As Pequenas Pistas que Indicam Grandes Tendências",
+      autor: "Martin Lindstrom",
+      categoria: "Fundamentos",
+      descricao: "Como pequenos detalhes do comportamento humano podem revelar grandes insights para inovação e crescimento de negócios.",
+      capa: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=400&fit=crop&crop=center",
+      linkCompra: "https://www.amazon.com.br/Small-Data-Indicam-Grandes-Tend%C3%AAncias/dp/8569809719"
     }
   ];
 
