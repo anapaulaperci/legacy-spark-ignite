@@ -676,7 +676,9 @@ const Checklist = () => {
                 {/* Group Items */}
                 <CardContent className="pt-0">
                   <div className="grid gap-2">
-                    {(group.checklist_items || []).map((item: any) => {
+                    {(group.checklist_items || [])
+                      .sort((a: any, b: any) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime())
+                      .map((item: any) => {
                       const selectedTheme = taskThemes[item.id];
                       const themeColor = selectedTheme ? getThemeColor(selectedTheme) : "bg-gray-200";
                       
