@@ -123,7 +123,7 @@ const Resumos = () => {
     {
       titulo: "Small Data: As Pequenas Pistas que Indicam Grandes Tendências",
       autor: "Martin Lindstrom",
-      categoria: "Fundamentos",
+      categoria: "Palestra 1",
       descricao: "Como pequenos detalhes do comportamento humano podem revelar grandes insights para inovação e crescimento de negócios.",
       capa: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=400&fit=crop&crop=center",
       linkCompra: "https://www.amazon.com.br/Small-Data-Indicam-Grandes-Tend%C3%AAncias/dp/8569809719"
@@ -131,7 +131,7 @@ const Resumos = () => {
     {
       titulo: "O Herói e o Fora-da-Lei: Como Construir Marcas Extraordinárias Usando o Poder dos Arquétipos",
       autor: "Margaret Mark e Carol S. Pearson",
-      categoria: "Branding",
+      categoria: "Palestra 2",
       descricao: "Descubra como usar arquétipos universais para criar marcas poderosas e memoráveis que conectam emocionalmente com seu público.",
       capa: "/lovable-uploads/0e398d8a-36f5-4826-85fb-e891d6308ef3.png",
       linkCompra: "https://www.amazon.com.br/her%C3%B3i-fora-lei-extraordin%C3%A1rias-arqu%C3%A9tipos/dp/8531608090"
@@ -140,10 +140,14 @@ const Resumos = () => {
 
   const getCategoryColor = (category: string) => {
     const colors = {
-      "Fundamentos": "bg-primary/10 text-primary border-primary/20",
+      "Palestra 1": "bg-primary/10 text-primary border-primary/20",
+      "Palestra 2": "bg-orange-500/10 text-orange-600 border-orange-200",
+      "Palestra 3": "bg-red-500/10 text-red-600 border-red-200",
+      "Palestra 4": "bg-purple-500/10 text-purple-600 border-purple-200",
+      "Palestra 5": "bg-success/10 text-success border-success/20", 
+      "Palestra 6": "bg-accent/10 text-accent-foreground border-accent/20",
       "Estratégia": "bg-success/10 text-success border-success/20", 
       "Público": "bg-accent/10 text-accent-foreground border-accent/20",
-      "Branding": "bg-orange-500/10 text-orange-600 border-orange-200",
       "Vendas": "bg-red-500/10 text-red-600 border-red-200",
       "Linha Editorial": "bg-purple-500/10 text-purple-600 border-purple-200",
       "Posicionamento": "bg-blue-500/10 text-blue-600 border-blue-200",
@@ -276,10 +280,10 @@ const Resumos = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {livrosIndicados.map((livro, index) => (
-              <article key={index} className="group">
-                <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-border/20">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {livrosIndicados.map((livro, index) => (
+                <article key={index} className="group h-full">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-border/20 h-full flex flex-col">
                   {/* Capa do Livro */}
                   <div className="aspect-[3/4] bg-gradient-to-br from-primary/10 to-accent/10 relative overflow-hidden">
                     {livro.capa ? (
@@ -297,7 +301,7 @@ const Resumos = () => {
                   </div>
 
                   {/* Informações do Livro */}
-                  <div className="p-6">
+                  <div className="p-6 flex-1 flex flex-col">
                     <div className="mb-3">
                       <Badge variant="secondary" className={`${getCategoryColor(livro.categoria)} text-xs`}>
                         {livro.categoria}
@@ -317,7 +321,7 @@ const Resumos = () => {
                     </p>
 
                     {/* Botões de Ação */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mt-auto">
                       {livro.linkCompra && (
                         <a
                           href={livro.linkCompra}
