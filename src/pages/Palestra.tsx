@@ -47,69 +47,74 @@ const MarkdownContent = ({ content }: { content: string }) => {
       return;
     }
 
-    // Seções principais com emoji (🎯, 📘, 🧱, etc.)
-    if (/^[🎯📘🧱💡❓📚📝🔚]\s/.test(trimmedLine)) {
+    // Linha horizontal ---
+    if (trimmedLine === '---') {
       flushList();
-      const [emoji, ...titleParts] = trimmedLine.split(' ');
-      const title = titleParts.join(' ');
+      elements.push(
+        <div key={index} className="w-full h-px bg-gradient-to-r from-primary/30 to-transparent my-12"></div>
+      );
+      return;
+    }
+
+    // Títulos com ## (incluindo markdown)
+    if (trimmedLine.startsWith('## ')) {
+      flushList();
+      const title = trimmedLine.replace('## ', '');
       elements.push(
         <div key={index} className="mt-16 mb-8 first:mt-0">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="text-4xl">{emoji}</span>
-            <h2 className="text-3xl font-bold text-foreground">
-              {title}
-            </h2>
-          </div>
+          <h2 className="text-3xl font-bold text-foreground mb-6" dangerouslySetInnerHTML={{ __html: parseMarkdown(title) }} />
           <div className="w-full h-px bg-gradient-to-r from-primary/50 to-transparent"></div>
         </div>
       );
       return;
     }
 
-    // Subtítulos numerados (📍1., 📍2., etc.)
-    if (/^📍\d+\.\s/.test(trimmedLine)) {
+    // Subtítulos com ###
+    if (trimmedLine.startsWith('### ')) {
       flushList();
-      const title = trimmedLine.replace(/^📍\d+\.\s/, '');
+      const title = trimmedLine.replace('### ', '');
       elements.push(
         <h3 key={index} className="text-2xl font-semibold text-foreground mt-12 mb-6 flex items-center gap-3">
           <span className="w-2 h-2 bg-primary rounded-full"></span>
-          {title}
+          <span dangerouslySetInnerHTML={{ __html: parseMarkdown(title) }} />
         </h3>
       );
       return;
     }
 
-    // Subtítulos simples sem emoji
-    if (trimmedLine.endsWith(':') && !trimmedLine.includes('Persona:') && !trimmedLine.includes('ICP:')) {
-      flushList();
-      const title = trimmedLine.replace(':', '');
-      elements.push(
-        <h4 key={index} className="text-xl font-semibold text-foreground mt-10 mb-4">
-          {title}
-        </h4>
-      );
+    // Lista com bullets *
+    if (trimmedLine.startsWith('* ')) {
+      const item = trimmedLine.replace('* ', '');
+      listItems.push(item);
       return;
     }
 
-    // Items de lista simples
-    if (trimmedLine.match(/^[A-Za-z\s]+:/)) {
+    // Lista numerada
+    if (/^\d+\.\s/.test(trimmedLine)) {
       flushList();
-      const [label, ...descParts] = trimmedLine.split(':');
-      const description = descParts.join(':').trim();
+      const content = trimmedLine.replace(/^\d+\.\s/, '');
       elements.push(
         <div key={index} className="bg-muted/30 p-4 rounded-lg border-l-4 border-primary mb-4">
-          <p className="text-lg">
-            <span className="font-semibold text-foreground">{label}:</span>
-            {description && <span className="text-muted-foreground ml-2" dangerouslySetInnerHTML={{ __html: parseMarkdown(description) }} />}
-          </p>
+          <p className="text-lg text-foreground" dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }} />
         </div>
       );
       return;
     }
 
-    // Listas normais
-    if (trimmedLine.match(/^[A-Za-z]/)) {
-      listItems.push(trimmedLine);
+    // Parágrafos com **Pergunta:** e **Resposta:**
+    if (trimmedLine.startsWith('**Pergunta:**') || trimmedLine.startsWith('**Resposta:**')) {
+      flushList();
+      elements.push(
+        <p key={index} className="mb-4 text-foreground leading-relaxed text-lg" 
+           dangerouslySetInnerHTML={{ __html: parseMarkdown(trimmedLine) }} />
+      );
+      return;
+    }
+
+    // Listas com indentação (sublistas)
+    if (trimmedLine.match(/^\s{2,}\*/)) {
+      const item = trimmedLine.replace(/^\s*\*\s/, '');
+      listItems.push(`&nbsp;&nbsp;&nbsp;&nbsp;• ${item}`);
       return;
     }
 
@@ -145,161 +150,142 @@ export default function Palestra() {
       image: "/lovable-uploads/17e9dc7e-85aa-43f2-bdd3-b74a55a72ce9.png",
       isNew: true,
       fullContent: `
-🎯 Objetivos de Aprendizagem
-Compreender a diferença entre persona e ICP (Ideal Customer Profile)
+## **🎯 Objetivos de Aprendizagem**
 
-Analisar como a clareza de persona impacta todo o funil de marketing e vendas
+* **Compreender** a diferença entre *persona* e *ICP (Ideal Customer Profile)*
+* **Analisar** como a clareza de persona impacta todo o funil de marketing e vendas
+* **Aplicar** o conhecimento de ICP para desenvolver linha editorial estratégica
+* **Identificar** elementos de autoridade, prova social e conexão emocional em conteúdos
+* **Explorar** como adaptar soluções às dores e desejos reais da audiência
 
-Aplicar o conhecimento de ICP para desenvolver linha editorial estratégica
+---
 
-Identificar elementos de autoridade, prova social e conexão emocional em conteúdos
+## **📘 Conceitos-Chave**
 
-Explorar como adaptar soluções às dores e desejos reais da audiência
+1. **Persona**: Representação do público-alvo de forma ampla (ex: mulheres que querem emagrecer).
+2. **ICP (Ideal Customer Profile)**: Subgrupo dentro da persona que representa o cliente ideal — quem executa, aplica e valoriza a solução.
+3. **Linha editorial estratégica**: Planejamento de conteúdo que inclui *autoridade*, *prova social*, *conexão emocional*, *atração* e *quebra de objeções*.
+4. **Prova social**: Demonstração de resultados reais (ex: faturamento, depoimentos).
+5. **Autoridade**: Reconhecimento de mercado (ex: palestrar, estar em masterminds).
+6. **Nível de consciência**: Grau de entendimento que o cliente tem sobre seus problemas e possíveis soluções.
+7. **Custo de aquisição**: Tempo ou dinheiro investido para trazer um lead qualificado até a venda.
+8. **Funil de vendas**: Jornada completa desde o primeiro contato com a marca até a conversão.
+9. **Conteúdo estratégico**: Produções que educam, conectam e conduzem o lead na jornada de compra.
+10. **Objeções**: Barreiras mentais do lead que impedem a compra.
 
-📘 Conceitos-Chave
-Persona: Representação do público-alvo de forma ampla (ex: mulheres que querem emagrecer).
+---
 
-ICP (Ideal Customer Profile): Subgrupo dentro da persona que representa o cliente ideal — quem executa, aplica e valoriza a solução.
+## **🧱 Conteúdo Principal**
 
-Linha editorial estratégica: Planejamento de conteúdo que inclui autoridade, prova social, conexão emocional, atração e quebra de objeções.
+### **📍1. O passo zero de qualquer negócio**
 
-Prova social: Demonstração de resultados reais (ex: faturamento, depoimentos).
+* Todo negócio nasce para **resolver a dor de alguém** — não apenas gerar dinheiro.
+* Sem entender **quem é essa pessoa**, não se constrói um funil escalável.
+* Mesmo empresas de 7 dígitos não têm clareza sobre sua persona/ICP.
 
-Autoridade: Reconhecimento de mercado (ex: palestrar, estar em masterminds).
+### **📍2. Persona vs. ICP**
 
-Nível de consciência: Grau de entendimento que o cliente tem sobre seus problemas e possíveis soluções.
+* Persona: visão ampla e demográfica.
+* ICP: cliente ideal com comportamentos e características específicas.
+* Estratégia: **comece pela persona**, mas **afunile para o ICP** na hora da venda.
 
-Custo de aquisição: Tempo ou dinheiro investido para trazer um lead qualificado até a venda.
+### **📍3. Funil, Zoom e custo de reunião**
 
-Funil de vendas: Jornada completa desde o primeiro contato com a marca até a conversão.
+* Fazer reuniões com leads desalinhados gera **custo alto e desperdício de tempo**.
+* Exemplo: entrar no Zoom para vender algo de R$ 50 mil para quem só pode pagar R$ 5 mil.
+* Solução: **segmentar bem antes de chamar para a reunião**.
 
-Conteúdo estratégico: Produções que educam, conectam e conduzem o lead na jornada de compra.
+### **📍4. Linha editorial que vende**
 
-Objeções: Barreiras mentais do lead que impedem a compra.
+* Precisa conter:
+  * *Autoridade*
+  * *Prova social*
+  * *Conexão emocional*
+  * *Quebra de objeção*
+  * *Atração*
 
-🧱 Conteúdo Principal
-📍1. O passo zero de qualquer negócio
-Todo negócio nasce para resolver a dor de alguém — não apenas gerar dinheiro.
+* Exemplo: print de vendas = prova social, não autoridade.
+* Autoridade = palestra, evento, mentoria, estar entre os grandes nomes do nicho.
 
-Sem entender quem é essa pessoa, não se constrói um funil escalável.
+### **📍5. Produção de conteúdo como parte da estratégia**
 
-Mesmo empresas de 7 dígitos não têm clareza sobre sua persona/ICP.
+* **Produção de conteúdo não é um extra** – é o coração da atração e do crescimento.
+* **Volume e consistência** constroem autoridade e presença.
+* "Meu trabalho envolve criar conteúdo" — visão de mentalidade profissional.
 
-📍2. Persona vs. ICP
-Persona: visão ampla e demográfica.
+### **📍6. Ferramentas de IA e GPT personalizado**
 
-ICP: cliente ideal com comportamentos e características específicas.
+* GPTs personalizados têm **limite de uso via OpenAI**.
+Para escala, usar **API da OpenAI** com controle de tokens.
+* Exemplo de uso: GPT criado para mapear matriz de ICP com profundidade comportamental.
 
-Estratégia: comece pela persona, mas afunile para o ICP na hora da venda.
+### **📍7. Universo do cliente e escuta ativa**
 
-📍3. Funil, Zoom e custo de reunião
-Fazer reuniões com leads desalinhados gera custo alto e desperdício de tempo.
+* Pergunta central: **"No que meu cliente pensa ao deitar a cabeça no travesseiro?"**
+* Mapear as *dores, desejos, desafios emocionais e cotidianos* do lead.
+* Escuta ativa do cliente = base da criação de produtos e otimização da entrega.
 
-Exemplo: entrar no Zoom para vender algo de R$ 50 mil para quem só pode pagar R$ 5 mil.
+### **📍8. Olhar para a concorrência**
 
-Solução: segmentar bem antes de chamar para a reunião.
+* **Benchmark** dos 3 principais players do nicho.
+* Biblioteca de anúncios, tipo de produtos, abordagem de funil.
+* Não para copiar, mas para entender o que já funciona no mercado.
 
-📍4. Linha editorial que vende
-Precisa conter:
+---
 
-Autoridade
+## **💡 Exemplos e Casos Práticos**
 
-Prova social
+* **Mentoria de IA**:
+  * Persona ampla: pessoas que querem lucrar com IA
+  * ICP: executores, disciplinados, que sabem produzir conteúdo próprio
 
-Conexão emocional
+* **IA de Vendas**:
+  * Concorrentes já existiam, mas entregavam de forma genérica
+  * Solução criada com foco em personalização e funil completo
 
-Quebra de objeção
+* **Segmentação de emagrecimento**:
+  * Persona: mulheres que querem emagrecer
+  * ICP: mulheres de 20 a 40 anos que rejeitam dietas restritivas
 
-Atração
+---
 
-Exemplo: print de vendas = prova social, não autoridade.
+## **❓ Dúvidas e Esclarecimentos**
 
-Autoridade = palestra, evento, mentoria, estar entre os grandes nomes do nicho.
+**Pergunta:** Como saber se um conteúdo gera autoridade ou não?
+**Resposta:** Depende da percepção da sua ICP. Print pode funcionar para alguns, palestras para outros.
 
-📍5. Produção de conteúdo como parte da estratégia
-Produção de conteúdo não é um extra – é o coração da atração e do crescimento.
+**Pergunta:** O que é autoridade para meu público?
+**Resposta:** Depende do nicho. Precisa ser validado com base no comportamento do ICP, não por intuição.
 
-Volume e consistência constroem autoridade e presença.
+---
 
-"Meu trabalho envolve criar conteúdo" — visão de mentalidade profissional.
+## **📚 Recursos Complementares**
 
-📍6. Ferramentas de IA e GPT personalizado
-GPTs personalizados têm limite de uso via OpenAI.
+* **GPT personalizado da Ana Paula** para mapeamento de ICP (baseado na metodologia da empresa)
+* Recomendação: acessar **biblioteca de anúncios do Meta Ads** dos concorrentes
+* Leitura sugerida (implícita): *Building a StoryBrand*, *Invisible Selling Machine*, *Customer Avatar Worksheet*
 
-Para escala, usar API da OpenAI com controle de tokens.
+---
 
-Exemplo de uso: GPT criado para mapear matriz de ICP com profundidade comportamental.
+## **📝 Atividades e Avaliações**
 
-📍7. Universo do cliente e escuta ativa
-Pergunta central: "No que meu cliente pensa ao deitar a cabeça no travesseiro?"
+* **Exercício sugerido:**
+  1. Esboçar persona atual
+  2. Identificar ICP
+  3. Mapear elementos de linha editorial atual
+  4. Criar pelo menos um conteúdo para cada tipo (autoridade, prova, emocional, objeção)
 
-Mapear as dores, desejos, desafios emocionais e cotidianos do lead.
+* **Projeto longo:** Criar planejamento editorial mensal baseado na matriz de ICP
 
-Escuta ativa do cliente = base da criação de produtos e otimização da entrega.
+---
 
-📍8. Olhar para a concorrência
-Benchmark dos 3 principais players do nicho.
+## **🔚 Síntese Final**
 
-Biblioteca de anúncios, tipo de produtos, abordagem de funil.
-
-Não para copiar, mas para entender o que já funciona no mercado.
-
-💡 Exemplos e Casos Práticos
-Mentoria de IA:
-
-Persona ampla: pessoas que querem lucrar com IA
-
-ICP: executores, disciplinados, que sabem produzir conteúdo próprio
-
-IA de Vendas:
-
-Concorrentes já existiam, mas entregavam de forma genérica
-
-Solução criada com foco em personalização e funil completo
-
-Segmentação de emagrecimento:
-
-Persona: mulheres que querem emagrecer
-
-ICP: mulheres de 20 a 40 anos que rejeitam dietas restritivas
-
-❓ Dúvidas e Esclarecimentos
-Pergunta: Como saber se um conteúdo gera autoridade ou não?
-Resposta: Depende da percepção da sua ICP. Print pode funcionar para alguns, palestras para outros.
-
-Pergunta: O que é autoridade para meu público?
-Resposta: Depende do nicho. Precisa ser validado com base no comportamento do ICP, não por intuição.
-
-📚 Recursos Complementares
-GPT personalizado da Ana Paula para mapeamento de ICP (baseado na metodologia da empresa)
-
-Recomendação: acessar biblioteca de anúncios do Meta Ads dos concorrentes
-
-Leitura sugerida (implícita): Building a StoryBrand, Invisible Selling Machine, Customer Avatar Worksheet
-
-📝 Atividades e Avaliações
-Exercício sugerido:
-
-Esboçar persona atual
-
-Identificar ICP
-
-Mapear elementos de linha editorial atual
-
-Criar pelo menos um conteúdo para cada tipo (autoridade, prova, emocional, objeção)
-
-Projeto longo: Criar planejamento editorial mensal baseado na matriz de ICP
-
-🔚 Síntese Final
-O negócio começa com clareza de persona e ICP — sem isso, não escala.
-
-Produzir conteúdo é estratégia central, não secundária.
-
-Linha editorial deve ser direcionada e balanceada entre autoridade, prova, emoção e objeções.
-
-O cliente ideal precisa ser ouvido constantemente, e os produtos devem nascer dessa escuta.
-
-Ferramentas de IA são úteis, mas exigem entendimento técnico para escalar.
+1. O **negócio começa com clareza de persona e ICP** — sem isso, não escala.
+2. **Produzir conteúdo é estratégia central**, não secundária.
+3. **Linha editorial deve ser direcionada e balanceada** entre autoridade, prova, emoção e objeções.
+4. O **cliente ideal precisa ser ouvido constantemente**, e os produtos devem nascer dessa escuta.
+5. **Ferramentas de IA são úteis**, mas exigem entendimento técnico para escalar.
       `
     },
     {
