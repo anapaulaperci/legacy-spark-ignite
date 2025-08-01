@@ -119,6 +119,57 @@ const Resumos = () => {
     }
   ];
 
+  const livrosIndicados = [
+    {
+      titulo: "Posicionamento: A Batalha por Sua Mente",
+      autor: "Al Ries e Jack Trout",
+      categoria: "Posicionamento",
+      descricao: "O livro clássico que define os fundamentos do posicionamento de marca e como conquistar um espaço na mente do consumidor.",
+      capa: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop&crop=center",
+      linkCompra: "https://www.amazon.com.br/s?k=posicionamento+batalha+mente"
+    },
+    {
+      titulo: "Content Inc.",
+      autor: "Joe Pulizzi",
+      categoria: "Produção de Conteúdo",
+      descricao: "Como construir um negócio de milhões de dólares sem dinheiro de marketing, apenas criando conteúdo que as pessoas querem.",
+      capa: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=400&fit=crop&crop=center",
+      linkCompra: "https://www.amazon.com.br/s?k=content+inc+joe+pulizzi"
+    },
+    {
+      titulo: "Storybrand",
+      autor: "Donald Miller",
+      categoria: "Branding",
+      descricao: "Aprenda a clarificar sua mensagem para que os clientes escutem usando o poder das histórias.",
+      capa: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=400&fit=crop&crop=center",
+      linkCompra: "https://www.amazon.com.br/s?k=storybrand+donald+miller"
+    },
+    {
+      titulo: "Marketing de Conteúdo",
+      autor: "Rafael Rez",
+      categoria: "Linha Editorial",
+      descricao: "A moeda do século XXI: como criar conteúdo relevante para conquistar audiências e gerar resultados.",
+      capa: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=300&h=400&fit=crop&crop=center",
+      linkCompra: "https://www.amazon.com.br/s?k=marketing+conteudo+rafael+rez"
+    },
+    {
+      titulo: "Dotcom Secrets",
+      autor: "Russell Brunson",
+      categoria: "Vendas",
+      descricao: "Os funis de vendas online que transformaram uma empresa iniciante em um império de oito dígitos.",
+      capa: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=400&fit=crop&crop=center",
+      linkCompra: "https://www.amazon.com.br/s?k=dotcom+secrets+russell+brunson"
+    },
+    {
+      titulo: "Purple Cow",
+      autor: "Seth Godin", 
+      categoria: "Estratégia",
+      descricao: "Transforme seu negócio sendo notável. Aprenda por que ser seguro é arriscado e ser arriscado é seguro.",
+      capa: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop&crop=center",
+      linkCompra: "https://www.amazon.com.br/s?k=purple+cow+seth+godin"
+    }
+  ];
+
   const getCategoryColor = (category: string) => {
     const colors = {
       "Fundamentos": "bg-primary/10 text-primary border-primary/20",
@@ -126,7 +177,9 @@ const Resumos = () => {
       "Público": "bg-accent/10 text-accent-foreground border-accent/20",
       "Branding": "bg-orange-500/10 text-orange-600 border-orange-200",
       "Vendas": "bg-red-500/10 text-red-600 border-red-200",
-      "Linha Editorial": "bg-purple-500/10 text-purple-600 border-purple-200"
+      "Linha Editorial": "bg-purple-500/10 text-purple-600 border-purple-200",
+      "Posicionamento": "bg-blue-500/10 text-blue-600 border-blue-200",
+      "Produção de Conteúdo": "bg-green-500/10 text-green-600 border-green-200"
     };
     return colors[category as keyof typeof colors] || "bg-muted text-muted-foreground border-muted";
   };
@@ -240,6 +293,88 @@ const Resumos = () => {
             </article>
           ))}
 
+        </div>
+      </div>
+
+      {/* Seção de Livros Indicados */}
+      <div className="border-t border-border/40 bg-muted/30">
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-normal text-foreground mb-4 leading-tight">
+              Livros <span className="italic">Indicados</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Uma curadoria especial de livros essenciais para aprofundar seus conhecimentos em posicionamento digital
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {livrosIndicados.map((livro, index) => (
+              <article key={index} className="group">
+                <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-border/20">
+                  {/* Capa do Livro */}
+                  <div className="aspect-[3/4] bg-gradient-to-br from-primary/10 to-accent/10 relative overflow-hidden">
+                    {livro.capa ? (
+                      <img 
+                        src={livro.capa} 
+                        alt={`Capa do livro ${livro.titulo}`}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="text-6xl text-primary/30">📚</div>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+
+                  {/* Informações do Livro */}
+                  <div className="p-6">
+                    <div className="mb-3">
+                      <Badge variant="secondary" className={`${getCategoryColor(livro.categoria)} text-xs`}>
+                        {livro.categoria}
+                      </Badge>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-foreground mb-2 leading-tight group-hover:text-primary transition-colors">
+                      {livro.titulo}
+                    </h3>
+                    
+                    <p className="text-sm text-muted-foreground mb-2 font-medium">
+                      por {livro.autor}
+                    </p>
+                    
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
+                      {livro.descricao}
+                    </p>
+
+                    {/* Botões de Ação */}
+                    <div className="flex gap-2">
+                      {livro.linkCompra && (
+                        <a
+                          href={livro.linkCompra}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full"
+                        >
+                          <Button variant="outline" size="sm" className="w-full text-xs">
+                            📖 Ver Livro
+                          </Button>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Call to Action */}
+          <div className="mt-12 text-center">
+            <p className="text-muted-foreground text-sm">
+              <strong>Dica:</strong> Estes livros foram cuidadosamente selecionados para complementar o conteúdo da imersão
+            </p>
+          </div>
         </div>
       </div>
     </div>
