@@ -22,7 +22,7 @@ const IA = () => {
       color: "bg-gradient-to-br from-purple-500 to-purple-600",
       shadowColor: "shadow-purple-500/25",
       hoverColor: "hover:shadow-purple-500/40",
-      gptLink: "https://chatgpt.com/g/g-688d0824d59c8191a293fae3a80b3063-linha-editorial"
+      gptLink: "https://chatgpt.com/g/g-linha-editorial" // Você precisará fornecer este link
     },
     {
       id: "estudos-imersao",
@@ -37,11 +37,11 @@ const IA = () => {
   ];
 
   const handleAIActivation = (ai: any) => {
-    if (ai.id === 'matriz-icp' || ai.id === 'linha-editorial') {
+    if (ai.id === 'matriz-icp') {
       // Abrir o link do GPT personalizado em uma nova janela
       window.open(ai.gptLink, '_blank', 'noopener,noreferrer');
     } else {
-      // Para Estudos, mostrar mensagem
+      // Para Linha Editorial e Estudos, mostrar mensagem
       alert('Faremos a IA juntos ao final do dia.');
     }
   };

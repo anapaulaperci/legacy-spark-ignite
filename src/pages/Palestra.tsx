@@ -544,17 +544,6 @@ Traz **clareza** para designer, social media, vídeos, pitch de vendas e muito m
                   </a>
                 </>
               )}
-              
-              {/* Contact Links for other instructors */}
-              {['Ana', 'Melina', 'Sabrina', 'Ana Paula Perci'].includes(resumo.author) && (
-                <>
-                  <span className="text-muted-foreground">·</span>
-                  <span className="inline-flex items-center gap-2 text-primary text-sm font-medium">
-                    <MessageCircle className="w-4 h-4" />
-                    Falar com {resumo.author.split(' ')[0]}
-                  </span>
-                </>
-              )}
             </div>
           </div>
         </header>

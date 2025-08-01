@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { BookOpen, User, Play, Star, ArrowRight, Download, MessageCircle } from "lucide-react";
+import { BookOpen, User, Play, Star, ArrowRight, Download } from "lucide-react";
 
 const Resumos = () => {
   const navigate = useNavigate();
@@ -186,17 +186,6 @@ const Resumos = () => {
                         <User className="h-3 w-3 text-primary" />
                       </div>
                       <span className="text-sm text-muted-foreground">{resumo.author}</span>
-                      {resumo.author === 'Victor' && (
-                        <a
-                          href="https://wa.me/41998927030"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-primary hover:text-primary-glow transition-colors text-xs"
-                        >
-                          <MessageCircle className="w-3 h-3" />
-                          Falar com Victor
-                        </a>
-                      )}
                     </div>
                     <span className="text-sm text-muted-foreground">·</span>
                     <Badge variant="secondary" className={`${getCategoryColor(resumo.category)} text-xs`}>
