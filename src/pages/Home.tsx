@@ -88,49 +88,37 @@ const Home = () => {
       </section>
 
       {/* Speakers Section */}
-      <section className="py-16 bg-secondary/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-              Palestrantes
-            </h2>
-          </div>
+      <section className="speakers-section">
+        <div className="section-header">
+          <h2 className="section-title">Palestrantes</h2>
+        </div>
 
-          {/* Speakers Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-            {speakers.map((speaker, index) => (
-              <a 
-                key={index}
-                href={speaker.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group cursor-pointer"
-              >
-                <div className="bg-card rounded-2xl p-8 text-center shadow-card hover:shadow-elegant transition-all duration-300 hover:transform hover:scale-105 border border-border/50">
-                  {/* Speaker Image */}
-                  <div className="relative mb-6">
-                    <div className="w-24 h-24 mx-auto rounded-full overflow-hidden shadow-lg">
-                      <img 
-                        src={speaker.image}
-                        alt={speaker.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    </div>
-                  </div>
-                  
-                  {/* Speaker Info */}
-                  <div className="space-y-2">
-                    <h3 className="font-bold text-xl text-foreground group-hover:text-primary transition-colors duration-300">
-                      {speaker.name}
-                    </h3>
-                    <p className="text-muted-foreground text-sm font-medium">
-                      {speaker.description}
-                    </p>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
+        {/* Speakers Grid */}
+        <div className="speakers-grid">
+          {speakers.map((speaker, index) => (
+            <a 
+              key={index}
+              href={speaker.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="speaker-card"
+            >
+              {/* Speaker Image */}
+              <img 
+                src={speaker.image}
+                alt={speaker.name}
+                className="speaker-image"
+              />
+              
+              {/* Speaker Info */}
+              <h3 className="speaker-name">
+                {speaker.name}
+              </h3>
+              <p className="speaker-role">
+                {speaker.description}
+              </p>
+            </a>
+          ))}
         </div>
       </section>
 

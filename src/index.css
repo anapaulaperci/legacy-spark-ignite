@@ -117,6 +117,79 @@ All colors MUST be HSL.
   }
 }
 
+/* Configuração Visual - Seção Speakers */
+@layer components {
+  .speakers-section {
+    @apply py-20 px-10 bg-white;
+  }
+
+  .section-header {
+    @apply flex justify-between items-center mb-15 max-w-7xl mx-auto;
+  }
+
+  .section-title {
+    @apply text-5xl font-bold text-gray-900 tracking-tight;
+  }
+
+  .speakers-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-10 max-w-7xl mx-auto;
+  }
+
+  .speaker-card {
+    @apply text-center p-5 cursor-pointer transition-transform duration-300 hover:-translate-y-1;
+  }
+
+  .speaker-image {
+    @apply w-48 h-48 rounded-full mx-auto mb-6 object-cover border-4 border-white shadow-lg transition-all duration-300;
+  }
+
+  .speaker-card:hover .speaker-image {
+    @apply scale-105 shadow-xl;
+  }
+
+  .speaker-name {
+    @apply text-xl font-semibold text-gray-900 mb-1;
+  }
+
+  .speaker-role {
+    @apply text-sm text-gray-600 font-medium;
+  }
+
+  .cta-button {
+    @apply bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-lg font-medium tracking-wide transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg;
+  }
+
+  /* Responsividade Tablet */
+  @media (max-width: 768px) {
+    .speakers-grid {
+      @apply grid-cols-2 gap-8;
+    }
+    
+    .section-title {
+      @apply text-4xl;
+    }
+    
+    .speaker-image {
+      @apply w-40 h-40;
+    }
+  }
+
+  /* Responsividade Mobile */
+  @media (max-width: 480px) {
+    .speakers-grid {
+      @apply grid-cols-1 gap-10;
+    }
+    
+    .section-header {
+      @apply flex-col gap-5 text-center;
+    }
+    
+    .cta-button {
+      @apply w-full;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
