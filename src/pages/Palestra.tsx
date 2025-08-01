@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { ArrowLeft, Star, User, Instagram, BookOpen } from 'lucide-react';
+import { ArrowLeft, Star, User, Instagram, BookOpen, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 // Função para processar markdown
@@ -525,6 +525,22 @@ Traz **clareza** para designer, social media, vídeos, pitch de vendas e muito m
                   >
                     <Instagram className="w-4 h-4" />
                     Falar com Camilo
+                  </a>
+                </>
+              )}
+              
+              {/* WhatsApp Link for Victor */}
+              {resumo.author === 'Victor' && (
+                <>
+                  <span className="text-muted-foreground">·</span>
+                  <a
+                    href="https://wa.me/41998927030"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-primary hover:text-primary-glow transition-colors text-sm font-medium"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Falar com Victor
                   </a>
                 </>
               )}
