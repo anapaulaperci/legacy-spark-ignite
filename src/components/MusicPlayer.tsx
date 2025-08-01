@@ -11,7 +11,7 @@ import {
   VolumeX,
   Music,
   Heart,
-  MoreVertical,
+  
   Repeat,
   Shuffle
 } from "lucide-react";
@@ -103,14 +103,9 @@ const MusicPlayer = () => {
       <Card className="border-purple-700/50 text-white shadow-2xl backdrop-blur-sm overflow-hidden rounded-3xl" style={{ backgroundColor: '#110A1D' }}>
         {/* Header */}
         <div className="px-3 py-2 border-b border-purple-700/30">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Music className="h-3 w-3 text-purple-300" />
-              <span className="font-medium text-xs">Study Playlist</span>
-            </div>
-            <Button variant="ghost" size="sm" className="text-purple-300 hover:text-white hover:bg-purple-700/50 h-6 w-6 p-0">
-              <MoreVertical className="h-3 w-3" />
-            </Button>
+          <div className="flex items-center gap-2">
+            <Music className="h-3 w-3 text-purple-300" />
+            <span className="font-medium text-xs">Study Playlist</span>
           </div>
         </div>
 
