@@ -489,7 +489,10 @@ const FocusWave: React.FC = () => {
 
             {/* Album Art / Visualizer */}
             <div className="w-full max-w-72 h-72 mx-auto mb-8 bg-muted/20 backdrop-blur-sm border border-border rounded-2xl flex items-center justify-center">
-              <div className="flex items-center gap-1">
+              <div className="text-8xl mb-4">
+                {presets[currentPreset].icon}
+              </div>
+              <div className="absolute bottom-4 flex items-center gap-1">
                 {[...Array(10)].map((_, i) => (
                   <div
                     key={i}
@@ -539,9 +542,9 @@ const FocusWave: React.FC = () => {
                 className="p-4 bg-gradient-to-r from-primary to-accent hover:shadow-glow rounded-full transition-all hover:scale-105"
               >
                 {isPlaying ? (
-                  <Pause className="w-8 h-8" />
+                  <Pause className="w-8 h-8 text-white" />
                 ) : (
-                  <Play className="w-8 h-8 ml-1" />
+                  <Play className="w-8 h-8 ml-1 text-white" />
                 )}
               </button>
               
