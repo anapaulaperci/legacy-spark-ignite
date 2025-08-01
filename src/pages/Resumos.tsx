@@ -113,7 +113,7 @@ const Resumos = () => {
       description: "Como criar uma linha editorial consistente utilizando inteligência artificial para otimizar seu conteúdo.",
       author: "Ana Paula Perci",
       category: "Linha Editorial",
-      image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop&crop=center",
+      image: "/lovable-uploads/3b0d1df3-7102-4c52-ba2f-eb2338f927d7.png",
       rating: 4.6,
       isNew: false
     }
@@ -270,23 +270,23 @@ const Resumos = () => {
 
       {/* Seção de Livros Indicados */}
       <div className="border-t border-border/40 bg-gradient-to-br from-muted/30 via-background to-muted/20">
-        <div className="max-w-6xl mx-auto px-6 py-20">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+        <div className="max-w-5xl mx-auto px-6 py-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
               Livros <span className="italic bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">Indicados</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Uma curadoria especial de livros essenciais para aprofundar seus conhecimentos em posicionamento digital
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {livrosIndicados.map((livro, index) => (
               <article key={index} className="group h-full">
-                <div className="relative bg-gradient-to-br from-white via-white to-gray-50/50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-border/30 h-full flex flex-col group-hover:scale-[1.02] group-hover:-translate-y-1">
+                <div className="relative bg-gradient-to-br from-white via-white to-gray-50/50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border/30 h-full flex flex-col group-hover:scale-[1.01] group-hover:-translate-y-0.5">
                   
                   {/* Gradient overlay effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                   
                   {/* Capa do Livro */}
                   <div className="relative aspect-[3/4] bg-gradient-to-br from-muted/30 to-muted/60 overflow-hidden">
@@ -294,7 +294,7 @@ const Resumos = () => {
                       <img 
                         src={livro.capa} 
                         alt={`Capa do livro ${livro.titulo}`}
-                        className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
@@ -306,7 +306,7 @@ const Resumos = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     
                     {/* Category badge floating */}
-                    <div className="absolute top-4 left-4 z-10">
+                    <div className="absolute top-3 left-3 z-10">
                       <Badge variant="secondary" className={`${getCategoryColor(livro.categoria)} text-xs font-semibold backdrop-blur-sm bg-white/90 border-white/50 shadow-lg`}>
                         {livro.categoria}
                       </Badge>
@@ -314,9 +314,9 @@ const Resumos = () => {
                   </div>
 
                   {/* Informações do Livro */}
-                  <div className="relative p-8 flex-1 flex flex-col space-y-4">
+                  <div className="relative p-6 flex-1 flex flex-col space-y-3">
                     
-                    <h3 className="text-xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                    <h3 className="text-lg font-bold text-foreground leading-tight group-hover:text-primary transition-colors duration-300 line-clamp-2">
                       {livro.titulo}
                     </h3>
                     
@@ -329,7 +329,7 @@ const Resumos = () => {
                     </p>
 
                     {/* Botão de Ação */}
-                    <div className="pt-4 mt-auto">
+                    <div className="pt-3 mt-auto">
                       {livro.linkCompra && (
                         <a
                           href={livro.linkCompra}
@@ -338,7 +338,7 @@ const Resumos = () => {
                           className="block w-full"
                         >
                           <Button 
-                            className="w-full bg-primary hover:bg-primary-glow text-primary-foreground font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:translate-y-0 transform translate-y-1"
+                            className="w-full bg-primary hover:bg-primary-glow text-primary-foreground font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
                           >
                             <span className="flex items-center justify-center gap-2">
                               📖 <span>Ver Livro</span>
@@ -354,7 +354,7 @@ const Resumos = () => {
           </div>
 
           {/* Call to Action aprimorado */}
-          <div className="mt-16 text-center">
+          <div className="mt-12 text-center">
             <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full border border-primary/20">
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
               <p className="text-muted-foreground text-sm font-medium">
