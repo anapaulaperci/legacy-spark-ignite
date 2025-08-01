@@ -21,7 +21,7 @@ const Palestra = () => {
       description: "Como identificar e analisar seus concorrentes para criar vantagens competitivas sustentáveis.",
       author: "Ana Paula Perci", 
       category: "Estratégia",
-      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=200&fit=crop&crop=center",
+      image: "/lovable-uploads/2fc804ca-797b-447a-baad-a3ef8205e1f1.png",
       isNew: false
     },
     {
