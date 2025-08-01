@@ -8,12 +8,229 @@ const Palestra = () => {
   const resumos = [
     {
       id: 1,
-      title: "Abertura",
-      description: "Bem-vindos à Imersão Posicionamento 2024! Uma jornada transformadora para acelerar sua presença digital.",
-      author: "Ana Paula Perci",
+      title: "Construção de Negócios Digitais e Marca Pessoal - Estratégias Completas",
+      description: "Palestra de abertura da Imersão de Posicionamento com foco em diferenciação entre persona e ICP, construção de autoridade e linha editorial estratégica.",
+      author: "Ana",
       category: "Fundamentos",
       image: "/lovable-uploads/17e9dc7e-85aa-43f2-bdd3-b74a55a72ce9.png",
-      isNew: true
+      isNew: true,
+      fullContent: `
+## Informações da Palestra
+**Data:** 08/01/2025  
+**Horário:** 10h da manhã  
+**Contexto:** Imersão de Posicionamento com uso de aplicativo próprio para anotações
+
+## Objetivos de Aprendizagem
+
+- Dominar a diferenciação entre persona, público-alvo e matriz ICP
+- Identificar e criar elementos de autoridade específicos para cada nicho
+- Construir linha editorial estratégica que eleva nível de consciência
+- Implementar processo contínuo de escuta e adaptação do negócio
+- Conectar profundamente conteúdo com universo emocional do cliente
+
+## Conceitos-Chave Aprofundados
+
+### 1. Persona vs ICP - A Diferença Crucial
+
+**Persona:** Avatar geral com dados demográficos (onde mora, gênero, idade, filhos, CLT/empresário)
+
+**ICP (Ideal Customer Profile):** Conjunto específico de comportamentos ideais
+
+**Exemplo Prático - Mentoria IA:**
+- **Persona:** "Toda pessoa querendo faturar 30-100k com IA"
+- **ICP:** "Executora, não mimizenta, visão longo prazo, disciplinada, produz conteúdo"
+
+### 2. Elementos da Linha Editorial
+
+Ana enfatizou que muitos confundem os elementos:
+
+**Autoridade ≠ Prova Social**
+
+- **Autoridade:** "Palestrar em mastermind, fazer eventos, estudar constantemente"
+- **NÃO é autoridade:** "Prints de faturamento" (isso é prova social)
+
+**Prova Social:** Demonstração tangível de resultados
+- "Se digo que você vai faturar X, olha que eu fiz"
+- Cases de clientes, transformações documentadas
+
+**Quebra de Objeção:** Atacar medos específicos
+- "Se acham IA complexo, mostro fazendo em 5 minutos"
+- "Se querem dieta não rigorosa, mostro minha metodologia flexível"
+
+**Conexão Emocional:** Entrar no universo mental do cliente
+
+### 3. Custo de Venda e Assertividade
+
+- Custo de reunião Zoom está altíssimo
+- Não pode entrar em reunião com lead de 5k querendo vender solução de 50k
+- Afunilar comunicação = diminuir custo de venda
+
+## Conteúdo Principal Expandido
+
+### Seção 1: O Problema das Empresas Grandes
+
+Ana revelou insights de suas consultorias:
+- Empresas de 7 dígitos sem clareza de persona
+- Chegam em platô e não conseguem escalar
+- "Como escalo se não tenho clareza do meu funil?"
+- Funil começa no entendimento profundo da matriz ICP
+
+### Seção 2: O Exercício do Travesseiro
+
+**Pergunta fundamental:** "Quando seu lead coloca a cabeça no travesseiro, no que pensa?"
+
+- Se está preocupado, pensa na preocupação
+- Se angustiado, pensa no problema complexo
+- Esse é o momento que abre celular e vê seu anúncio
+- "A pessoa que acorda com preguiça e abre Instagram"
+
+**Para empresas B2B:**
+- Processos organizados?
+- Ganham quanto poderiam?
+- Time está feliz?
+- Gestor satisfeito?
+
+### Seção 3: Análise Competitiva Inteligente
+
+Ana compartilhou método não convencional:
+- "O que top 3 do nicho estão fazendo?"
+- "Se é top e faz algo, tem insight valioso"
+- Analisar biblioteca de anúncios
+- "Se investe dinheiro no Facebook, tem potencial"
+- Não copiar, mas entender padrões de sucesso
+
+### Seção 4: O Processo de Escuta Contínua
+
+**Filosofia central:** "Negócio digital é processo de escuta"
+
+- Escutar o que cliente diz que quer
+- Identificar dificuldades relacionadas à solução
+- Descobrir o que tornaria vida mais fácil
+- "Nossa empresa existe para tornar vida do cliente mais fácil"
+
+**Exemplo do time de IA:**
+- Time jovem queria criar aplicativo complexo
+- Ana: "Cliente prefere WhatsApp, não complique"
+- "Empresa não existe para satisfazer o que EU preciso"
+
+### Seção 5: Produção de Conteúdo Estratégico
+
+**Problema comum:** "Produzo muito conteúdo mas não vende"
+
+- Conteúdo fala com todo mundo = não gera conexão
+- Sem elementos de autoridade para público específico
+- Linha editorial fragmentada não eleva consciência
+
+**Solução - Consistência dos Elementos:**
+- Autoridade consistente
+- Prova social regular
+- Quebra de objeções recorrente
+- Conexão emocional constante
+- Elementos de atração
+
+### Seção 6: Nível de Consciência e Volume
+
+Ana compartilhou insight do mastermind:
+- "Nível de consciência sobre IA ainda muito baixo"
+- "Estamos numa bolha"
+- **Solução:** Conteúdo em volume para educar mercado
+- "Sem volume, não atrai gente suficiente (exceto ticket muito alto)"
+
+## Exemplos e Casos Práticos Detalhados
+
+### Case IA de Vendas - Processo de Inovação
+
+**Análise:** "Já tinha bastante gente fazendo"
+
+**Diferencial identificado:**
+- Outros não olhavam funil completo
+- Falta de personalização
+- Soluções incompletas
+
+**Solução Ana:** Modelar para necessidades reais  
+**Melhoria contínua:** "Refazendo para otimizar baseado em feedback"
+
+### Exemplo Nicho Financeiro
+
+- Consultoria com empresa do setor
+- "Acorda sem saber se Trump vai mexer no GPS"
+- Necessidade de adaptar comunicação ao contexto
+- Manter posicionamento mas considerar fatores externos
+
+### GPT Personalizado - Limitações
+
+- Usa tokens da OpenAI
+- Limitação de uso (não indefinido)
+- **Solução para escala:** API própria
+- "Salvamos cliente que travou GPT para base grande"
+
+## Insights Profundos e Filosofia
+
+### Sobre Criação de Produtos
+"Você cria produto para resolver problema do lead, não seu problema de dinheiro"
+- Resolver problema = ganhar dinheiro naturalmente
+- Foco no dinheiro sem resolver problema = não funciona
+
+### Sobre Conteúdo e Consciência
+"Linha editorial fragmentada não vende"
+- Só autoridade = "fica estudando mas nunca mostra case"
+- Só emocional = "coach de boteco"
+- Só prova social = "ninguém sabe o que faz"
+
+### Sobre Adaptação de Mercado
+- Mercado muda, sociedade evolui
+- Não pode fingir que mudanças não existem
+- Adaptar mantendo princípios da empresa
+
+## Dúvidas e Esclarecimentos Aprofundados
+
+### Elementos de Autoridade por Nicho
+**Pergunta crucial:** "Vocês sabem o que seria conteúdo de autoridade para seu público?"
+- Varia drasticamente por persona
+- Print funciona para alguns, não para outros
+- Precisa mergulhar no universo específico
+
+### Consistência vs Resultados
+- "No começo é dolorido"
+- "Fica confuso se é autoridade ou não"
+- "Vem da consistência"
+- "Depois fica automático"
+
+## Atividades Práticas Propostas
+
+### Exercício de Mapeamento
+- Usar GPT personalizado fornecido
+- Mapear matriz ICP profundamente
+- Conectar com linha editorial
+- Identificar elementos para cada tipo de conteúdo
+
+### Análise de Universo
+- Responder: "No que meu lead pensa ao dormir?"
+- Mapear preocupações e angústias
+- Entender contexto de vida
+- Criar conteúdo que intercepta esses momentos
+
+## Síntese Final Expandida
+
+### Princípios Fundamentais
+- **Clareza antes de escala:** "Sem ICP claro, empresa não passa do platô"
+- **Escuta como filosofia:** "Negócio digital = processo contínuo de escuta"
+- **Facilitar, não complicar:** "Se não facilita vida do cliente, ele muda de empresa"
+- **Consistência editorial:** "Elementos fragmentados não elevam consciência"
+- **Volume com propósito:** "Produzir muito mas com estratégia clara"
+
+### Aplicações Imediatas
+- Parar de fazer conteúdo genérico
+- Mapear profundamente o momento do travesseiro
+- Analisar top 3 concorrentes estrategicamente
+- Criar GPT ou sistema para escalar insights
+- Implementar os 4 elementos em cada peça
+
+### Conexão com Realidade Atual
+- Considerar contexto político/econômico
+- Adaptar para momento de baixa consciência sobre IA
+- Preparar para mudanças constantes do mercado
+      `
     },
     {
       id: 2,
@@ -175,12 +392,37 @@ const Palestra = () => {
               {/* End Col */}
 
               <div className="space-y-5">
-                <p className="text-muted-foreground">
-                  Este material está sendo preparado especialmente para você. Em breve, todo o conteúdo detalhado estará disponível.
-                </p>
-                <p className="text-muted-foreground">
-                  Enquanto isso, acompanhe nossos outros materiais disponíveis e fique atento às atualizações.
-                </p>
+                {resumo.id === 1 && resumo.fullContent ? (
+                  <div className="prose prose-lg max-w-none text-muted-foreground">
+                    {resumo.fullContent.split('\n').map((line, index) => {
+                      if (line.startsWith('## ')) {
+                        return <h2 key={index} className="text-2xl font-bold text-foreground mt-8 mb-4">{line.replace('## ', '')}</h2>
+                      }
+                      if (line.startsWith('### ')) {
+                        return <h3 key={index} className="text-xl font-semibold text-foreground mt-6 mb-3">{line.replace('### ', '')}</h3>
+                      }
+                      if (line.startsWith('**') && line.endsWith('**')) {
+                        return <p key={index} className="font-semibold text-foreground mt-4 mb-2">{line.replace(/\*\*/g, '')}</p>
+                      }
+                      if (line.startsWith('- ')) {
+                        return <li key={index} className="ml-4 mb-2">{line.replace('- ', '')}</li>
+                      }
+                      if (line.trim() === '') {
+                        return <br key={index} />
+                      }
+                      return <p key={index} className="mb-3 leading-relaxed">{line}</p>
+                    })}
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-muted-foreground">
+                      Este material está sendo preparado especialmente para você. Em breve, todo o conteúdo detalhado estará disponível.
+                    </p>
+                    <p className="text-muted-foreground">
+                      Enquanto isso, acompanhe nossos outros materiais disponíveis e fique atento às atualizações.
+                    </p>
+                  </>
+                )}
               </div>
               {/* End Col */}
             </div>

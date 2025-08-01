@@ -59,9 +59,9 @@ const Resumos = () => {
   const resumos = [
     {
       id: 1,
-      title: "Abertura",
-      description: "Bem-vindos à Imersão Posicionamento 2024! Uma jornada transformadora para acelerar sua presença digital.",
-      author: "Ana Paula Perci",
+      title: "Construção de Negócios Digitais e Marca Pessoal - Estratégias Completas",
+      description: "Palestra de abertura da Imersão de Posicionamento com foco em diferenciação entre persona e ICP, construção de autoridade e linha editorial estratégica.",
+      author: "Ana",
       category: "Fundamentos",
       image: "/lovable-uploads/17e9dc7e-85aa-43f2-bdd3-b74a55a72ce9.png",
       rating: 4.9,
