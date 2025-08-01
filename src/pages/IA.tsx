@@ -54,11 +54,11 @@ const IA = () => {
           <div className="flex justify-center mb-8">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur opacity-20 animate-pulse"></div>
-              <div className="relative p-6 bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-3xl shadow-xl border border-white/20">
+              <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-3xl shadow-xl border border-white/20 overflow-hidden">
                 <img 
                   src="/lovable-uploads/da4a1b4f-7426-4531-bd3a-a48207005dd7.png" 
                   alt="Ana Paula Perci" 
-                  className="w-16 h-16 rounded-full object-cover"
+                  className="w-28 h-28 object-cover"
                 />
                 <Sparkles className="h-6 w-6 text-yellow-500 absolute -top-1 -right-1 animate-pulse" />
               </div>
